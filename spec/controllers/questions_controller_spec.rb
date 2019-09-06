@@ -1,6 +1,32 @@
 require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
+    let(:question) { create(:question) }
+
+  describe 'GET #show' do
+    before { get :show, params: {id: question} }
+
+    it '@question must be defined' do
+      expect(assigns(:question)).to eql(question)
+    end
+    it 'render show template' do
+      expect(response).to render_template :show
+    end
+  end
+
+  describe 'GET #index' do
+    let(:questions) { create_list(:question, 3) }
+    before { get :index }
+
+    it '@questions is array' do
+      expect(assigns(:questions)).to match_array(questions)
+    end
+
+    it 'render index template' do
+      expect(response).to render_template :index
+    end
+  end
+
   describe 'GET #new' do
     let(:question) { create(:question) }
 
