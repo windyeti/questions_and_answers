@@ -9,6 +9,9 @@ RSpec.describe QuestionsController, type: :controller do
     it '@question must be defined' do
       expect(assigns(:question)).to eql(question)
     end
+    it '@answer is new' do
+      expect(assigns(:answer)).to be_a_new(Answer)
+    end
     it 'render show template' do
       expect(response).to render_template :show
     end
