@@ -6,11 +6,14 @@ feature 'User can create an answer on the page question', %q{
 } do
   given(:question) { create(:question) }
 
-  scenario 'with valid body field' do
+  background {
     visit question_path(question)
-    expect(page).to have_content("#{question.title}")
-    expect(page).to have_content("#{question.body}")
 
+    expect(page).to have_content(question.title)
+    expect(page).to have_content(question.body)
+  }
+
+  scenario 'with valid body field' do
     fill_in 'answer_body', with: 'My text answer'
 
     click_on 'Create answer'
@@ -18,10 +21,6 @@ feature 'User can create an answer on the page question', %q{
     expect(page).to have_content('My text answer')
   end
   scenario 'with invalid body field' do
-    visit question_path(question)
-    expect(page).to have_content("#{question.title}")
-    expect(page).to have_content("#{question.body}")
-
     click_on 'Create answer'
 
     expect(page).to have_content("Body can't be blank")

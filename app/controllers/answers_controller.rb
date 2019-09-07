@@ -1,10 +1,5 @@
 class AnswersController < ApplicationController
-  before_action :find_answer, only: [:show]
   before_action :find_question, only: [:create]
-
-  # def new
-  #   # @answer = Answer.new
-  # end
 
   def create
     @answer = @question.answers.new(answer_params)
@@ -14,10 +9,6 @@ class AnswersController < ApplicationController
       render 'questions/show'
     end
   end
-
-  # def show
-  #
-  # end
 
   private
 
