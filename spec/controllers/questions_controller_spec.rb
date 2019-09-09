@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
-    let(:question) { create(:question) }
+  let(:question) { create(:question) }
 
   describe 'GET #show' do
     before { get :show, params: {id: question} }
@@ -31,21 +31,23 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'GET #new' do
-    let(:question) { create(:question) }
+    let(:user) { create(:user) }
+    before { login(user) }
+
+    before { get :new }
 
     it '@question is new' do
-      get :new
-
       expect(assigns(:question)).to be_a_new(Question)
     end
     it 'render template new' do
-      get :new
-
       expect(response).to render_template :new
     end
   end
 
   describe 'POST #create' do
+    let(:user) { create(:user) }
+    before { login(user) }
+
     context 'with valid attributes' do
       it 'new question save' do
         expect { post :create, params: { question: attributes_for(:question) } }.to change(Question, :count).by(1)

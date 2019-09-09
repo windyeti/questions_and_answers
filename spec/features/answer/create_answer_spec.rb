@@ -4,9 +4,13 @@ feature 'User can create an answer on the page question', %q{
   When user visit page of question
   then can create answer
 } do
+  given(:user) { create(:user) }
+  background { sign_in(user) }
+
   given(:question) { create(:question) }
 
   background {
+
     visit question_path(question)
 
     expect(page).to have_content(question.title)

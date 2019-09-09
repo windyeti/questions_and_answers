@@ -1,9 +1,13 @@
 require 'rails_helper'
 
-feature 'User can create question', %q{
+feature 'User create question', %q{
   To resolve issue
 } do
+  given(:user) { create(:user) }
+
   background {
+    sign_in(user)
+
     visit questions_path
     click_on 'Ask question'
 

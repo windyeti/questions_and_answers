@@ -4,15 +4,13 @@ feature 'user can sign in', %q{
   User can sign in
   to have full control own questions and answers
 } do
-  User.create!(email: 'user4@test.com', password: '123456')
+  given(:user) { create(:user) }
 
   scenario 'Registered user can sign in' do
     visit new_user_session_path
-    fill_in 'Email', with: 'user4@test.com'
-    fill_in 'Password', with: '123456'
+    fill_in 'Email', with: user.email
+    fill_in 'Password', with: user.password
     click_on 'Log in'
-
-    save_and_open_page
 
     expect(page).to have_content('Signed in successfully.')
   end

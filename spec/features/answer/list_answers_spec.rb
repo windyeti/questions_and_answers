@@ -3,6 +3,9 @@ require 'rails_helper'
 feature 'User can see a question with answers', %q{
 
 } do
+  given(:user) { create(:user) }
+  background { sign_in(user) }
+
   given!(:question) { create(:question) }
 
   scenario 'show question with his answers' do

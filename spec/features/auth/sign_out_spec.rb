@@ -3,7 +3,7 @@ require 'rails_helper'
 feature 'User can sign out', %q{
 
 } do
-  User.create!(email: 'user13@test.com', password: '123456')
+  given(:user) { create(:user) }
 
   scenario 'click on link to sign out' do
   visit new_user_session_path
