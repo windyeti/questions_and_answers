@@ -5,7 +5,6 @@ FactoryBot.define do
   factory :question do
     title { "MyTitle_#{generate(:num)}" }
     body { "MyBody #{generate(:num)}" }
-
     trait :invalid do
       body { nil }
     end

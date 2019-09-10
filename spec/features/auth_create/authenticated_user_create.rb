@@ -15,7 +15,7 @@ feature 'Only authenticated user can create question and answer', %q{
       expect(page).to have_content 'Create question'
     end
 
-    scenario 'Unauthenticated user cannot create a question' do
+    scenario 'Unauthenticated user does not create a question' do
       visit questions_path
       click_on 'Ask'
 
@@ -38,7 +38,7 @@ feature 'Only authenticated user can create question and answer', %q{
       expect(page).to have_content 'My text answer'
     end
 
-    scenario 'Unauthenticated user cannot create a answer' do
+    scenario 'Unauthenticated user can not create a answer' do
       visit question_path(question)
       fill_in 'answer_body', with: "My text answer"
       click_on 'Create answer'
