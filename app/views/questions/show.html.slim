@@ -4,6 +4,9 @@ h1= @question.title
 p= @question.body
 
 h4 List answers
+
+-@question.reload
+
 = render @question.answers
 
 = render 'answers/form'

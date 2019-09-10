@@ -6,7 +6,7 @@ feature 'User can see a question with answers', %q{
   given(:user) { create(:user) }
   background { sign_in(user) }
 
-  given!(:question) { create(:question) }
+  given!(:question) { user.questions.create(attributes_for(:question)) }
 
   scenario 'show question with his answers' do
     visit questions_path

@@ -1,7 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
-  let(:question) { create(:question) }
+  let(:user) { create(:user) }
+  let(:question) { user.questions.create(attributes_for(:question)) }
 
   describe 'GET #show' do
     before { get :show, params: {id: question} }
@@ -18,11 +19,15 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'GET #index' do
-    let(:questions) { create_list(:question, 3) }
+    let(:user) { create(:user) }
+    let(:question) { user.questions.create(attributes_for(:question)) }
+    let(:question) { user.questions.create(attributes_for(:question)) }
+    let(:question) { user.questions.create(attributes_for(:question)) }
+
     before { get :index }
 
     it '@questions is array' do
-      expect(assigns(:questions)).to match_array(questions)
+      expect(assigns(:questions)).to match_array(user.questions)
     end
 
     it 'render index template' do
@@ -65,6 +70,27 @@ RSpec.describe QuestionsController, type: :controller do
       it 'render new template' do
         post :create, params: { question: attributes_for(:question, :invalid) }
         expect(response).to render_template :new
+      end
+    end
+  end
+
+  describe 'DELETE #destroy' do
+      let(:user) { create(:user) }
+      before { login(user) }
+      let!(:question) { user.questions.create(attributes_for(:question)) }
+
+    context 'Authenticated user' do
+      it 'delete question' do
+        expect { delete :destroy, params: { id: question } }.to change(Question, :count).by(-1)
+      end
+    end
+
+    context 'Unauthenticated user' do
+      let(:user_other) { create(:user) }
+      before { login(user_other) }
+
+      it 'does not delete question' do
+        expect { delete :destroy, params: { id: question } }.to_not change(Question, :count)
       end
     end
   end

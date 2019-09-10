@@ -7,7 +7,8 @@ feature 'User can create an answer on the page question', %q{
   given(:user) { create(:user) }
   background { sign_in(user) }
 
-  given(:question) { create(:question) }
+  given(:question) { user.questions.create(attributes_for(:question)) }
+  given!(:answer) { question.answers.create(attributes_for(:answer)) }
 
   background {
 
@@ -24,6 +25,7 @@ feature 'User can create an answer on the page question', %q{
 
     expect(page).to have_content('My text answer')
   end
+
   scenario 'with invalid body field' do
     click_on 'Create answer'
 
