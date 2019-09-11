@@ -43,6 +43,6 @@ class QuestionsController < ApplicationController
   end
 
   def current_user_owner_question?
-    @question.user.email == current_user.email
+    @question.user == current_user
   end
 end

@@ -35,6 +35,6 @@ class AnswersController < ApplicationController
   end
 
   def current_user_owner_answer?
-    @answer.question.user.email == current_user.email
+    @answer.question.user == current_user
   end
 end

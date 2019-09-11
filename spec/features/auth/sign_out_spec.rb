@@ -9,9 +9,9 @@ feature 'User can sign out', %q{
   visit new_user_session_path
   fill_in 'Email', with: 'user13@test.com'
   fill_in 'Password', with: '123456'
-  click_on 'Log in'
+  click_button 'Log in'
 
-  click_on 'Log out'
+  click_link 'Log out'
 
   expect(page).to have_content('Signed out successfully.')
   end

@@ -1,7 +1,7 @@
 require 'rails_helper'
 
-feature 'User create question', %q{
-  To resolve issue
+feature 'Only authenticated user can create question', %q{
+
 } do
   given(:user) { create(:user) }
 

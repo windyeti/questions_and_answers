@@ -1,6 +1,6 @@
-p= "List questions"
-p= link_to "Ask question", new_question_path
+p= link_to "Ask", new_question_path if current_user.present?
 
+h3= "List questions"
 table
   tr
     th ID
