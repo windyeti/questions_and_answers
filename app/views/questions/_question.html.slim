@@ -1,8 +1,7 @@
 tr
-  td= question.id
   td= question.title
   td= question.body
   td
     span= link_to 'Show', question_path(question)
     '
-    span= link_to 'Delete', question_path(question), method: :delete if current_user.present? && current_user == question.user
+    span= link_to 'Delete', question_path(question), method: :delete if current_user == question.user

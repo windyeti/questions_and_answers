@@ -5,17 +5,22 @@ class AnswersController < ApplicationController
 
   def create
     @answer = @question.answers.new(answer_params)
+    @answer.user_id = current_user.id
     if @answer.save
       redirect_to @question, notice: "Answer have been successfully created."
     else
+      # если не перезагрузить @question после невалидного answer,
+      # то в @question.answers остается answer с кривыми данными,
+      # и он ломает верстку
+      @question.reload
       render 'questions/show'
     end
   end
 
   def destroy
     if current_user_owner_answer?
-      flash[:notice] = "Question have been delete."
-      @answer.delete
+      flash[:notice] = "Answer have been deleted."
+      @answer.destroy
     end
     redirect_to @answer.question, notice: "Answer have been delete."
   end

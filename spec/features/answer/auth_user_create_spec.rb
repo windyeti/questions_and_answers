@@ -11,7 +11,7 @@ feature 'Only authenticated user can create answer', %q{
       sign_in(user)
 
       visit question_path(question)
-      fill_in 'answer_body', with: "My text answer"
+      fill_in 'Body', with: "My text answer"
       click_on 'Create answer'
 
       expect(page).to have_content 'Answer have been successfully created.'

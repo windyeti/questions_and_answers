@@ -26,7 +26,7 @@ class QuestionsController < ApplicationController
   def destroy
     if current_user_owner_question?
       flash[:notice] = "Question have been delete."
-      @question.delete
+      @question.destroy
     end
 
     redirect_to questions_path

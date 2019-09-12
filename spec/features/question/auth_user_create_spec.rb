@@ -14,8 +14,10 @@ feature 'Only authenticated user can create question', %q{
     expect(page).to have_content("Create question")
   }
   scenario 'user ask a question with valid fields' do
-    fill_in "question_title", with: "My text title"
-    fill_in "question_body", with: "My text text text body"
+
+    fill_in "Title", with: "My text title"
+    fill_in "Body", with: "My text text text body"
+
     click_on "Create question"
 
     expect(page).to have_content("My text title")
@@ -23,14 +25,14 @@ feature 'Only authenticated user can create question', %q{
   end
 
   scenario 'user ask a question with invalid title field' do
-    fill_in "question_body", with: "My text text text body"
+    fill_in "Body", with: "My text text text body"
     click_on "Create question"
 
     expect(page).to have_content("Title can't be blank")
   end
 
   scenario 'user ask a question with invalid body field' do
-    fill_in "question_title", with: "My text title"
+    fill_in "Title", with: "My text title"
     click_on "Create question"
 
     expect(page).to have_content("Body can't be blank")

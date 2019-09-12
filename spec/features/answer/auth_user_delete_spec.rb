@@ -7,13 +7,12 @@ feature 'User can delete only his answer', %q{
   given!(:question) { user.questions.create( title: 'My Title text', body: 'My body text text' ) }
 
   context 'Answer' do
-    given!(:answer) { question.answers.create(body: 'My body answer text') }
+    given!(:answer) { create(:answer, question: question, user: user) }
 
     scenario 'Authenticated user delete his answer' do
       sign_in(user)
       visit questions_path
       click_on 'Show'
-      expect(page).to have_content 'My body answer text'
 
       click_on 'Delete'
 

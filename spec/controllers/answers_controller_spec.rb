@@ -31,7 +31,7 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
-    let!(:answer) { question.answers.create(attributes_for(:answer)) }
+    let!(:answer) { create(:answer, question: question, user: user) }
 
     context 'Authenticated user' do
       it 'delete answer' do

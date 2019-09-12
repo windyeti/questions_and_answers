@@ -4,4 +4,4 @@ h4
   '
   = answer.body
   '
-  = link_to 'Delete', answer_path(answer), method: :delete if current_user.present? && current_user == answer.question.user
+  = link_to 'Delete', answer_path(answer), method: :delete if current_user == answer.question.user

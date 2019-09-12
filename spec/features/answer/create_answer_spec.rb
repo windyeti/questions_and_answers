@@ -19,7 +19,7 @@ feature 'User can create an answer on the page question', %q{
   }
 
   scenario 'with valid body field' do
-    fill_in 'answer_body', with: 'My text answer'
+    fill_in 'Body', with: 'My text answer'
 
     click_on 'Create answer'
 
