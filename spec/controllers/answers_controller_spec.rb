@@ -39,10 +39,17 @@ RSpec.describe AnswersController, type: :controller do
       end
     end
 
-    context 'Unauthenticated user' do
+    context 'Authenticated user is not owner of the question' do
       let(:user_other) { create(:user) }
       before { login(user_other) }
-      it 'does not delete answer' do
+      it 'was not deleted answer' do
+        expect { delete :destroy, params: { id: answer } }.to_not change(Answer, :count)
+      end
+    end
+
+    context 'Guest' do
+      before { sign_out(user) }
+      it 'was not deleted answer' do
         expect { delete :destroy, params: { id: answer } }.to_not change(Answer, :count)
       end
     end

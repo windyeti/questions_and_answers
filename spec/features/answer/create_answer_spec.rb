@@ -7,8 +7,7 @@ feature 'User can create an answer on the page question', %q{
   given(:user) { create(:user) }
   background { sign_in(user) }
 
-  given(:question) { user.questions.create(attributes_for(:question)) }
-  given!(:answer) { question.answers.create(attributes_for(:answer)) }
+  given(:question) { create(:question, user: user) }
 
   background {
 
@@ -24,6 +23,7 @@ feature 'User can create an answer on the page question', %q{
     click_on 'Create answer'
 
     expect(page).to have_content('My text answer')
+    expect(page).to_not have_content("Body can't be blank")
   end
 
   scenario 'with invalid body field' do

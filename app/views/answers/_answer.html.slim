@@ -1,7 +1,5 @@
+-return unless answer.persisted?
 h4
-  = answer.id
-  | .
-  '
   = answer.body
   '
-  = link_to 'Delete', answer_path(answer), method: :delete if user_owner?(answer.user)
+  = link_to 'Delete', answer_path(answer), method: :delete if user_owner?(answer)

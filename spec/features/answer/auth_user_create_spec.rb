@@ -16,6 +16,7 @@ feature 'Only authenticated user can create answer', %q{
 
       expect(page).to have_content 'Answer have been successfully created.'
       expect(page).to have_content 'My text answer'
+      expect(page).to_not have_content "Body can't be blank"
     end
 
     scenario 'Unauthenticated user can not create a answer' do

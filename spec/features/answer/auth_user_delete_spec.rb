@@ -17,7 +17,7 @@ feature 'User can delete only his answer', %q{
       click_on 'Delete'
 
       expect(page).to_not have_content 'My body answer text'
-      expect(page).to have_content 'Answer have been delete.'
+      expect(page).to have_content 'Answer have been deleted.'
     end
 
     given(:user2) { create(:user) }

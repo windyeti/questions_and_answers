@@ -9,20 +9,18 @@ class AnswersController < ApplicationController
     if @answer.save
       redirect_to @question, notice: "Answer have been successfully created."
     else
-      # если не перезагрузить @question после невалидного answer,
-      # то в @question.answers остается answer с кривыми данными,
-      # и он ломает верстку
-      @question.reload
       render 'questions/show'
     end
   end
 
   def destroy
-    if current_user_owner_answer?
-      flash[:notice] = "Answer have been deleted."
+    if current_user.answers.include?(@answer)
       @answer.destroy
+      flash[:notice] = "Answer have been deleted."
+    else
+      flash[:alert] = "Answer was not deleted."
     end
-    redirect_to @answer.question, notice: "Answer have been delete."
+      redirect_to @answer.question
   end
 
   private

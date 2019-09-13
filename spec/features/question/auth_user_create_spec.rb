@@ -22,6 +22,8 @@ feature 'Only authenticated user can create question', %q{
 
     expect(page).to have_content("My text title")
     expect(page).to have_content("My text text text body")
+    expect(page).to_not have_content "Body can't be blank"
+    expect(page).to_not have_content "Title can't be blank"
   end
 
   scenario 'user ask a question with invalid title field' do

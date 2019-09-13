@@ -85,11 +85,20 @@ RSpec.describe QuestionsController, type: :controller do
       end
     end
 
-    context 'Unauthenticated user' do
+    context 'Unauthenticated user is not owner of the question' do
       let(:user_other) { create(:user) }
       before { login(user_other) }
 
-      it 'does not delete question' do
+      it 'can\'t delete question' do
+        expect { delete :destroy, params: { id: question } }.to_not change(Question, :count)
+      end
+    end
+
+    context 'Guest' do
+      let(:user_other) { create(:user) }
+      before { login(user_other) }
+
+      it 'can\'t delete question' do
         expect { delete :destroy, params: { id: question } }.to_not change(Question, :count)
       end
     end
