@@ -5,16 +5,17 @@ class AnswersController < ApplicationController
 
   def create
     @answer = @question.answers.new(answer_params)
-    @answer.user_id = current_user.id
+    @answer.user = current_user
     if @answer.save
       redirect_to @question, notice: "Answer have been successfully created."
     else
+      flash.now[:alert] = "Answer was not created."
       render 'questions/show'
     end
   end
 
   def destroy
-    if current_user.answers.include?(@answer)
+    if current_user.owner?(@answer)
       @answer.destroy
       flash[:notice] = "Answer have been deleted."
     else
@@ -35,9 +36,5 @@ class AnswersController < ApplicationController
 
   def find_answer
     @answer = Answer.find(params[:id])
-  end
-
-  def current_user_owner_answer?
-    @answer.question.user == current_user
   end
 end

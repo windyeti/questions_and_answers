@@ -8,6 +8,6 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   def owner?(resource)
-    resource.send(:user) == self
+    resource.user == self
   end
 end

@@ -24,7 +24,7 @@ class QuestionsController < ApplicationController
   end
 
   def destroy
-    if current_user.questions.include?(@question)
+    if current_user.owner?(@question)
       @question.destroy
       flash[:notice] = "Question have been delete."
     else
@@ -41,9 +41,5 @@ class QuestionsController < ApplicationController
 
   def find_question
     @question = Question.find(params[:id])
-  end
-
-  def current_user_owner_question?
-    @question.user == current_user
   end
 end

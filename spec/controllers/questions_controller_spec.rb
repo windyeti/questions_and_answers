@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
   let(:user) { create(:user) }
-  let(:question) { user.questions.create(attributes_for(:question)) }
+  let(:question) { create(:question, user: user) }
 
   describe 'GET #show' do
     before { get :show, params: {id: question} }
@@ -20,14 +20,12 @@ RSpec.describe QuestionsController, type: :controller do
 
   describe 'GET #index' do
     let(:user) { create(:user) }
-    let(:question) { user.questions.create(attributes_for(:question)) }
-    let(:question) { user.questions.create(attributes_for(:question)) }
-    let(:question) { user.questions.create(attributes_for(:question)) }
+    let(:questions) { create_list(:question, 3, user: user) }
 
     before { get :index }
 
     it '@questions is array' do
-      expect(assigns(:questions)).to match_array(user.questions)
+      expect(assigns(:questions)).to match_array(questions)
     end
 
     it 'render index template' do
@@ -37,9 +35,10 @@ RSpec.describe QuestionsController, type: :controller do
 
   describe 'GET #new' do
     let(:user) { create(:user) }
-    before { login(user) }
-
-    before { get :new }
+    before {
+      login(user)
+      get :new
+    }
 
     it '@question is new' do
       expect(assigns(:question)).to be_a_new(Question)
@@ -75,11 +74,11 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
-      let(:user) { create(:user) }
-      before { login(user) }
-      let!(:question) { user.questions.create(attributes_for(:question)) }
+    let!(:question) { create(:question, user: user) }
 
     context 'Authenticated user' do
+      before { login(user) }
+
       it 'delete question' do
         expect { delete :destroy, params: { id: question } }.to change(Question, :count).by(-1)
       end
@@ -95,9 +94,6 @@ RSpec.describe QuestionsController, type: :controller do
     end
 
     context 'Guest' do
-      let(:user_other) { create(:user) }
-      before { login(user_other) }
-
       it 'can\'t delete question' do
         expect { delete :destroy, params: { id: question } }.to_not change(Question, :count)
       end
