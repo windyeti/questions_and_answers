@@ -4,8 +4,9 @@ feature 'User can create an answer on the page question', %q{
   When user visit page of question
   then can create answer
 } do
+  given(:user) { create(:user) }
+
   context 'Authenticated user create answer' do
-    given(:user) { create(:user) }
     background { sign_in(user) }
 
     given(:question) { create(:question, user: user) }
@@ -34,8 +35,7 @@ feature 'User can create an answer on the page question', %q{
     end
   end
 
-  context 'Unauthenticated user cannot create answer' do
-    given(:user) { create(:user) }
+  context 'Guest user cannot create answer' do
     given(:question) { create(:question, user: user) }
 
     scenario 'with valid body field' do

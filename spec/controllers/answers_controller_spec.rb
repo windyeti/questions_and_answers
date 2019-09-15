@@ -3,29 +3,37 @@ require 'rails_helper'
 RSpec.describe AnswersController, type: :controller do
   let(:user) { create(:user) }
   let(:question) { create(:question, user: user) }
-  before { login(user) }
 
   describe 'POST #create' do
+    context 'Authenticated user' do
+      before { login(user) }
 
-    context 'with valid attributes' do
-      it 'new answer save' do
-        expect { post :create, params: {question_id: question, answer: attributes_for(:answer)} }.to change(Answer, :count).by(1)
+      context 'with valid data' do
+        it 'create answer' do
+          expect { post :create, params: {question_id: question, answer: attributes_for(:answer)} }.to change(Answer, :count).by(1)
+        end
+
+        it 'redirect to question' do
+          post :create, params: {question_id: question, answer: attributes_for(:answer)}
+          expect(response).to redirect_to question
+        end
       end
 
-      it 'redirect to question' do
-        post :create, params: {question_id: question, answer: attributes_for(:answer)}
-        expect(response).to redirect_to question
+      context 'with invalid data' do
+        it 'does not create answer' do
+          expect { post :create, params: {question_id: question, answer: attributes_for(:answer, :invalid)} }.to_not change(Answer, :count)
+        end
+
+        it 'render template questions/show' do
+          post :create, params: {question_id: question, answer: attributes_for(:answer, :invalid)}
+          expect(response).to render_template 'questions/show'
+        end
       end
     end
 
-    context 'with not valid attributes' do
-      it 'new answer does not save' do
-        expect { post :create, params: {question_id: question, answer: attributes_for(:answer, :invalid)} }.to_not change(Answer, :count)
-      end
-
-      it 'render template questions/show' do
-        post :create, params: {question_id: question, answer: attributes_for(:answer, :invalid)}
-        expect(response).to render_template 'questions/show'
+    context 'Guest user' do
+      it 'does not create answer' do
+        expect { post :create, params: {question_id: question, answer: attributes_for(:answer)} }.to_not change(Answer, :count)
       end
     end
   end
@@ -34,6 +42,7 @@ RSpec.describe AnswersController, type: :controller do
     let!(:answer) { create(:answer, question: question, user: user) }
 
     context 'Authenticated user' do
+      before { login(user) }
       it 'delete answer' do
         expect { delete :destroy, params: { id: answer } }.to change(Answer, :count).by(-1)
       end
@@ -48,7 +57,6 @@ RSpec.describe AnswersController, type: :controller do
     end
 
     context 'Guest' do
-      before { sign_out(user) }
       it 'was not deleted answer' do
         expect { delete :destroy, params: { id: answer } }.to_not change(Answer, :count)
       end

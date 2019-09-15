@@ -6,6 +6,10 @@ class QuestionsController < ApplicationController
     @questions = Question.all
   end
 
+  def show
+    @answer = Answer.new
+  end
+
   def new
     @question = Question.new
   end
@@ -17,10 +21,6 @@ class QuestionsController < ApplicationController
     else
       render :new
     end
-  end
-
-  def show
-    @answer = Answer.new
   end
 
   def destroy

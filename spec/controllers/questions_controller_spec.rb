@@ -19,7 +19,6 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'GET #index' do
-    let(:user) { create(:user) }
     let(:questions) { create_list(:question, 3, user: user) }
 
     before { get :index }
@@ -34,41 +33,71 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'GET #new' do
-    let(:user) { create(:user) }
-    before {
-      login(user)
-      get :new
-    }
+    context 'Authenticated user' do
+      before {
+        login(user)
+        get :new
+      }
 
-    it '@question is new' do
-      expect(assigns(:question)).to be_a_new(Question)
+      it '@question is new' do
+        expect(assigns(:question)).to be_a_new(Question)
+      end
+      it 'render template new' do
+        expect(response).to render_template :new
+      end
     end
-    it 'render template new' do
-      expect(response).to render_template :new
+
+    context 'Unauthenticated user' do
+      before { get :new }
+
+      it 'tried visit template new' do
+        expect(response).to redirect_to new_user_session_path
+      end
     end
   end
 
   describe 'POST #create' do
-    let(:user) { create(:user) }
-    before { login(user) }
 
-    context 'with valid attributes' do
-      it 'new question save' do
-        expect { post :create, params: { question: attributes_for(:question) } }.to change(Question, :count).by(1)
+    context 'Authenticated user' do
+      before { login(user) }
+
+      context 'with valid attributes' do
+
+        it 'create question' do
+          expect { post :create, params: { question: attributes_for(:question) } }.to change(Question, :count).by(1)
+        end
+
+        it 'after create redirect to question' do
+          post :create, params: { question: attributes_for(:question) }
+          expect(response).to redirect_to assigns(:question)
+        end
+
+        it 'assigns current user as owner question' do
+          post :create, params: { question: attributes_for(:question) }
+          expect(assigns(:question).user_id).to eq (question.user_id)
+        end
       end
-      it 'redirect to question' do
-        post :create, params: { question: attributes_for(:question) }
-        expect(response).to redirect_to assigns(:question)
+
+      context 'with invalid attributes' do
+
+        it 'does not create question' do
+          expect { post :create, params: { question: attributes_for(:question, :invalid) } }.to_not change(Question, :count)
+        end
+
+        it 'render template new' do
+          post :create, params: { question: attributes_for(:question, :invalid) }
+          expect(response).to render_template :new
+        end
       end
     end
-    context 'with not valid attributes' do
-      it 'new question dont save' do
-        expect { post :create, params: { question: attributes_for(:question, :invalid) } }.to_not change(Question, :count)
-      end
 
-      it 'render new template' do
-        post :create, params: { question: attributes_for(:question, :invalid) }
-        expect(response).to render_template :new
+    context 'Guest user' do
+      it 'does not create question' do
+        expect { post :create, params: { question: attributes_for(:question) } }.to_not change(Question, :count)
+      end
+      it 'after tried create question redirect to log in' do
+        post :create, params: { question: attributes_for(:question) }
+        expect(response).to redirect_to new_user_session_path
       end
     end
   end
@@ -84,7 +113,7 @@ RSpec.describe QuestionsController, type: :controller do
       end
     end
 
-    context 'Unauthenticated user is not owner of the question' do
+    context 'Authenticated user is not owner of the question' do
       let(:user_other) { create(:user) }
       before { login(user_other) }
 
