@@ -1,8 +1,6 @@
 require 'rails_helper'
 
-feature 'User can delete only his answer', %q{
-
-} do
+feature 'User can delete only his answer' do
   given(:user) { create(:user) }
   given!(:question) { user.questions.create( title: 'My Title text', body: 'My body text text' ) }
 

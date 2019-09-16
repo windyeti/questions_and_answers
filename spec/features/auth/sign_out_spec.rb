@@ -1,8 +1,6 @@
 require 'rails_helper'
 
-feature 'Authenticated user can log out', %q{
-
-} do
+feature 'Authenticated user can log out' do
   background {
     visit new_user_session_path
     fill_in 'Email', with: 'user13@test.com'

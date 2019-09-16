@@ -1,8 +1,6 @@
 require 'rails_helper'
 
-feature 'Only authenticated user can create question', %q{
-
-} do
+feature 'Only authenticated user can create question' do
   given(:user) { create(:user) }
 
   background {

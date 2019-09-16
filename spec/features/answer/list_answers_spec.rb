@@ -1,8 +1,6 @@
 require 'rails_helper'
 
-feature 'User can see a answers on the page of question', %q{
-
-} do
+feature 'User can see a answers on the page of question' do
   given(:question) { create(:question) }
   given!(:answers) { create_list(:answer, 5, question: question, body: 'My Answer 23456 text') }
 
