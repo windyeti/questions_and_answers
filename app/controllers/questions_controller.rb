@@ -28,7 +28,7 @@ class QuestionsController < ApplicationController
       @question.destroy
       flash[:notice] = "Question have been delete."
     else
-      flash[:alert] = "Question was not deleted."
+      flash[:alert] = "Question have not been deleted. You are not owner of the question."
     end
     redirect_to questions_path
   end

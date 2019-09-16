@@ -33,6 +33,7 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'GET #new' do
+
     context 'Authenticated user' do
       before {
         login(user)
@@ -49,6 +50,10 @@ RSpec.describe QuestionsController, type: :controller do
 
     context 'Unauthenticated user' do
       before { get :new }
+
+      it 'does not create @question' do
+        expect(assigns(:question)).to be_nil
+      end
 
       it 'tried visit template new' do
         expect(response).to redirect_to new_user_session_path
@@ -67,14 +72,14 @@ RSpec.describe QuestionsController, type: :controller do
           expect { post :create, params: { question: attributes_for(:question) } }.to change(Question, :count).by(1)
         end
 
-        it 'after create redirect to question' do
+        it 'redirect to question' do
           post :create, params: { question: attributes_for(:question) }
           expect(response).to redirect_to assigns(:question)
         end
 
         it 'assigns current user as owner question' do
           post :create, params: { question: attributes_for(:question) }
-          expect(assigns(:question).user_id).to eq (question.user_id)
+          expect(assigns(:question).user).to eq (user)
         end
       end
 
@@ -95,7 +100,7 @@ RSpec.describe QuestionsController, type: :controller do
       it 'does not create question' do
         expect { post :create, params: { question: attributes_for(:question) } }.to_not change(Question, :count)
       end
-      it 'after tried create question redirect to log in' do
+      it 'redirect to log in' do
         post :create, params: { question: attributes_for(:question) }
         expect(response).to redirect_to new_user_session_path
       end
@@ -111,6 +116,11 @@ RSpec.describe QuestionsController, type: :controller do
       it 'delete question' do
         expect { delete :destroy, params: { id: question } }.to change(Question, :count).by(-1)
       end
+
+      it 'redirect to questions' do
+        delete :destroy, params: { id: question }
+        expect(response).to redirect_to(questions_path)
+      end
     end
 
     context 'Authenticated user is not owner of the question' do
@@ -120,11 +130,21 @@ RSpec.describe QuestionsController, type: :controller do
       it 'can\'t delete question' do
         expect { delete :destroy, params: { id: question } }.to_not change(Question, :count)
       end
+
+      it 'redirect to questions' do
+        delete :destroy, params: { id: question }
+        expect(response).to redirect_to(questions_path)
+      end
     end
 
     context 'Guest' do
       it 'can\'t delete question' do
         expect { delete :destroy, params: { id: question } }.to_not change(Question, :count)
+      end
+
+      it 'redirect to questions' do
+        delete :destroy, params: { id: question }
+        expect(response).to redirect_to(new_user_session_path)
       end
     end
   end
