@@ -1,0 +1,9 @@
+p= link_to "Ask", new_question_path if current_user.present?
+
+h3= "List questions"
+table
+  tr
+    th Title
+    th Question
+    th colspan="3" Action
+  = render @questions

@@ -1,8 +1,11 @@
 FactoryBot.define do
+  sequence :num do |n|
+    "#{n}"
+  end
   factory :question do
-    title { "MyTitle" }
-    body { "MyBody" }
-
+    title { "MyTitle_#{generate(:num)}" }
+    body { "MyBody #{generate(:num)}" }
+    user
     trait :invalid do
       body { nil }
     end

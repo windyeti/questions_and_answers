@@ -1,0 +1,4 @@
+- if flash.present?
+  div.flash_message
+    - flash.each do |key, message|
+      p class="flash_#{key}"= message

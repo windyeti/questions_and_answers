@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
-  resources :questions, shallow: true do
-    resources :answers
+
+  devise_for :users, path: :account
+  root to: 'questions#index'
+
+  resources :questions, only: [:index, :show, :new, :create, :destroy], shallow: true do
+    resources :answers, only: [:create, :destroy]
   end
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+
 end
