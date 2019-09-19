@@ -1,6 +1,8 @@
 tr
-  td= question.title
-  td= question.body
+  td
+    span.question__title= question.title
+  td
+    span.question__body= question.body
   td
     span= link_to 'Show', question_path(question)
     '

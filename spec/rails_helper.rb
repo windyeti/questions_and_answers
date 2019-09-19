@@ -38,6 +38,11 @@ RSpec.configure do |config|
   config.include Devise::Test::IntegrationHelpers, type: :feature
   config.include ControllerHelper, type: :controller
   config.include FeatureHelper, type: :feature
+
+  config.include AcceptanceHelper, type: :feature
+
+  Capybara.javascript_driver = :selenium_chrome
+
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
 
