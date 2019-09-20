@@ -5,6 +5,6 @@ p= @question.body
 
 h4 List answers
 
-= render @question.answers
+.answers= render @question.answers
 
 = render 'answers/form' if current_user

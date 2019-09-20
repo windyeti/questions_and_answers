@@ -6,12 +6,7 @@ class AnswersController < ApplicationController
   def create
     @answer = @question.answers.new(answer_params)
     @answer.user = current_user
-    if @answer.save
-      redirect_to @question, notice: "Answer have been successfully created."
-    else
-      flash.now[:alert] = "Answer was not created."
-      render 'questions/show'
-    end
+    @answer.save
   end
 
   def destroy

@@ -1,0 +1,8 @@
+<% if @answer.errors.empty? %>
+  $('.nav').before('<p class=flash_notice>Answer have been successfully created.</p>')
+  $('.answers').append('<%= render @answer %>')
+  $('#answer_body').val('')
+<% else %>
+  $('.nav').before('<p class=flash_alert>Answer was not created.</p>')
+  $('.answers').after('<%= render 'shared/errors', resource: @answer %>')
+<% end %>

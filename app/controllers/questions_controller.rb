@@ -23,10 +23,14 @@ class QuestionsController < ApplicationController
     end
   end
 
+  def update
+
+  end
+
   def destroy
     if current_user.owner?(@question)
       @question.destroy
-      flash[:notice] = "Question have been delete."
+      flash[:notice] = "Question have been deleted."
     else
       flash[:alert] = "Question have not been deleted. You are not owner of the question."
     end

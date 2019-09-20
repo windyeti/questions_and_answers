@@ -61,7 +61,7 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
 
-  describe 'POST #create' do
+  describe 'POST #create', js: true do
 
     context 'Authenticated user' do
       before { login(user) }
@@ -148,4 +148,26 @@ RSpec.describe QuestionsController, type: :controller do
       end
     end
   end
+
+  # describe 'EDIT #edit' do
+  #
+  #   context 'Authenticated user can edit question' do
+  #       let(:question) { create(:question) }
+  #     it 'change question' do
+  #       patch :update, params: { id: question, title: 'NEW TITLE' }
+  #       expect(response).to have_content 'NEW TITLE'
+  #     end
+  #     it 'render update template'
+  #   end
+  #
+  #   context 'Unauthenticated user cannot edit question' do
+  #     it 'does not change question'
+  #     it 'render update template'
+  #   end
+  #
+  #   context 'Authenticated user not author cannot edit question' do
+  #     it 'does not change question'
+  #     it 'render update template'
+  #   end
+  # end
 end
