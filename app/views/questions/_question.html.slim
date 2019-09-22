@@ -5,3 +5,5 @@ tr
     span= link_to 'Show', question_path(question)
     '
     span= link_to 'Delete', question_path(question), method: :delete if current_user&.owner?(question)
+    '
+    span= link_to 'Edit', edit_question_path(question) if current_user&.owner?(question)

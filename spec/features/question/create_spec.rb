@@ -17,6 +17,7 @@ feature 'User create question', %q{
     scenario 'user ask a question with valid fields' do
       fill_in "Title", with: "My text title"
       fill_in "Body", with: "My text text text body"
+      save_and_open_page
       click_on "Create question"
 
       expect(page).to have_content("My text title")

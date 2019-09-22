@@ -1,13 +1,13 @@
 require 'rails_helper'
 
-feature 'User can delete only his answer' do
+feature 'User can delete only own answer' do
   given(:user) { create(:user) }
   given!(:question) { user.questions.create( title: 'My Title text', body: 'My body text text' ) }
 
   context 'Answer' do
     given!(:answer) { create(:answer, question: question, user: user) }
 
-    scenario 'Authenticated user delete his answer' do
+    scenario 'Authenticated user delete own answer' do
       sign_in(user)
       visit questions_path
       click_on 'Show'

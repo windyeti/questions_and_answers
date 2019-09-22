@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 feature 'Only authenticated user can create answer' do
-  context 'Create answer' do
+  context 'Create answer', js: true do
     given(:user) { create(:user) }
     given(:question) { create(:question, user: user) }
 

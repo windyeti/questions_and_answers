@@ -16,7 +16,7 @@ feature 'User can delete only his question' do
 
       expect(page).to_not have_content 'My Title text'
       expect(page).to_not have_content 'My body text text'
-      expect(page).to have_content 'Question have been delete.'
+      expect(page).to have_content 'Question have been deleted.'
     end
 
     given(:user2) { create(:user) }
