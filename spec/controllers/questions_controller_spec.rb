@@ -174,25 +174,59 @@ RSpec.describe QuestionsController, type: :controller do
     context 'Authenticated user can edit question' do
       before { login(user) }
 
-      it 'change question' do
-        patch :update, params: { id: question, question: { title: 'NEW TITLE', body: 'NEW BODY' } }, format: :js
-        expect(assigns(:question).title).to eq 'NEW TITLE'
-      end
+      context 'with valid data' do
+        it 'change question' do
+          patch :update, params: { id: question, question: { title: 'NEW TITLE', body: 'NEW BODY' } }, format: :js
+          expect(assigns(:question).title).to eq 'NEW TITLE'
+        end
 
-      it 'render update template' do
-        patch :update, params: { id: question, question: { title: 'NEW TITLE', body: 'NEW BODY' } }, format: :js
-        expect(response).to render_template :update
+        it 'render update template' do
+          patch :update, params: { id: question, question: { title: 'NEW TITLE', body: 'NEW BODY' } }, format: :js
+          expect(response).to render_template :update
+        end
+      end
+      context 'with invalid data' do
+        it 'change question' do
+          expect do
+            patch :update, params: { id: question, question: attributes_for(:question, :invalid) }, format: :js
+          end.to_not change(question, :body)
+        end
+
+        it 'render update template' do
+          patch :update, params: { id: question, question: attributes_for(:question, :invalid) }, format: :js
+          expect(response).to render_template :update
+        end
       end
     end
 
     context 'Unauthenticated user can not edit question' do
-      it 'does not change question'
-      it 'render update template'
+      it 'does not change question' do
+        expect do
+          patch :update, params: { id: question, question: { title: 'NEW TITLE', body: 'NEW BODY' } }, format: :js
+        end.to_not change(question, :title)
+      end
+      it 'render update template' do
+        patch :update, params: { id: question, question: { title: 'NEW TITLE', body: 'NEW BODY' } }, format: :js
+        expect(response).to have_http_status '401'
+      #   хотя здесь должна быть проверка редиректа на форму авторизации
+      #   expect(response).to redirect_to new_user_session_path
+      end
     end
 
     context 'Authenticated user not author can not edit question' do
-      it 'does not change question'
-      it 'render update template'
+      let(:other_user) { create(:user) }
+      before { login(other_user) }
+
+      it 'does not change question' do
+        expect do
+          patch :update, params: { id: question, question: { title: 'NEW TITLE', body: 'NEW BODY' } }, format: :js
+        end.to_not change(question, :title)
+      end
+
+      it 'render question' do
+        patch :update, params: { id: question, question: { title: 'NEW TITLE', body: 'NEW BODY' } }, format: :js
+        expect(response).to redirect_to question_path(question)
+      end
     end
   end
 end
