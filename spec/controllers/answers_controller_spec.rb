@@ -77,4 +77,39 @@ RSpec.describe AnswersController, type: :controller do
       end
     end
   end
+
+  describe 'GET #edit' do
+    let(:answer) { create(:answer, question: question, user: user) }
+
+    context 'Authenticated user' do
+      before {
+        login(user)
+        get :edit, params: { id: answer }
+      }
+
+      it 'edit own answer' do
+        expect(assigns(:answer)).to eql answer
+      end
+
+      it 'render edit template' do
+        expect(response).to render_template :edit
+      end
+    end
+
+    context 'Authenticated other user' do
+      let(:other_user) { create(:user) }
+      before { login(other_user) }
+
+      it 'not author' do
+        get :edit, params: { id: answer }
+        expect(response).to redirect_to question
+      end
+    end
+    context 'Unauthenticated user' do
+      it 'guest' do
+        get :edit, params: { id: answer }
+        expect(response).to redirect_to new_user_session_path
+      end
+    end
+  end
 end

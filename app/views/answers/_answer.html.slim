@@ -2,4 +2,6 @@
 h4
   = answer.body
   '
-  = link_to 'Delete', answer_path(answer), method: :delete if current_user&.owner?(answer)
+  - if current_user&.owner?(answer)
+    = link_to 'Delete', answer_path(answer), method: :delete
+    = link_to 'Edit', edit_answer_path(answer)

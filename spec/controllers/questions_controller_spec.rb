@@ -155,7 +155,7 @@ RSpec.describe QuestionsController, type: :controller do
 
       before { login(user) }
 
-      it 'assigns @question' do
+      it 'edit own question' do
         get :edit, params: {id: question}
         expect(assigns(:question)).to eql(question)
       end
@@ -163,6 +163,24 @@ RSpec.describe QuestionsController, type: :controller do
       it 'render edit template' do
         get :edit, params: {id: question}
         expect(response).to render_template :edit
+      end
+    end
+
+    context 'Authenticated user not author' do
+      let(:other_user) { create(:user) }
+      before { login(other_user) }
+
+      it 'assigns @question' do
+        get :edit, params: {id: question}
+        expect(response).to redirect_to questions_path
+      end
+    end
+
+    context 'Guest user' do
+
+      it 'render edit template' do
+        get :edit, params: {id: question}
+        expect(response).to redirect_to new_user_session_path
       end
     end
 
@@ -199,20 +217,6 @@ RSpec.describe QuestionsController, type: :controller do
       end
     end
 
-    context 'Unauthenticated user can not edit question' do
-      it 'does not change question' do
-        expect do
-          patch :update, params: { id: question, question: { title: 'NEW TITLE', body: 'NEW BODY' } }, format: :js
-        end.to_not change(question, :title)
-      end
-      it 'render update template' do
-        patch :update, params: { id: question, question: { title: 'NEW TITLE', body: 'NEW BODY' } }, format: :js
-        expect(response).to have_http_status '401'
-      #   хотя здесь должна быть проверка редиректа на форму авторизации
-      #   expect(response).to redirect_to new_user_session_path
-      end
-    end
-
     context 'Authenticated user not author can not edit question' do
       let(:other_user) { create(:user) }
       before { login(other_user) }
@@ -223,9 +227,24 @@ RSpec.describe QuestionsController, type: :controller do
         end.to_not change(question, :title)
       end
 
-      it 'render question' do
+      it 'render index template' do
         patch :update, params: { id: question, question: { title: 'NEW TITLE', body: 'NEW BODY' } }, format: :js
-        expect(response).to redirect_to question_path(question)
+        expect(response).to redirect_to questions_path
+      end
+    end
+
+    context 'Unauthenticated user can not edit question' do
+      it 'does not change question' do
+        expect do
+          patch :update, params: { id: question, question: { title: 'NEW TITLE', body: 'NEW BODY' } }, format: :js
+        end.to_not change(question, :title)
+      end
+
+      it 'render update template' do
+        patch :update, params: { id: question, question: { title: 'NEW TITLE', body: 'NEW BODY' } }, format: :js
+        expect(response).to have_http_status '401'
+      #   хотя здесь должна быть проверка редиректа на форму авторизации
+      #   expect(response).to redirect_to new_user_session_path
       end
     end
   end

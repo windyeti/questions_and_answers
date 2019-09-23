@@ -1,13 +1,19 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!
   before_action :find_question, only: [:create]
-  before_action :find_answer, only: [:destroy]
+  before_action :find_answer, only: [:destroy, :edit]
 
   def create
     @answer = @question.answers.new(answer_params)
     @answer.user = current_user
     @answer.save
   end
+
+  def edit
+    redirect_to @answer.question unless current_user&.owner?(@answer)
+  end
+
+  def update; end
 
   def destroy
     if current_user.owner?(@answer)

@@ -1,0 +1,5 @@
+h1 Edit answer
+= form_with  model: @answer do |f|
+  = f.label :body, 'Your answer'
+  = f.text_field :body
+  = f.submit 'Save'
