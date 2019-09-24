@@ -1,7 +1,8 @@
 -return unless answer.persisted?
-h4
-  = answer.body
-  '
-  - if current_user&.owner?(answer)
-    = link_to 'Delete', answer_path(answer), method: :delete
-    = link_to 'Edit', edit_answer_path(answer)
+.answer
+  h4
+    = answer.body
+    '
+    - if current_user&.owner?(answer)
+      = link_to 'Delete', answer_path(answer), method: :delete, :remote => true, :class => 'delete_answer'
+      = link_to 'Edit', edit_answer_path(answer)

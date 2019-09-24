@@ -1,7 +1,7 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!
   before_action :find_question, only: [:create]
-  before_action :find_answer, only: [:destroy, :edit]
+  before_action :find_answer, only: [:destroy, :edit, :update]
 
   def create
     @answer = @question.answers.new(answer_params)
@@ -13,16 +13,13 @@ class AnswersController < ApplicationController
     redirect_to @answer.question unless current_user&.owner?(@answer)
   end
 
-  def update; end
+  def update
+    redirect_to @answer.question unless current_user&.owner?(@answer)
+    @answer.update(answer_params)
+  end
 
   def destroy
-    if current_user.owner?(@answer)
-      @answer.destroy
-      flash[:notice] = "Answer have been deleted."
-    else
-      flash[:alert] = "Answer was not deleted."
-    end
-      redirect_to @answer.question
+    @answer.destroy if current_user&.owner?(@answer)
   end
 
   private

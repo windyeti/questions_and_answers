@@ -27,6 +27,7 @@ feature 'Only author can edit own question' do
 
       question.reload
       expect(question.title).to eq 'NOT EDIT TITLE'
+      expect(page).to have_content("Title can't be blank")
     end
   end
 

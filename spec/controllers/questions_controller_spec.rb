@@ -7,7 +7,7 @@ RSpec.describe QuestionsController, type: :controller do
   describe 'GET #show' do
     before { get :show, params: {id: question} }
 
-    it '@question must be defined' do
+    it 'assigns question' do
       expect(assigns(:question)).to eql(question)
     end
     it '@answer is new' do
@@ -55,7 +55,7 @@ RSpec.describe QuestionsController, type: :controller do
         expect(assigns(:question)).to be_nil
       end
 
-      it 'tried visit template new' do
+      it 'redirect to log in' do
         expect(response).to redirect_to new_user_session_path
       end
     end
@@ -119,7 +119,7 @@ RSpec.describe QuestionsController, type: :controller do
 
       it 'redirect to questions' do
         delete :destroy, params: { id: question }
-        expect(response).to redirect_to(questions_path)
+        expect(response).to redirect_to questions_path
       end
     end
 
@@ -133,7 +133,7 @@ RSpec.describe QuestionsController, type: :controller do
 
       it 'redirect to questions' do
         delete :destroy, params: { id: question }
-        expect(response).to redirect_to(questions_path)
+        expect(response).to redirect_to questions_path
       end
     end
 
@@ -144,20 +144,20 @@ RSpec.describe QuestionsController, type: :controller do
 
       it 'redirect to questions' do
         delete :destroy, params: { id: question }
-        expect(response).to redirect_to(new_user_session_path)
+        expect(response).to redirect_to new_user_session_path
       end
     end
   end
 
   describe 'GET #edit' do
 
-    context 'Authenticated user' do
+    context 'Authenticated user can' do
 
       before { login(user) }
 
       it 'edit own question' do
         get :edit, params: {id: question}
-        expect(assigns(:question)).to eql(question)
+        expect(assigns(:question).user).to eql user
       end
 
       it 'render edit template' do
@@ -170,7 +170,7 @@ RSpec.describe QuestionsController, type: :controller do
       let(:other_user) { create(:user) }
       before { login(other_user) }
 
-      it 'assigns @question' do
+      it 'redirect to questions' do
         get :edit, params: {id: question}
         expect(response).to redirect_to questions_path
       end

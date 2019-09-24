@@ -13,7 +13,7 @@ RSpec.describe AnswersController, type: :controller do
           expect { post :create, params: {question_id: question, answer: attributes_for(:answer)}, format: :js }.to change(Answer, :count).by(1)
         end
 
-        it 'redirect to question' do
+        it 'render create template' do
           post :create, params: {question_id: question, answer: attributes_for(:answer)}, format: :js
           expect(response).to render_template :create
         end
@@ -24,7 +24,7 @@ RSpec.describe AnswersController, type: :controller do
           expect { post :create, params: {question_id: question, answer: attributes_for(:answer, :invalid)}, format: :js }.to_not change(Answer, :count)
         end
 
-        it 'render template questions/show' do
+        it 'render create template' do
           post :create, params: {question_id: question, answer: attributes_for(:answer, :invalid)}, format: :js
           expect(response).to render_template :create
         end
@@ -32,7 +32,7 @@ RSpec.describe AnswersController, type: :controller do
     end
 
     context 'Guest user' do
-      it 'does not create answer' do
+      it 'can not create answer' do
         expect { post :create, params: {question_id: question, answer: attributes_for(:answer)}, format: :js }.to_not change(Answer, :count)
       end
     end
@@ -44,25 +44,26 @@ RSpec.describe AnswersController, type: :controller do
     context 'Authenticated user' do
       before { login(user) }
       it 'delete answer' do
-        expect { delete :destroy, params: { id: answer } }.to change(Answer, :count).by(-1)
+        expect { delete :destroy, params: { id: answer }, format: :js }.to change(Answer, :count).by(-1)
       end
 
-      it 'redirect to question' do
-        delete :destroy, params: { id: answer }
-        expect(response).to redirect_to(answer.question)
+      it 'render destroy template' do
+        delete :destroy, params: { id: answer }, format: :js
+        expect(response).to render_template :destroy
       end
     end
 
-    context 'Authenticated user is not owner of the question' do
+    context 'Authenticated user not author of the question' do
       let(:user_other) { create(:user) }
       before { login(user_other) }
+
       it 'was not deleted answer' do
-        expect { delete :destroy, params: { id: answer } }.to_not change(Answer, :count)
+        expect { delete :destroy, params: { id: answer }, format: :js }.to_not change(Answer, :count)
       end
 
-      it 'redirect to question' do
-        delete :destroy, params: { id: answer }
-        expect(response).to redirect_to(answer.question)
+      it 'render destroy template' do
+        delete :destroy, params: { id: answer }, format: :js
+        expect(response).to render_template :destroy
       end
     end
 
@@ -73,7 +74,7 @@ RSpec.describe AnswersController, type: :controller do
 
       it 'redirect to log in' do
         delete :destroy, params: { id: answer }
-        expect(response).to redirect_to(new_user_session_path)
+        expect(response).to redirect_to new_user_session_path
       end
     end
   end
@@ -88,7 +89,7 @@ RSpec.describe AnswersController, type: :controller do
       }
 
       it 'edit own answer' do
-        expect(assigns(:answer)).to eql answer
+        expect(assigns(:answer).user).to eql user
       end
 
       it 'render edit template' do
@@ -96,17 +97,18 @@ RSpec.describe AnswersController, type: :controller do
       end
     end
 
-    context 'Authenticated other user' do
+    context 'Authenticated not author can not edit answer' do
       let(:other_user) { create(:user) }
       before { login(other_user) }
 
-      it 'not author' do
+      it 'redirect to question' do
         get :edit, params: { id: answer }
         expect(response).to redirect_to question
       end
     end
-    context 'Unauthenticated user' do
-      it 'guest' do
+
+    context 'Guest user' do
+      it 'redirect to log in' do
         get :edit, params: { id: answer }
         expect(response).to redirect_to new_user_session_path
       end

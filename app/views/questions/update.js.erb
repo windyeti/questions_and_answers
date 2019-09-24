@@ -1,6 +1,3 @@
-<% if @question.errors.empty? %>
-  $('.nav').before('<p class=flash_notice>Question have been updated.</p>')
-<% else %>
-  $('.nav').before('<p class=flash_alert>Question have not been updated.</p>')
-  $('.nav').after('<%= render 'shared/errors', resource: @question %>')
+<% if @question.errors.present? %>
+$('.nav').after("<p><%= render 'shared/errors', resource: @question %></p>")
 <% end %>

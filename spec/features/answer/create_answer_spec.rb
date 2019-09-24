@@ -25,7 +25,6 @@ feature 'User can create an answer on the page question', %q{
       click_on 'Create answer'
 
       expect(page).to have_content('My text answer')
-      expect(page).to_not have_content("Body can't be blank")
     end
 
     scenario 'with invalid body field' do
@@ -35,7 +34,7 @@ feature 'User can create an answer on the page question', %q{
     end
   end
 
-  context 'Guest user cannot create answer', js: true do
+  context 'Guest user can not create answer', js: true do
     given(:question) { create(:question, user: user) }
 
     scenario 'with valid body field' do
