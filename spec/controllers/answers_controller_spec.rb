@@ -57,7 +57,7 @@ RSpec.describe AnswersController, type: :controller do
       let(:user_other) { create(:user) }
       before { login(user_other) }
 
-      it 'was not deleted answer' do
+      it 'can not delete answer' do
         expect { delete :destroy, params: { id: answer }, format: :js }.to_not change(Answer, :count)
       end
 
@@ -111,6 +111,54 @@ RSpec.describe AnswersController, type: :controller do
       it 'redirect to log in' do
         get :edit, params: { id: answer }
         expect(response).to redirect_to new_user_session_path
+      end
+    end
+  end
+
+  describe 'GET #best' do
+    let!(:answer) { create(:answer, question: question) }
+    context "Authenticated user author of question can set best answer of question" do
+      before { login(user) }
+      it 'change attribute best' do
+        patch :best, params: { id: answer }, format: :js
+        expect(assigns(:answer).best).to be true
+
+        # странно что закомментированный код не срабатывает
+        # Failure/Error: expected `Answer#best` to have changed, but is still false
+        #
+        # expect { patch :best, params: { id: answer }, format: :js }.to change(answer, :best)
+      end
+
+      it 'render best template' do
+        patch :best, params: { id: answer }, format: :js
+        expect(response).to render_template :best
+      end
+    end
+
+    context 'Authenticated user not author of question can not set best answer of question' do
+      let(:other_user) { create(:user) }
+      before {
+        login(other_user)
+        patch :best, params: { id: answer }, format: :js
+      }
+      it 'does not change attribute best' do
+        expect(assigns(:answer).best).to be false
+      end
+
+      it 'render best template' do
+        expect(response).to render_template :best
+      end
+    end
+
+    context 'Guest user can not set best answer of question' do
+      before { patch :best, params: { id: answer }, format: :js}
+
+      it 'does not change attribute best' do
+        expect(assigns(:answer)).to be_nil
+      end
+
+      it 'render best template' do
+        expect(response).to have_http_status '401'
       end
     end
   end

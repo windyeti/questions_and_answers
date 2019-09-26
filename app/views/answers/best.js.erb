@@ -1,0 +1,7 @@
+$('.answers').on('ajax:success', function(e) {
+  var target = e.target
+  $('.best').removeClass('best').find('.link_best').toggleClass('hide_link_best')
+  var $new_best_answer = $(target).closest('.answer')
+  $new_best_answer.addClass('best').remove().prependTo('.answers')
+    .find('.link_best').toggleClass('hide_link_best')
+})
