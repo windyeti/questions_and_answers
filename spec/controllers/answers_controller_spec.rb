@@ -133,6 +133,16 @@ RSpec.describe AnswersController, type: :controller do
         patch :best, params: { id: answer }, format: :js
         expect(response).to render_template :best
       end
+
+      context 'must be only one the best answer of question' do
+        let!(:answer_best) { create(:answer, question: question, best: true) }
+
+        it do
+          patch :best, params: { id: answer }, format: :js
+          answer_best.reload
+          expect(answer_best.best).to be false
+        end
+      end
     end
 
     context 'Authenticated user not author of question can not set best answer of question' do
