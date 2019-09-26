@@ -12,4 +12,4 @@ div class=(answer.best ? 'answer best':'answer')
     = link_to 'Best', best_answer_path(answer),
                       method: :patch,
                       :remote => true,
-                      class: (current_user&.owner?(answer.question) && !answer.best ? 'link_best show_link_best' : 'link_best hide_link_best')
+                      class: (current_user&.owner?(answer.question) && !answer.best ? 'link_best' : 'link_best hide_link_best')
