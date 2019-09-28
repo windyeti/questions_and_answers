@@ -28,8 +28,11 @@ class QuestionsController < ApplicationController
   end
 
   def update
-    redirect_to questions_path unless current_user&.owner?(@question)
-    @question.update(question_params)
+    if current_user&.owner?(@question)
+      @question.update(question_params)
+    else
+      redirect_to questions_path
+    end
   end
 
   def destroy

@@ -23,10 +23,7 @@ class AnswersController < ApplicationController
   end
 
   def best
-    if current_user&.owner?(@answer.question)
-      @answer.all_best_false
-      @answer.update(best: true)
-    end
+    @answer.set_best if current_user&.owner?(@answer.question)
   end
 
   private

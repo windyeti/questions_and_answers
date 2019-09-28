@@ -3,12 +3,13 @@ class Answer < ApplicationRecord
   belongs_to :user
 
   validates :body, presence: true
-  validates_inclusion_of :best, in: [true, false]
 
-  default_scope { order(best: :desc) }
+  default_scope { order(best: :desc).order(created_at: :desc) }
 
-  def all_best_false
-    Answer.where('best = true').update(best: false)
+  def set_best
+    transaction do
+      question.answers.each { |answer_best| answer_best.update!(best: false) }
+      update!(best: true)
+    end
   end
-
 end

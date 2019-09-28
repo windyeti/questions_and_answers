@@ -10,6 +10,7 @@ feature 'Only authenticate user can delete own answer' do
 
     scenario 'delete own answer' do
       visit question_path(question)
+      expect(page).to have_content 'MY BODY ANSWER'
       click_on 'Delete'
 
       expect(page).to_not have_content 'MY BODY ANSWER'

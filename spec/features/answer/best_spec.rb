@@ -11,65 +11,79 @@ feature 'Only author can select best of question' do
       visit question_path(question)
       click_on 'Best'
 
-      sleep(1)
-
-      answer.reload
-      expect(answer.best).to be true
+      expect(page).to have_css('.answer.best')
     end
 
   end
 
-  context 'Authenticated user not author ' do
-  given(:other_user) { create(:user) }
-  background { sign_in(other_user) }
+  context 'Authenticated user not author ', js: true do
+    given(:other_user) { create(:user) }
+    background { sign_in(other_user) }
 
     scenario 'can not select best answer' do
       visit question_path(question)
 
-      expect(page).to have_css('a.hide_link_best')
+      expect(page).to_not have_content('Best')
     end
   end
 
-  context 'Guest user not author ' do
+  context 'Guest user not author ', js: true do
     scenario 'can not select best answer' do
       visit question_path(question)
 
-      expect(page).to have_css('a.hide_link_best')
+      expect(page).to_not have_selector('textarea')
+      expect(page).to_not have_content('Best')
     end
   end
 
-    context 'Only one answer should be best', js: true do
-      background { sign_in(user) }
-      given!(:answer_start_best) { create(:answer, question: question, body: 'The best answer', best: true) }
+  context 'Only one answer should be best', js: true do
+    background { sign_in(user) }
+    given!(:answer_start_best) { create(:answer, question: question, body: 'The best answer', best: true) }
 
-      scenario 'Set other answer as best' do
-        visit question_path(question)
+    scenario 'Set other answer as best' do
+      visit question_path(question)
 
-        click_on 'Best'
+      within '.answers' do
+        expect(find('.answer:first-child')['class']).to eq 'answer best'
+        expect(find('.answer:last-child')['class']).to eq 'answer'
+      end
 
-        sleep(1)
+      within '.answer:first-child' do
+        expect(page).to have_content'The best answer'
+      end
 
-        answer.reload
-        answer_start_best.reload
+      click_on 'Best'
 
-        sleep(3)
-
-        expect(answer.best).to be true
-        expect(answer_start_best.best).to be false
+      within '.answer:first-child' do
+        expect(page).to_not have_content'The best answer'
+      end
+      within '.answers' do
+        expect(find('.answer:first-child')['class']).to eq 'answer best'
+        expect(find('.answer:last-child')['class']).to eq 'answer'
       end
     end
+  end
 
-    context 'Must be the first best answer on the list', js: true do
-      background { sign_in(user) }
-      given!(:answer_start_best) { create(:answer, question: question, body: 'The best answer', best: true) }
+  context 'Must be the first best answer on the list', js: true do
+    background { sign_in(user) }
+    given!(:answer_start_best) { create(:answer, question: question, body: 'The best answer', best: true) }
 
-      scenario 'checking the number of best answer' do
-        visit question_path(question)
+    scenario 'checking the number of best answer' do
+      visit question_path(question)
 
-        within '.answer:first-child' do
-          expect(page).to have_content'The best answer'
-        end
+      within '.answer:first-child' do
+        expect(page).to have_content'The best answer'
       end
     end
+  end
 
+    # context 'The order of answers in the list on the question page' do
+    #   background { sign_in(user) }
+    #   given!(:answer) { create(:answer, question: question, body: 'MY BODY BEST ANSWER 1', best: true) }
+    #   given!(:answers) { create_list(:answer, question: question) }
+    #   given!(:answer) { create(:answer, question: question, body: 'MY BODY BEST ANSWER 2', best: true) }
+    #   scenario 'best is first' do
+    #
+    #   end
+    # end
 end

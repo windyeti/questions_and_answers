@@ -10,6 +10,8 @@ feature 'User can delete only his question' do
 
     scenario 'can delete his question' do
       visit questions_path
+      expect(page).to have_content 'My Title text'
+      expect(page).to have_content 'My body text text'
       click_on 'Delete'
 
       expect(page).to_not have_content 'My Title text'

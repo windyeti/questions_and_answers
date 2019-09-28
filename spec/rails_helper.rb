@@ -38,11 +38,12 @@ RSpec.configure do |config|
   config.include Devise::Test::IntegrationHelpers, type: :feature
   config.include ControllerHelper, type: :controller
   config.include FeatureHelper, type: :feature
+  config.include WaitForAjaxHelper, type: :feature
 
-  config.include AcceptanceHelper, type: :feature
+  Capybara.default_max_wait_time = 5
 
-  Capybara.javascript_driver = :selenium_chrome
-  # Capybara.javascript_driver = :selenium_chrome_headless
+  # Capybara.javascript_driver = :selenium_chrome
+  Capybara.javascript_driver = :selenium_chrome_headless
   #
 
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
@@ -74,7 +75,6 @@ RSpec.configure do |config|
   # config.filter_gems_from_backtrace("gem name")
 end
 
-Capybara.default_max_wait_time = 15
 
 
 Shoulda::Matchers.configure do |config|

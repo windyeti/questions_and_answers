@@ -1,15 +1,14 @@
 - return unless answer.persisted?
-div class=(answer.best ? 'answer best':'answer')
+.answer class=('best' if answer.best)
   h4
     = answer.body
-    '
     - if current_user&.owner?(answer)
-      = link_to 'Delete',
+      =< link_to 'Delete',
                 answer_path(answer),
                 method: :delete, :remote => true,
                 class: 'delete_answer'
-      = link_to 'Edit', edit_answer_path(answer)
-    = link_to 'Best', best_answer_path(answer),
+      =< link_to 'Edit', edit_answer_path(answer)
+    =< link_to 'Best', best_answer_path(answer),
                       method: :patch,
-                      :remote => true,
+                      remote: true,
                       class: (current_user&.owner?(answer.question) && !answer.best ? 'link_best' : 'link_best hide_link_best')

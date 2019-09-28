@@ -122,11 +122,6 @@ RSpec.describe AnswersController, type: :controller do
       it 'change attribute best' do
         patch :best, params: { id: answer }, format: :js
         expect(assigns(:answer).best).to be true
-
-        # странно что закомментированный код не срабатывает
-        # Failure/Error: expected `Answer#best` to have changed, but is still false
-        #
-        # expect { patch :best, params: { id: answer }, format: :js }.to change(answer, :best)
       end
 
       it 'render best template' do
@@ -135,7 +130,7 @@ RSpec.describe AnswersController, type: :controller do
       end
 
       context 'must be only one the best answer of question' do
-        let!(:answer_best) { create(:answer, question: question, best: true) }
+        let!(:answer_best) { create(:answer, question: question, body: 'START BEST', best: true) }
 
         it do
           patch :best, params: { id: answer }, format: :js

@@ -6,6 +6,5 @@ p= @question.body
 h4 List answers
 
 .answers= render @question.answers
-/ .answers= render @question.answers.order(best: :desc)
 
 = render 'answers/form' if current_user

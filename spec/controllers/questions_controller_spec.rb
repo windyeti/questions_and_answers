@@ -225,6 +225,9 @@ RSpec.describe QuestionsController, type: :controller do
         expect do
           patch :update, params: { id: question, question: { title: 'NEW TITLE', body: 'NEW BODY' } }, format: :js
         end.to_not change(question, :title)
+
+        # patch :update, params: { id: question, question: { title: 'NEW TITLE', body: 'NEW BODY' } }, format: :js
+        # expect(assigns(:question).title).to_not eq 'NEW TITLE'
       end
 
       it 'render index template' do
@@ -241,10 +244,8 @@ RSpec.describe QuestionsController, type: :controller do
       end
 
       it 'render update template' do
-        patch :update, params: { id: question, question: { title: 'NEW TITLE', body: 'NEW BODY' } }, format: :js
-        expect(response).to have_http_status '401'
-      #   хотя здесь должна быть проверка редиректа на форму авторизации
-      #   expect(response).to redirect_to new_user_session_path
+        patch :update, params: { id: question, question: { title: 'NEW TITLE', body: 'NEW BODY' } }
+        expect(response).to redirect_to new_user_session_path
       end
     end
   end
