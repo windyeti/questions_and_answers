@@ -1,0 +1,6 @@
+<% if @answer.errors.empty? %>
+  $('.answers').append('<%= j render @answer %>')
+  $('#answer_body').val('')
+<% else %>
+  $('.nav').after("<p><%= render 'shared/errors', resource: @answer %></p>")
+<% end %>

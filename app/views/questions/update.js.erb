@@ -1,0 +1,3 @@
+<% if @question.errors.present? %>
+$('.nav').after("<p><%= render 'shared/errors', resource: @question %></p>")
+<% end %>

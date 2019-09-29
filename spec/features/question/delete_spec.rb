@@ -3,32 +3,37 @@ require 'rails_helper'
 
 feature 'User can delete only his question' do
   given(:user) { create(:user) }
-  given!(:question) { user.questions.create( title: 'My Title text', body: 'My body text text' ) }
+  given!(:question) { create(:question, user: user, title: 'My Title text', body: 'My body text text' ) }
 
-  context 'Question' do
-    scenario 'Authenticated user delete his question' do
-      sign_in(user)
+  context 'Authenticated user' do
+    background { sign_in(user) }
+
+    scenario 'can delete his question' do
       visit questions_path
       expect(page).to have_content 'My Title text'
       expect(page).to have_content 'My body text text'
-
       click_on 'Delete'
 
       expect(page).to_not have_content 'My Title text'
       expect(page).to_not have_content 'My body text text'
-      expect(page).to have_content 'Question have been delete.'
+      expect(page).to have_content 'Question have been deleted.'
     end
 
-    given(:user2) { create(:user) }
+  end
 
-    scenario 'Authenticated user can not delete question that created another user' do
-      sign_in(user2)
+  context 'Authenticated user not author' do
+    given(:other_user) { create(:user) }
+    background { sign_in(other_user) }
+
+    scenario 'can not delete question' do
       visit questions_path
 
       expect(page).to_not have_selector(:link_or_button, 'Delete')
     end
+  end
 
-    scenario 'Unauthenticated user does not delete question' do
+  context 'Guest' do
+    scenario 'can not delete question' do
       visit questions_path
 
       expect(page).to_not have_selector(:link_or_button, 'Delete')

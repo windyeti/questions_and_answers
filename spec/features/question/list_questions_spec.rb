@@ -4,12 +4,10 @@ feature 'Guest look at list of questions', %q{
     User can look at list of questions
     to given an answer
 } do
-  given(:user) { create(:user) }
-  given!(:questions) { create_list(:question, 4, title: 'My title text', body: 'My body text text 456') }
+  given!(:questions) { create_list(:question, 4) }
 
-  scenario 'look list of questions' do
+  scenario 'list of questions exists' do
     visit questions_path
-    expect(page).to have_content('My title text')
-    expect(page).to have_content('My body text text 456')
+    questions.each { |question| expect(page).to have_content question.title }
   end
 end

@@ -1,27 +1,29 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!
   before_action :find_question, only: [:create]
-  before_action :find_answer, only: [:destroy]
+  before_action :find_answer, only: [:destroy, :edit, :update, :best]
 
   def create
     @answer = @question.answers.new(answer_params)
     @answer.user = current_user
-    if @answer.save
-      redirect_to @question, notice: "Answer have been successfully created."
-    else
-      flash.now[:alert] = "Answer was not created."
-      render 'questions/show'
-    end
+    @answer.save
+  end
+
+  def edit
+    redirect_to @answer.question unless current_user&.owner?(@answer)
+  end
+
+  def update
+    redirect_to @answer.question unless current_user&.owner?(@answer)
+    @answer.update(answer_params)
   end
 
   def destroy
-    if current_user.owner?(@answer)
-      @answer.destroy
-      flash[:notice] = "Answer have been deleted."
-    else
-      flash[:alert] = "Answer was not deleted."
-    end
-      redirect_to @answer.question
+    @answer.destroy if current_user&.owner?(@answer)
+  end
+
+  def best
+    @answer.set_best if current_user&.owner?(@answer.question)
   end
 
   private

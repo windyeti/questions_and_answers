@@ -1,0 +1,12 @@
+h1 Edit question
+
+= form_with model: @question do |f|
+  p
+    = f.label :title
+    = f.text_field :title
+
+  p
+    = f.label :body
+    = f.text_field :body
+
+  = f.submit "Save"
