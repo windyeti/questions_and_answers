@@ -119,9 +119,9 @@ RSpec.describe AnswersController, type: :controller do
     let!(:answer) { create(:answer, question: question) }
     context "Authenticated user author of question can set best answer of question" do
       before { login(user) }
-      it 'change attribute best' do
+      it 'Change attribute best' do
         patch :best, params: { id: answer }, format: :js
-        expect(assigns(:answer).best).to be true
+        expect(assigns(:answer).best).to be_truthy
       end
 
       it 'render best template' do
@@ -135,7 +135,7 @@ RSpec.describe AnswersController, type: :controller do
         it do
           patch :best, params: { id: answer }, format: :js
           answer_best.reload
-          expect(answer_best.best).to be false
+          expect(answer_best.best).to be_falsey
         end
       end
     end

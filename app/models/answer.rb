@@ -8,7 +8,7 @@ class Answer < ApplicationRecord
 
   def set_best
     transaction do
-      question.answers.each { |answer_best| answer_best.update!(best: false) }
+      question.answers.update_all(best: false)
       update!(best: true)
     end
   end
