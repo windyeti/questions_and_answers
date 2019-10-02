@@ -12,3 +12,8 @@
                       method: :patch,
                       remote: true,
                       class: (current_user&.owner?(answer.question) && !answer.best ? 'link_best' : 'link_best hide_link_best')
+
+    .files
+      - if answer.files.attached?
+        - answer.files.each do |file|
+          .file= link_to file.filename.to_s, url_for(file)
