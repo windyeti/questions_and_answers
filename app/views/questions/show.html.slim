@@ -3,10 +3,11 @@
 h1= @question.title
 p= @question.body
 
-- if @question.files.attached?
-  - @question.files.each do |file|
-    p= link_to file.filename.to_s, url_for(@question)
-  end
+.attached
+  h4 Прикрепленные файлы:
+  - if @question.files.attached?
+    - @question.files.each do |file|
+      p= link_to file.filename.to_s, url_for(@question)
 
 h4 List answers
 
