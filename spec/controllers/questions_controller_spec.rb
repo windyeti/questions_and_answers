@@ -225,9 +225,6 @@ RSpec.describe QuestionsController, type: :controller do
         expect do
           patch :update, params: { id: question, question: { title: 'NEW TITLE', body: 'NEW BODY' } }, format: :js
         end.to_not change(question, :title)
-
-        # patch :update, params: { id: question, question: { title: 'NEW TITLE', body: 'NEW BODY' } }, format: :js
-        # expect(assigns(:question).title).to_not eq 'NEW TITLE'
       end
 
       it 'render index template' do
@@ -245,6 +242,45 @@ RSpec.describe QuestionsController, type: :controller do
 
       it 'render update template' do
         patch :update, params: { id: question, question: { title: 'NEW TITLE', body: 'NEW BODY' } }
+        expect(response).to redirect_to new_user_session_path
+      end
+    end
+  end
+
+  describe 'DELETE #detele_attachment' do
+      let(:user) { create(:user) }
+      let(:user_author) { create(:user) }
+      let(:question) { create(:question, :with_attached, user: user_author) }
+
+    context 'Authenticated author of question' do
+      before { login(user_author) }
+
+      it 'can delete attachment file to question' do
+        expect do
+          delete :delete_attachment, params: { id: question.files[0] }, format: :js
+        end.to change(question.files, :count).by(-1)
+      end
+    end
+
+    context 'Authenticated user not author of question' do
+      before { login(user) }
+
+      it 'can not delete attachment file to question' do
+        expect do
+          delete :delete_attachment, params: { id: question.files[0] }, format: :js
+        end.to_not change(question.files, :count)
+      end
+    end
+
+    context 'Guest' do
+      it 'can not delete attachment file to question' do
+        expect do
+          delete :delete_attachment, params: { id: question.files[0] }, format: :js
+        end.to_not change(question.files, :count)
+      end
+
+      it 'redirect to new_user_session' do
+        delete :delete_attachment, params: { id: question.files[0] }
         expect(response).to redirect_to new_user_session_path
       end
     end

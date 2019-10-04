@@ -36,11 +36,10 @@ feature 'Only author can edit own question' do
     scenario 'can add files' do
       click_on 'Show'
 
-      within 'div.attached' do
+      within '.question' do
         expect(page).to_not have_content 'rails_helper.rb'
         expect(page).to_not have_content 'spec_helper.rb'
       end
-      save_and_open_page
       visit questions_path
       click_on 'Edit'
 
@@ -51,7 +50,7 @@ feature 'Only author can edit own question' do
       visit questions_path
       click_on 'Show'
 
-      within 'div.attached' do
+      within '.question' do
         expect(page).to have_content 'rails_helper.rb'
         expect(page).to have_content 'spec_helper.rb'
       end

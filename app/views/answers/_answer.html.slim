@@ -4,16 +4,19 @@
     = answer.body
     - if current_user&.owner?(answer)
       =< link_to 'Delete',
-                answer_path(answer),
-                method: :delete, :remote => true,
-                class: 'delete_answer'
+                  answer_path(answer),
+                  method: :delete,
+                  remote: true,
+                  class: 'delete_answer'
       =< link_to 'Edit', edit_answer_path(answer)
-    =< link_to 'Best', best_answer_path(answer),
-                      method: :patch,
-                      remote: true,
-                      class: (current_user&.owner?(answer.question) && !answer.best ? 'link_best' : 'link_best hide_link_best')
+    =< link_to 'Best',
+                best_answer_path(answer),
+                method: :patch,
+                remote: true,
+                class: (current_user&.owner?(answer.question) && !answer.best ? 'link_best' : 'link_best hide_link_best')
 
-    .files
+    .answer__attachment
+      h4 Attached files:
       - if answer.files.attached?
         - answer.files.each do |file|
-          .file= link_to file.filename.to_s, url_for(file)
+          = link_to file.filename.to_s, url_for(file), target: '_blank'
