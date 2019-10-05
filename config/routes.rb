@@ -8,6 +8,7 @@ Rails.application.routes.draw do
     delete :delete_attachment, on: :member
     resources :answers, only: [:create, :edit, :update, :destroy] do
       patch :best, on: :member
+      delete :delete_attachment, on: :member
     end
   end
 

@@ -26,6 +26,15 @@ class AnswersController < ApplicationController
     @answer.set_best if current_user&.owner?(@answer.question)
   end
 
+  def delete_attachment
+    @file = ActiveStorage::Attachment.find(params[:id])
+    if current_user&.owner?(@file.record)
+      @file.purge
+    else
+      redirect_to @file.record
+    end
+  end
+
   private
 
   def answer_params

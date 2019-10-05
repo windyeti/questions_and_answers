@@ -250,7 +250,7 @@ RSpec.describe QuestionsController, type: :controller do
   describe 'DELETE #detele_attachment' do
       let(:user) { create(:user) }
       let(:user_author) { create(:user) }
-      let(:question) { create(:question, :with_attached, user: user_author) }
+      let(:question) { create(:question, :with_attachment, user: user_author) }
 
     context 'Authenticated author of question' do
       before { login(user_author) }
