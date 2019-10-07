@@ -42,13 +42,17 @@ gem 'devise'
 
 gem 'jquery-rails'
 
+gem "aws-sdk-s3", require: false
+
 group :development, :test do
+  gem 'dotenv-rails'
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'factory_bot_rails'
-  %w[rspec-core rspec-expectations rspec-mocks rspec-rails rspec-support].each do |lib|
-    gem lib, :git => "https://github.com/rspec/#{lib}.git", :branch => 'master'
-  end
+  gem 'rspec-rails', '~> 3.8'
+  # %w[rspec-core rspec-expectations rspec-mocks rspec-rails rspec-support].each do |lib|
+  #   gem lib, :git => "https://github.com/rspec/#{lib}.git", :branch => 'master'
+  # end
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '>= 2.15'
 end

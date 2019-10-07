@@ -1,7 +1,7 @@
 = render 'shared/errors', resource: @question
 
 h1 Create question
-= form_with model: @question, local: true do |f|
+= form_with model: @question do |f|
   p
     = f.label :title
     = f.text_field :title
@@ -12,6 +12,6 @@ h1 Create question
 
   p
     = f.label :files
-    = f.file_field :files, multiple: true
+    = f.file_field :files, multiple: true, direct_upload: true
 
   = f.submit "Create question"

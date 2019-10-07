@@ -47,8 +47,10 @@ feature 'Only author can edit own question' do
       attach_file 'Files', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
       click_on 'Save'
 
-      visit questions_path
-      click_on 'Show'
+      # wait_for_ajax
+      sleep(5)
+
+      visit question_path(question)
 
       within '.question' do
         expect(page).to have_content 'rails_helper.rb'

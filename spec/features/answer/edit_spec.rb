@@ -46,7 +46,12 @@ feature 'Only authenticated user can edit answer' do
       attach_file 'Files', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
       click_on 'Save'
 
+      sleep(3)
+
       visit question_path(question)
+
+      # wait_for_ajax
+      sleep(3)
 
       within '.answer__attachment' do
         expect(page).to have_content 'rails_helper.rb'
