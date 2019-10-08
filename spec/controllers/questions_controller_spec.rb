@@ -246,43 +246,4 @@ RSpec.describe QuestionsController, type: :controller do
       end
     end
   end
-
-  describe 'DELETE #detele_attachment' do
-      let(:user) { create(:user) }
-      let(:user_author) { create(:user) }
-      let(:question) { create(:question, :with_attachment, user: user_author) }
-
-    context 'Authenticated author of question' do
-      before { login(user_author) }
-
-      it 'can delete attachment file to question' do
-        expect do
-          delete :delete_attachment, params: { id: question.files[0] }, format: :js
-        end.to change(question.files, :count).by(-1)
-      end
-    end
-
-    context 'Authenticated user not author of question' do
-      before { login(user) }
-
-      it 'can not delete attachment file to question' do
-        expect do
-          delete :delete_attachment, params: { id: question.files[0] }, format: :js
-        end.to_not change(question.files, :count)
-      end
-    end
-
-    context 'Guest' do
-      it 'can not delete attachment file to question' do
-        expect do
-          delete :delete_attachment, params: { id: question.files[0] }, format: :js
-        end.to_not change(question.files, :count)
-      end
-
-      it 'redirect to new_user_session' do
-        delete :delete_attachment, params: { id: question.files[0] }
-        expect(response).to redirect_to new_user_session_path
-      end
-    end
-  end
 end

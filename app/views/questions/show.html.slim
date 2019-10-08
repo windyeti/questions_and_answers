@@ -11,7 +11,7 @@ p= @question.body
                     class: "question__attachment__file",
                     id: "attachment_id_#{file.id}"
         = link_to file.filename.to_s, url_for(file), target: '_blank'
-        =< link_to 'Delete', delete_attachment_question_path(file), method: :delete, remote: true if current_user&.owner?(@question)
+        =< link_to 'Delete', attachment_path(file), method: :delete, remote: true if current_user&.owner?(@question)
 
 h4 List answers
 

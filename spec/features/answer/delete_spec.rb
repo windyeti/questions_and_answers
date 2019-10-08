@@ -18,20 +18,20 @@ feature 'Only authenticate user can delete own answer' do
       expect(page).to_not have_content 'MY BODY ANSWER'
     end
 
-    scenario 'can delete attachment file' do
-      visit question_path(question)
-
-      within '.answer__attachment' do
-        expect(page).to have_content 'rails_helper.rb'
-        expect(page).to have_content 'spec_helper.rb'
-      end
-
-      within "#attachment_id_#{answer.files[0].id}" do
-        click_on 'Delete'
-        expect(page).to_not have_content 'rails_helper.rb'
-      end
-
-    end
+    # scenario 'can delete attachment file' do
+    #   visit question_path(question)
+    #
+    #   within '.answer__attachment' do
+    #     expect(page).to have_content 'rails_helper.rb'
+    #     expect(page).to have_content 'spec_helper.rb'
+    #   end
+    #
+    #   within "#attachment_id_#{answer.files[0].id}" do
+    #     click_on 'Delete'
+    #     expect(page).to_not have_content 'rails_helper.rb'
+    #   end
+    #
+    # end
   end
 
   context 'Authenticated user not author ' do

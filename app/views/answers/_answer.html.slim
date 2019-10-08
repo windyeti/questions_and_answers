@@ -23,4 +23,4 @@
                   class: "answer__attachment__file",
                   id: "attachment_id_#{file.id}"
             = link_to file.filename.to_s, url_for(file), target: '_blank'
-            =< link_to 'Delete', delete_attachment_answer_path(file), method: :delete, remote: true if current_user&.owner?(answer)
+            =< link_to 'Delete', attachment_path(file), method: :delete, remote: true if current_user&.owner?(answer)
