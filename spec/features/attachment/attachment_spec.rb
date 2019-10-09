@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-feature 'Attachment files' do
+feature 'Delete attached file' do
   given(:user) { create(:user) }
   given!(:question) { create(:question, :with_attachment, user: user ) }
 
@@ -8,7 +8,7 @@ feature 'Attachment files' do
   context "Authenticated user", js: true do
     background { sign_in(user) }
 
-    scenario 'can delete attachment files from his question' do
+    scenario 'can delete attached file from his question' do
       visit question_path(question)
       within '.question' do
         expect(page).to have_content 'rails_helper.rb'
@@ -26,7 +26,7 @@ feature 'Attachment files' do
     given(:other_user) { create(:user) }
     background { sign_in(other_user) }
 
-    scenario 'can not delete attached files to question' do
+    scenario 'can not delete attached file' do
       visit question_path(question)
 
       within '.question' do
@@ -36,7 +36,7 @@ feature 'Attachment files' do
   end
 
   context "Guest" do
-    scenario 'can not delete attached files to question' do
+    scenario 'can not delete attached files' do
       visit question_path(question)
 
       within '.question' do
