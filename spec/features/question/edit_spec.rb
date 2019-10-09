@@ -8,10 +8,11 @@ feature 'Only author can edit own question' do
     background {
       sign_in(user)
       visit questions_path
-      click_on 'Edit'
     }
 
     scenario 'can edit question' do
+      click_on 'Edit'
+
       fill_in 'Title', with: 'New title'
       click_on 'Save'
 
@@ -22,12 +23,39 @@ feature 'Only author can edit own question' do
     end
 
     scenario 'edit question with invalid data' do
+      click_on 'Edit'
+
       fill_in 'Title', with: ''
       click_on 'Save'
 
       question.reload
       expect(question.title).to eq 'NOT EDIT TITLE'
       expect(page).to have_content("Title can't be blank")
+    end
+
+    scenario 'can add files' do
+      click_on 'Show'
+
+      within '.question' do
+        expect(page).to_not have_content 'rails_helper.rb'
+        expect(page).to_not have_content 'spec_helper.rb'
+      end
+      visit questions_path
+      click_on 'Edit'
+
+
+      attach_file 'Files', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
+      click_on 'Save'
+
+      # wait_for_ajax
+      sleep(5)
+
+      visit question_path(question)
+
+      within '.question' do
+        expect(page).to have_content 'rails_helper.rb'
+        expect(page).to have_content 'spec_helper.rb'
+      end
     end
   end
 

@@ -40,7 +40,7 @@ RSpec.configure do |config|
   config.include FeatureHelper, type: :feature
   config.include WaitForAjaxHelper, type: :feature
 
-  Capybara.default_max_wait_time = 5
+  Capybara.default_max_wait_time = 10
 
   # Capybara.javascript_driver = :selenium_chrome
   Capybara.javascript_driver = :selenium_chrome_headless
@@ -73,6 +73,10 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
+
+  config.after(:all) do
+    FileUtils.rm_rf("#{Rails.root}/tmp/storage")
+  end
 end
 
 
@@ -82,4 +86,8 @@ Shoulda::Matchers.configure do |config|
     with.test_framework :rspec
     with.library :rails
   end
+end
+
+FactoryBot::SyntaxRunner.class_eval do
+  include ActionDispatch::TestProcess
 end

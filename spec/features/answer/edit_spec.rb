@@ -7,6 +7,7 @@ feature 'Only authenticated user can edit answer' do
 
   context 'Authenticated user', js: true do
       background { sign_in(user) }
+
     scenario 'with valid data' do
       visit question_path(question)
       click_on 'Edit'
@@ -18,6 +19,7 @@ feature 'Only authenticated user can edit answer' do
       answer.reload
       expect(answer.body).to eq 'EDIT ANSWER'
     end
+
     scenario 'with invalid data' do
       visit question_path(question)
       click_on 'Edit'
@@ -29,6 +31,32 @@ feature 'Only authenticated user can edit answer' do
       answer.reload
       expect(answer.body).to eq 'My body answer'
       expect(page).to have_content("Body can't be blank")
+    end
+
+    scenario 'can edit answer with addition of files' do
+      visit question_path(question)
+
+      within '.answer__attachment' do
+        expect(page).to_not have_content 'rails_helper.rb'
+        expect(page).to_not have_content 'spec_helper.rb'
+      end
+      visit question_path(question)
+      click_on 'Edit'
+
+      attach_file 'Files', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
+      click_on 'Save'
+
+      sleep(3)
+
+      visit question_path(question)
+
+      # wait_for_ajax
+      sleep(3)
+
+      within '.answer__attachment' do
+        expect(page).to have_content 'rails_helper.rb'
+        expect(page).to have_content 'spec_helper.rb'
+      end
     end
   end
 

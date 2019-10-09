@@ -225,9 +225,6 @@ RSpec.describe QuestionsController, type: :controller do
         expect do
           patch :update, params: { id: question, question: { title: 'NEW TITLE', body: 'NEW BODY' } }, format: :js
         end.to_not change(question, :title)
-
-        # patch :update, params: { id: question, question: { title: 'NEW TITLE', body: 'NEW BODY' } }, format: :js
-        # expect(assigns(:question).title).to_not eq 'NEW TITLE'
       end
 
       it 'render index template' do

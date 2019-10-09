@@ -1,5 +1,10 @@
 h1 Edit answer
 = form_with  model: @answer do |f|
-  = f.label :body, 'Your answer'
-  = f.text_field :body
+  p
+    = f.label :body, 'Your answer'
+    = f.text_field :body
+  p
+    = f.label :files
+    = f.file_field :files, multiple: true, direct_upload: true
+
   = f.submit 'Save'

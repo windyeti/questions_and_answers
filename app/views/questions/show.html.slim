@@ -3,6 +3,16 @@
 h1= @question.title
 p= @question.body
 
+.question
+  h4 Attached files:
+  - if @question.files.attached?
+    - @question.files.each do |file|
+      = content_tag :p,
+                    class: "question__attachment__file",
+                    id: "attachment_id_#{file.id}"
+        = link_to file.filename.to_s, url_for(file), target: '_blank'
+        =< link_to 'Delete', attachment_path(file), method: :delete, remote: true if current_user&.owner?(@question)
+
 h4 List answers
 
 .answers= render @question.answers

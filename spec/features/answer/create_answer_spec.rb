@@ -32,6 +32,17 @@ feature 'User can create an answer on the page question', %q{
 
       expect(page).to have_content("Body can't be blank")
     end
+
+    scenario 'with attachment file' do
+      fill_in 'Body', with: 'My text answer'
+
+      attach_file 'Files', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
+
+      click_on 'Create answer'
+
+      expect(page).to have_link 'rails_helper.rb'
+      expect(page).to have_link 'spec_helper.rb'
+    end
   end
 
   context 'Guest user can not create answer', js: true do
