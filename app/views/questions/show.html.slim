@@ -1,10 +1,15 @@
 = render 'shared/errors', resource: @answer
 
-h1= @question.title
-p= @question.body
-
 .question
-  h4 Attached files:
+  h1= @question.title
+  p= @question.body
+
+  p.links Links:
+  - if @question.links.present?
+    ul
+      - @question.links.each do |link|
+        li= link_to link.name, link.url, target: '_blank'
+  p.attachments Attached files:
   - if @question.files.attached?
     - @question.files.each do |file|
       = content_tag :p,
