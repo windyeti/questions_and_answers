@@ -9,11 +9,12 @@
                   remote: true,
                   class: 'delete_answer'
       =< link_to 'Edit', edit_answer_path(answer)
-    =< link_to 'Best',
-                best_answer_path(answer),
-                method: :patch,
-                remote: true,
-                class: (current_user&.owner?(answer.question) && !answer.best ? 'link_best' : 'link_best hide_link_best')
+    - if current_user&.owner?(answer.question)
+      =< link_to 'Best',
+                  best_answer_path(answer),
+                  method: :patch,
+                  remote: true,
+                  class: (answer.best ? 'link_best hide_link_best' : 'link_best')
 
     .answer__attachment
       h4 Attached files:
