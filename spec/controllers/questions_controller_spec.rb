@@ -10,9 +10,15 @@ RSpec.describe QuestionsController, type: :controller do
     it 'assigns question' do
       expect(assigns(:question)).to eql(question)
     end
+
     it '@answer is new' do
       expect(assigns(:answer)).to be_a_new(Answer)
     end
+
+    it '@answer.links is new' do
+      expect(assigns(:answer).links.first).to be_a_new(Link)
+    end
+
     it 'render show template' do
       expect(response).to render_template :show
     end
@@ -47,6 +53,7 @@ RSpec.describe QuestionsController, type: :controller do
       it '@question.links is new' do
         expect(assigns(:question).links.first).to be_a_new(Link)
       end
+
       it 'render template new' do
         expect(response).to render_template :new
       end
