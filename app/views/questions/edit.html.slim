@@ -13,5 +13,15 @@ h1 Edit question
     = f.label :files
     = f.file_field :files, multiple: true, direct_upload: true
 
+  p Links:
+  #links
+    = f.fields_for :links do |l|
+      = render 'shared/link_fields', f: l
+    .links_to_add
+      = link_to_add_association 'add link',
+              f,
+              :links,
+              partial: 'shared/link_fields'
+
   = f.submit "Save"
 

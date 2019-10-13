@@ -3,13 +3,6 @@
   p
     = answer.body
 
-    h4 Links:
-    .links
-      - if answer.links.present?
-        ul
-          - answer.links.each do |link|
-            li= link_to link.name, link.url, target: '_blank'
-
     - if current_user&.owner?(answer)
       =< link_to 'Delete',
                   answer_path(answer),
@@ -23,6 +16,13 @@
                   method: :patch,
                   remote: true,
                   class: (answer.best ? 'link_best hide_link_best' : 'link_best')
+
+    h4 Links:
+    .links
+      - if answer.links.present?
+        ul
+          - answer.links.each do |link|
+            li= link_to link.name, link.url, target: '_blank'
 
     .answer__attachment
       h4 Attached files:

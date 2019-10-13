@@ -4,7 +4,7 @@ feature 'Adding links' do
   given(:author_user) { create(:user) }
   given(:url_gist) { 'https://gist.github.com/windyeti/6ea00464eb9592b10581097dc2b6c755' }
 
-  context 'Authenticated author' do
+  context 'User' do
     background { sign_in(author_user) }
 
     scenario 'can added link to his question' do

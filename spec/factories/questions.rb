@@ -22,5 +22,14 @@ FactoryBot.define do
         question.files.attach([file1, file2])
       end
     end
+
+
+    trait :with_links do
+      after :create do |question|
+        link1 = Link.create(name: 'Google', url: 'https://google.ru')
+        link2 = Link.create(name: 'Gist', url: 'https://gist.github.com/windyeti/6ea00464eb9592b10581097dc2b6c755')
+        question.links << [link1, link2]
+      end
+    end
   end
 end

@@ -27,6 +27,7 @@ class QuestionsController < ApplicationController
 
   def edit
     redirect_to questions_path unless current_user&.owner?(@question)
+    @question.links.build
   end
 
   def update
@@ -52,7 +53,7 @@ class QuestionsController < ApplicationController
   def question_params
     params.require(:question).permit(:title, :body,
                                      files: [],
-                                     links_attributes: [:name, :url])
+                                     links_attributes: [:id, :name, :url, :_destroy])
   end
 
   def find_question
