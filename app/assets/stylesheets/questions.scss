@@ -1,3 +1,11 @@
 // Place all the styles related to the Questions controller here.
 // They will automatically be included in application.scss.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+.question {
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  padding: 5px;
+  background-color: #d1e0e3;
+}

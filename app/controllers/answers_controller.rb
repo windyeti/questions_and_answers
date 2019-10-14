@@ -11,6 +11,7 @@ class AnswersController < ApplicationController
 
   def edit
     redirect_to @answer.question unless current_user&.owner?(@answer)
+
   end
 
   def update
@@ -29,7 +30,7 @@ class AnswersController < ApplicationController
   private
 
   def answer_params
-    params.require(:answer).permit(:body, files: [], links_attributes: [:name, :url])
+    params.require(:answer).permit(:body, files: [], links_attributes: [:id, :name, :url, :_destroy])
   end
 
   def find_question

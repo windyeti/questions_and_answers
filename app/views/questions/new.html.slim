@@ -1,7 +1,7 @@
 = render 'shared/errors', resource: @question
 
 h1 Create question
-= form_with model: @question do |f|
+= form_with model: @question, local: true do |f|
   p
     = f.label :title
     = f.text_field :title
@@ -16,12 +16,6 @@ h1 Create question
 
   p Links:
   #links
-    = f.fields_for :links do |l|
-      = render 'shared/link_fields', f: l
-    .links_to_add
-      = link_to_add_association 'add link',
-                                f,
-                                :links,
-                                partial: 'shared/link_fields'
+    = render 'shared/nested_form_link', f: f
 
   = f.submit "Create question"

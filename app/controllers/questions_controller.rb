@@ -19,7 +19,7 @@ class QuestionsController < ApplicationController
   def create
     @question = current_user.questions.new(question_params)
     if @question.save
-      redirect_to @question, notice: "New question created"
+      redirect_to @question, notice: 'Question have been created'
     else
       render :new
     end
@@ -27,7 +27,6 @@ class QuestionsController < ApplicationController
 
   def edit
     redirect_to questions_path unless current_user&.owner?(@question)
-    @question.links.build
   end
 
   def update

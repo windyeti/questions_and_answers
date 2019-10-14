@@ -1,6 +1,5 @@
 Rails.application.routes.draw do
 
-
   devise_for :users, path: :account
   root to: 'questions#index'
 
@@ -13,5 +12,6 @@ Rails.application.routes.draw do
   end
 
   resources :attachments, only: [:destroy]
+  resources :links, only: [:destroy]
 
 end

@@ -1,15 +1,9 @@
-= render 'shared/errors', resource: @answer
-
 .question
   h1= @question.title
   p= @question.body
 
   h4 Links:
-  .links
-    - if @question.links.present?
-      ul
-        - @question.links.each do |link|
-          li= link_to link.name, link.url, target: '_blank'
+  = render 'shared/link', resource: @question
 
   h4 Attached files:
   .attachments
@@ -21,8 +15,10 @@
           = link_to file.filename.to_s, url_for(file), target: '_blank'
           =< link_to 'Delete', attachment_path(file), method: :delete, remote: true if current_user&.owner?(@question)
 
-h4 List answers
+h4 List answers:
+.answers
+  = render @question.answers
 
-.answers= render @question.answers
-
-= render 'answers/form' if current_user
+- if current_user
+  .new_answer
+    = render 'answers/form'

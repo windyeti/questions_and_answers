@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-feature 'Only author can select best of question' do
+feature 'Only author can choose best question' do
     given(:user) { create(:user) }
     given(:question) { create(:question, user: user) }
     given!(:answer) { create(:answer, question: question) }
@@ -36,54 +36,38 @@ feature 'Only author can select best of question' do
     end
   end
 
-  context 'Only one answer should be best', js: true do
+  context 'The best answer already exists', js: true do
     background { sign_in(user) }
     given!(:answer_start_best) { create(:answer, question: question, body: 'The best answer', best: true) }
 
-    scenario 'Set other answer as best' do
+    scenario 'The best answer should be first' do
       visit question_path(question)
 
       within '.answers' do
-        expect(find('.answer:first-child')['class']).to eq 'answer best'
-        expect(find('.answer:last-child')['class']).to eq 'answer'
-      end
-
-      within '.answer:first-child' do
-        expect(page).to have_content'The best answer'
+        expect(page.all('.answer')[0]).to have_content 'The best answer'
+        expect(page.all('.answer')[0]['class']).to eq 'answer best'
+        expect(page.all('.answer')[1]['class']).to eq 'answer'
       end
 
       click_on 'Best'
 
-      within '.answer:first-child' do
-        expect(page).to_not have_content'The best answer'
-      end
+      sleep 1
+
       within '.answers' do
-        expect(find('.answer:first-child')['class']).to eq 'answer best'
-        expect(find('.answer:last-child')['class']).to eq 'answer'
+        expect(page.all('.answer')[0]).to_not have_content'The best answer'
+        expect(page.all('.answer')[0]['class']).to eq 'answer best'
+        expect(page.all('.answer')[1]['class']).to eq 'answer'
       end
     end
-  end
 
-  context 'Must be the first best answer on the list', js: true do
-    background { sign_in(user) }
-    given!(:answer_start_best) { create(:answer, question: question, body: 'The best answer', best: true) }
-
-    scenario 'checking the number of best answer' do
+    scenario 'Only one answer should be best' do
       visit question_path(question)
 
-      within '.answer:first-child' do
-        expect(page).to have_content'The best answer'
+      within '.answers' do
+        expect(page.all('.best').length).to eq 1
       end
     end
   end
 
-    # context 'The order of answers in the list on the question page' do
-    #   background { sign_in(user) }
-    #   given!(:answer) { create(:answer, question: question, body: 'MY BODY BEST ANSWER 1', best: true) }
-    #   given!(:answers) { create_list(:answer, question: question) }
-    #   given!(:answer) { create(:answer, question: question, body: 'MY BODY BEST ANSWER 2', best: true) }
-    #   scenario 'best is first' do
-    #
-    #   end
-    # end
+  context 'Must be the first best answer on the list'
 end

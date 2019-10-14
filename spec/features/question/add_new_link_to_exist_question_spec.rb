@@ -14,10 +14,14 @@ feature 'Add links in exists question' do
 
       visit edit_question_path(question)
 
+      click_on 'add link'
+
       fill_in 'Name', with: 'New link'
       fill_in 'Url', with: 'http://new_url.ru'
 
       click_on 'Save'
+
+      sleep 1
 
       visit question_path(question)
 

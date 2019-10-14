@@ -7,4 +7,8 @@ h1 Edit answer
     = f.label :files
     = f.file_field :files, multiple: true, direct_upload: true
 
+  p Links:
+  #links
+    = render 'shared/nested_form_link', f: f
+
   = f.submit 'Save'

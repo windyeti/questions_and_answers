@@ -164,19 +164,16 @@ RSpec.describe QuestionsController, type: :controller do
 
     context 'Authenticated user can' do
 
-      before { login(user) }
+      before {
+        login(user)
+        get :edit, params: {id: question}
+      }
 
       it 'edit own question' do
-        get :edit, params: {id: question}
         expect(assigns(:question).user).to eql user
       end
 
-      it '@question.links there is new' do
-        expect(assigns(:question).links).to be_a_new(Link)
-      end
-
       it 'render edit template' do
-        get :edit, params: {id: question}
         expect(response).to render_template :edit
       end
     end
