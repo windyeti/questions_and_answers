@@ -10,6 +10,10 @@ feature 'Edit links' do
     scenario 'can edit link of his question', js: true do
       visit edit_question_path(question)
 
+      within '#links' do
+        expect(page).to_not have_content 'New link'
+      end
+
       within '.nested-fields:first-child' do
         fill_in 'Name', with: 'New link'
         fill_in 'Url', with: 'http://new_url.ru'
