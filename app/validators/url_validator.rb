@@ -7,7 +7,7 @@ class UrlValidator < ActiveModel::EachValidator
   def url_valid?(value)
     begin
       url = URI::parse(value)
-      url.kind_of?(URl::HTTP) || url.kind_of?(URl::HTTPS)
+      url.kind_of?(URI::HTTP) || url.kind_of?(URI::HTTPS)
     rescue
       false
     end

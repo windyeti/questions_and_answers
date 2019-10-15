@@ -5,7 +5,7 @@ class GistBodyService
   end
 
   def default_client
-    Octokit::Client.new(:access_token => "#{ENV['GIST_ACCESS_TOKEN']}")
+    Octokit::Client.new
   end
 
   def call

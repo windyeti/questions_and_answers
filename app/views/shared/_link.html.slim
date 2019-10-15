@@ -3,6 +3,6 @@
     ul
       - resource.links.each do |link|
         li
-          = link_to link.name, link.url, target: '_blank', class: "link link_id_#{link.id}"
+          = link_chooser(link)
           - if current_user.owner?(link.linkable)
             =< link_to 'Delete', link_path(link), method: :delete, remote: true
