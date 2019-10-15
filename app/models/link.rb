@@ -6,7 +6,7 @@ class Link < ApplicationRecord
   validates :name, presence: true
   validates :url, presence: true, url: true
   #
-  def gist?(url)
+  def gist?
     !!(GIST_URL_EXPRESSION =~ url)
   end
 end
