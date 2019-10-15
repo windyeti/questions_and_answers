@@ -2,7 +2,7 @@ require 'rails_helper'
 
 feature 'Adding links' do
   given(:author_user) { create(:user) }
-  given(:url_gist) { 'https://gist.github.com/windyeti/6ea00464eb9592b10581097dc2b6c755' }
+  given(:url_google) { 'https://google.ru' }
 
   context 'User' do
     background { sign_in(author_user) }
@@ -14,13 +14,13 @@ feature 'Adding links' do
       fill_in 'Body', with: 'New body'
 
       fill_in 'Name', with: 'New link'
-      fill_in 'Url', with: url_gist
+      fill_in 'Url', with: url_google
 
 
       click_on 'Create question'
 
       within '.links' do
-        expect(page).to have_link 'New link' , href: url_gist
+        expect(page).to have_link 'New link' , href: url_google
       end
     end
   end

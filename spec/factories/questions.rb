@@ -26,8 +26,8 @@ FactoryBot.define do
 
     trait :with_links do
       after :create do |question|
-        link1 = Link.create(name: 'Google', url: 'https://google.ru')
-        link2 = Link.create(name: 'Gist', url: 'https://gist.github.com/windyeti/6ea00464eb9592b10581097dc2b6c755')
+        link1 = Link.create(name: 'Google', url: 'https://google.com')
+        link2 = Link.create(name: 'Rbk', url: 'https://rbk.ru')
         question.links << [link1, link2]
       end
     end
