@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
 
   devise_for :users, path: :account
+
   root to: 'questions#index'
 
   resources :questions, shallow: true do
@@ -13,5 +14,6 @@ Rails.application.routes.draw do
 
   resources :attachments, only: [:destroy]
   resources :links, only: [:destroy]
+  get 'user_rewards', to: 'rewards#user_rewards'
 
 end

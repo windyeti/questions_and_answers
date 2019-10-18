@@ -31,5 +31,14 @@ FactoryBot.define do
         question.links << [link1, link2]
       end
     end
+
+    trait :with_reward do
+      after :create do |question|
+        reward = question.build_reward
+        reward.name = 'My reward for best answer'
+        reward.picture = fixture_file_upload(Rails.root.join('spec', 'rails_helper.rb'), 'text/plain')
+        reward.save
+      end
+    end
   end
 end

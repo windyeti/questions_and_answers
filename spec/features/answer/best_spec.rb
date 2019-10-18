@@ -13,7 +13,6 @@ feature 'Only author can choose best question' do
 
       expect(page).to have_css('.answer.best')
     end
-
   end
 
   context 'Authenticated user not author ', js: true do

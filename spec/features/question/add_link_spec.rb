@@ -10,12 +10,15 @@ feature 'Adding links' do
     scenario 'can added link to his question' do
       visit new_question_path
 
-      fill_in 'Title', with: 'New title'
-      fill_in 'Body', with: 'New body'
+      within '.fields_question' do
+        fill_in 'Title', with: 'New title'
+        fill_in 'Body', with: 'New body'
+      end
 
-      fill_in 'Name', with: 'New link'
-      fill_in 'Url', with: url_google
-
+      within '.nested-fields' do
+        fill_in 'Name', with: 'New link'
+        fill_in 'Url', with: url_google
+      end
 
       click_on 'Create question'
 

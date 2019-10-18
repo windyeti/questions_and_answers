@@ -13,7 +13,12 @@
                       class: "question__attachment__file",
                       id: "attachment_id_#{file.id}"
           = link_to file.filename.to_s, url_for(file), target: '_blank'
-          =< link_to 'Delete', attachment_path(file), method: :delete, remote: true if current_user&.owner?(@question)
+          - if current_user&.owner?(@question)
+            =< link_to 'Delete', attachment_path(file), method: :delete, remote: true
+
+  h4 Reward:
+  - if @question.reward.present?
+    = render @question.reward
 
 h4 List answers:
 .answers
