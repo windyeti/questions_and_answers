@@ -2,19 +2,20 @@
   .question__content
     h1= @question.title
     p= @question.body
-    .vote
-      = link_to 'Vote Up',
-              create_vote_question_path(@question),
-              remote: true,
-              class: 'vote_up',
-              data: {type: :json},
-              method: :post
-      = link_to 'Vote RESET',
-              create_vote_question_path(@question),
-              remote: true,
-              class: 'vote_reset',
-              data: {type: :json},
-              method: :post
+    - if !current_user&.owner?(@question)
+      .vote
+        .vote__up class = ("#{show_item_helper(@question, current_user) ? '' : 'hidden_item'}")
+          = link_to 'Vote Up',
+                  create_vote_question_path(@question),
+                  remote: true,
+                  data: {type: :json},
+                  method: :post
+        .vote__reset class = ("#{show_item_helper(@question, current_user) ? 'hidden_item' : ''}")
+          = link_to 'Vote RESET',
+                  create_vote_question_path(@question),
+                  remote: true,
+                  data: {type: :json},
+                  method: :post
 
   h4 Links:
   = render 'shared/link', resource: @question

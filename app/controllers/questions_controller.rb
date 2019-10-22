@@ -1,6 +1,8 @@
 class QuestionsController < ApplicationController
+  include Voted
+
   before_action :authenticate_user!, except: [:index, :show]
-  before_action :find_question, only: [:show, :destroy, :edit, :update, :create_vote]
+  before_action :find_question, only: [:show, :destroy, :edit, :update]
 
   def index
     @questions = Question.all
@@ -46,21 +48,6 @@ class QuestionsController < ApplicationController
       flash[:alert] = "Question have not been deleted. You are not owner of the question."
     end
     redirect_to questions_path
-  end
-
-  def create_vote
-    p '>>>>>>>>>>>>>>>>>>>>>>>>>'
-    p @question
-    p '>>>>>>>>>>>>>>>>>>>>>>>>>'
-    @vote = Vote.new(voteable: @question)
-    respond_to do |format|
-      if @vote.save
-        format.json do
-          render json: { text: 'reset vote' }.to_json
-        end
-      else
-      end
-    end
   end
 
   private
