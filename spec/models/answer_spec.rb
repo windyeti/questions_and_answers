@@ -26,4 +26,6 @@ RSpec.describe Answer, type: :model do
       expect(user_answer.rewards).to match_array [question.reward]
     end
   end
+
+  it_behaves_like 'voteable'
 end

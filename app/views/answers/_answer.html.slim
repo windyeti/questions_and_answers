@@ -1,22 +1,21 @@
 - return unless answer.persisted?
 .answer class=('best' if answer.best)
-  p
-    .answer__content
-      = answer.body
-      - if !current_user&.owner?(answer)
-        .vote
-          .vote__up class = ("#{show_item_helper(answer, current_user) ? '' : 'hidden_item'}")
-            = link_to 'Vote Up',
-                    create_vote_answer_path(answer),
-                    remote: true,
-                    data: {type: :json},
-                    method: :post
-          .vote__reset class = ("#{show_item_helper(answer, current_user) ? 'hidden_item' : ''}")
-            = link_to 'Vote RESET',
-                    create_vote_answer_path(answer),
-                    remote: true,
-                    data: {type: :json},
-                    method: :post
+  p.answer__content
+    = answer.body
+    - if current_user && !current_user&.owner?(answer)
+      .vote
+        .vote__up class = ("#{show_item_helper(answer, current_user) ? '' : 'hidden_item'}")
+          = link_to 'Vote Up',
+                  create_vote_answer_path(answer),
+                  remote: true,
+                  data: {type: :json},
+                  method: :post
+        .vote__reset class = ("#{show_item_helper(answer, current_user) ? 'hidden_item' : ''}")
+          = link_to 'Vote RESET',
+                  create_vote_answer_path(answer),
+                  remote: true,
+                  data: {type: :json},
+                  method: :post
 
     - if current_user&.owner?(answer)
       =< link_to 'Delete',

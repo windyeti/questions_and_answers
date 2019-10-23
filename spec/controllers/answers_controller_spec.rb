@@ -167,4 +167,8 @@ RSpec.describe AnswersController, type: :controller do
       end
     end
   end
+
+  describe "POST #create_vote" do
+    it_behaves_like "create_vote examples", :answer
+  end
 end

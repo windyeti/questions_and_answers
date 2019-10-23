@@ -24,11 +24,11 @@ module Voted
 
   private
 
-  def set_klass
+  def get_klass
     controller_name.classify.constantize
   end
 
   def set_voteable
-    @voteable = set_klass.find(params[:id])
+    @voteable = get_klass.find(params[:id])
   end
 end

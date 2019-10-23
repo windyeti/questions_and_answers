@@ -2,7 +2,7 @@
   .question__content
     h1= @question.title
     p= @question.body
-    - if !current_user&.owner?(@question)
+    - if current_user && !current_user.owner?(@question)
       .vote
         .vote__up class = ("#{show_item_helper(@question, current_user) ? '' : 'hidden_item'}")
           = link_to 'Vote Up',
