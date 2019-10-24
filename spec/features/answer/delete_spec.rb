@@ -2,7 +2,7 @@ require 'rails_helper'
 
 feature 'Only authenticate user can delete own answer' do
   given(:user) { create(:user) }
-  given(:question) { create(:question, user: user ) }
+  given(:question) { create(:question ) }
   given!(:answer) { create(:answer, :with_attachment, question: question, user: user, body: 'MY BODY ANSWER') }
 
   context 'Authenticated user', js: true do
@@ -11,7 +11,7 @@ feature 'Only authenticate user can delete own answer' do
     scenario 'can delete own answer' do
       visit question_path(question)
       expect(page).to have_content 'MY BODY ANSWER'
-      within '.answer > p' do
+      within '.answer__edit' do
         click_on 'Delete'
       end
 

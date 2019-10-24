@@ -22,7 +22,7 @@ module Voted
       respond_to do |format|
         if @vote.destroy
           format.json do
-            render json: { vote: "You vote destroy" }.to_json
+            render json: { vote: "You vote destroy", value: @voteable.balance_votes  }.to_json
           end
         else
           format.json do
@@ -41,7 +41,7 @@ module Voted
     respond_to do |format|
       if @vote.save
         format.json do
-          render json: { vote: "You voted" }.to_json
+          render json: { vote: "You voted", value: @voteable.balance_votes }.to_json
         end
       else
         format.json do

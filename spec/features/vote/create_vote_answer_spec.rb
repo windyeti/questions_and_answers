@@ -13,7 +13,7 @@ feature 'Voting' do
     scenario 'can not voted' do
 
       within '.answer' do
-        expect(page).to_not have_css(".vote")
+        expect(page).to_not have_css(".vote__up")
       end
     end
   end
@@ -27,7 +27,7 @@ feature 'Voting' do
     end
     scenario 'can not voted' do
       within '.answer' do
-        expect(page).to_not have_css(".vote")
+        expect(page).to_not have_css(".vote__up")
       end
     end
   end

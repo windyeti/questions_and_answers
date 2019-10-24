@@ -2,14 +2,14 @@
   .question__content
     h1= @question.title
     p= @question.body
-    .vote__balance
-      | Баланс голосов:
-      .vote__value
-        =< @question.balance_votes
-    - if current_user && !current_user.owner?(@question)
-      .vote
+    .vote
+      .vote__balance
+        | Баланс голосов:
+        .vote__value
+          =< @question.balance_votes
+      - if current_user && !current_user.owner?(@question)
         .vote__up class = ("#{show_item_helper(@question, current_user) ? '' : 'hidden_item'}")
-          = link_to 'Vote Up',
+          => link_to 'Vote Up',
                   vote_up_question_path(@question),
                   remote: true,
                   data: {type: :json},

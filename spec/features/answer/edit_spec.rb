@@ -50,7 +50,6 @@ feature 'Only authenticated user can edit answer' do
 
       visit question_path(question)
 
-      # wait_for_ajax
       sleep(3)
 
       within '.answer__attachment' do

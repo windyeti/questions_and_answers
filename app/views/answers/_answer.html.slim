@@ -2,12 +2,12 @@
 .answer class=('best' if answer.best)
   p.answer__content
     = answer.body
-    .vote__balance
-      | Баланс голосов:
-      .vote__value
-        =< answer.balance_votes
-    - if current_user && !current_user&.owner?(answer)
-      .vote
+    .vote
+      .vote__balance
+        | Баланс голосов:
+        .vote__value
+          =< answer.balance_votes
+      - if current_user && !current_user&.owner?(answer)
         .vote__up class = ("#{show_item_helper(answer, current_user) ? '' : 'hidden_item'}")
           = link_to 'Vote Up',
                   vote_up_answer_path(answer),
@@ -27,12 +27,13 @@
                   method: :delete
 
     - if current_user&.owner?(answer)
-      =< link_to 'Delete',
-                  answer_path(answer),
-                  method: :delete,
-                  remote: true,
-                  class: 'delete_answer'
-      =< link_to 'Edit', edit_answer_path(answer)
+      .answer__edit
+        =< link_to 'Delete',
+                    answer_path(answer),
+                    method: :delete,
+                    remote: true,
+                    class: 'delete_answer'
+        =< link_to 'Edit', edit_answer_path(answer)
     - if current_user&.owner?(answer.question)
       =< link_to 'Best',
                   best_answer_path(answer),
