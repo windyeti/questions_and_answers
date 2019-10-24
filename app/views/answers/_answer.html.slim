@@ -2,20 +2,29 @@
 .answer class=('best' if answer.best)
   p.answer__content
     = answer.body
+    .vote__balance
+      | Баланс голосов:
+      .vote__value
+        =< answer.balance_votes
     - if current_user && !current_user&.owner?(answer)
       .vote
         .vote__up class = ("#{show_item_helper(answer, current_user) ? '' : 'hidden_item'}")
           = link_to 'Vote Up',
-                  create_vote_answer_path(answer),
+                  vote_up_answer_path(answer),
+                  remote: true,
+                  data: {type: :json},
+                  method: :post
+          = link_to 'Vote Down',
+                  vote_down_answer_path(answer),
                   remote: true,
                   data: {type: :json},
                   method: :post
         .vote__reset class = ("#{show_item_helper(answer, current_user) ? 'hidden_item' : ''}")
           = link_to 'Vote RESET',
-                  create_vote_answer_path(answer),
+                  vote_reset_answer_path(answer),
                   remote: true,
                   data: {type: :json},
-                  method: :post
+                  method: :delete
 
     - if current_user&.owner?(answer)
       =< link_to 'Delete',

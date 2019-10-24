@@ -6,10 +6,14 @@ module Voteable
   end
 
   def can_vote?(user)
-    !has_vote?(user)
+    !user_vote(user)
   end
 
-  def has_vote?(user)
+  def user_vote(user)
     votes.find_by(user_id: user.id)
+  end
+
+  def balance_votes
+    2 * votes.where(voteup: true).count - votes.count
   end
 end
