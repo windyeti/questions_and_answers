@@ -1,7 +1,7 @@
 module WithVote
   def render_json_ok_response
-    # render json: { vote: "You are vote", value: @voteable.balance_votes }
     render json: Hash[:vote, "You are vote", :value, set_resource.balance_votes]
+    # render json: { vote: "You are vote", value: @voteable.balance_votes }
   end
 
   def render_json_with_errors
