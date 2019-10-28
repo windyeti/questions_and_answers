@@ -2,29 +2,7 @@
 .answer class=('best' if answer.best)
   p.answer__content
     = answer.body
-    .vote
-      .vote__balance
-        | Баланс голосов:
-        .vote__value
-          =< answer.balance_votes
-      - if current_user && !current_user&.owner?(answer)
-        .vote__up class = ("#{show_item_helper(answer, current_user) ? '' : 'hidden_item'}")
-          = link_to 'Vote Up',
-                  vote_up_answer_path(answer),
-                  remote: true,
-                  data: {type: :json},
-                  method: :post
-          = link_to 'Vote Down',
-                  vote_down_answer_path(answer),
-                  remote: true,
-                  data: {type: :json},
-                  method: :post
-        .vote__reset class = ("#{show_item_helper(answer, current_user) ? 'hidden_item' : ''}")
-          = link_to 'Vote RESET',
-                  vote_reset_answer_path(answer),
-                  remote: true,
-                  data: {type: :json},
-                  method: :delete
+    = render 'shared/vote', resource: answer
 
     - if current_user&.owner?(answer)
       .answer__edit

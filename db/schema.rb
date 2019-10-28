@@ -95,7 +95,7 @@ ActiveRecord::Schema.define(version: 2019_10_23_051927) do
     t.string "voteable_type"
     t.bigint "voteable_id"
     t.bigint "user_id"
-    t.boolean "voteup", default: false
+    t.integer "value"
     t.index ["user_id"], name: "index_votes_on_user_id"
     t.index ["voteable_type", "voteable_id"], name: "index_votes_on_voteable_type_and_voteable_id"
   end

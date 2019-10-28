@@ -36,7 +36,7 @@ feature 'Reset vote' do
   context 'Authenticated user not author', js: true do
     given(:user_other) { create(:user) }
     given(:question) { create(:question) }
-    given!(:vote) { create(:vote, user: user_other, voteable: question, voteup: true) }
+    given!(:vote) { create(:vote, user: user_other, voteable: question, value: 1) }
 
     background do
       sign_in(user_other)

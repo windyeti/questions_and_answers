@@ -4,7 +4,7 @@ feature 'Vote value' do
   context 'Guest', js: true do
     given(:question) { create(:question) }
     given(:user) { create(:user) }
-    given!(:vote) { create(:vote, voteable: question, user: user) }
+    given!(:vote) { create(:vote, voteable: question, user: user, value: 1) }
 
     background do
       visit question_path(question)

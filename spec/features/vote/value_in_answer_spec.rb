@@ -6,7 +6,7 @@ feature 'Vote value in answer' do
     given(:user) { create(:user) }
     given(:question) { create(:question) }
     given(:answer) { create(:answer, question: question) }
-    given!(:vote) { create(:vote, voteable: answer, user: user) }
+    given!(:vote) { create(:vote, voteable: answer, user: user, value: 1) }
 
     background do
       visit question_path(question)

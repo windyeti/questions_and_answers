@@ -7,7 +7,7 @@ module ApplicationHelper
     end
   end
 
-  def show_item_helper(resource, user)
-    resource.votes.select {|v| v.user_id == user.id}.empty?
+  def can_vote_for?(resource, user)
+    resource.votes.where(user_id: user.id).empty?
   end
 end
