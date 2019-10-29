@@ -23,22 +23,22 @@ shared_examples_for 'voteable' do
     end
   end
 
-  describe 'increment, decrement, reset' do
+  describe 'vote_up, vote_down, vote_reset' do
 
-    it 'vote_increment' do
+    it 'vote_up' do
       expect do
-        voteable.vote_increment(user)
+        voteable.vote_up(user)
       end.to change(voteable.votes, :count).by(1)
     end
 
-    it 'vote_decrement' do
+    it 'vote_down' do
       expect do
-        voteable.vote_decrement(user)
+        voteable.vote_down(user)
       end.to change(voteable.votes, :count).by(1)
     end
 
     it 'vote_reset' do
-      voteable.vote_increment(user)
+      voteable.vote_up(user)
 
       expect do
         voteable.vote_reset(user)

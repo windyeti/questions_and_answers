@@ -6,18 +6,18 @@
   - if current_user && !current_user.owner?(resource)
     .vote__up class = ("#{can_vote_for?(resource, current_user) ? '' : 'hidden_item'}")
       => link_to 'Vote Up',
-              "#{polymorphic_path(resource)}/vote_up",
+              polymorphic_path([:vote_up, resource]),
               remote: true,
               data: {type: :json},
               method: :post
       = link_to 'Vote Down',
-              "#{polymorphic_path(resource)}/vote_down",
+              polymorphic_path([:vote_down, resource]),
               remote: true,
               data: {type: :json},
               method: :post
     .vote__reset class = ("#{can_vote_for?(resource, current_user) ? 'hidden_item' : ''}")
       = link_to 'Vote RESET',
-              "#{polymorphic_path(resource)}/vote_reset",
+              polymorphic_path([:vote_reset, resource]),
               remote: true,
               data: {type: :json},
               method: :delete

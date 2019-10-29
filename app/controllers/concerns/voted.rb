@@ -7,13 +7,13 @@ module Voted
 
   def vote_up
     return render_no_permission unless @voteable.can_vote?(current_user)
-    @vote = @voteable.vote_increment(current_user)
+    @vote = @voteable.vote_up(current_user)
     render_json
   end
 
   def vote_down
     return render_no_permission unless @voteable.can_vote?(current_user)
-    @vote = @voteable.vote_decrement(current_user)
+    @vote = @voteable.vote_down(current_user)
     render_json
   end
 

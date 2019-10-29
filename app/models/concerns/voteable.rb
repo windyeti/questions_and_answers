@@ -5,11 +5,11 @@ module Voteable
     has_many :votes, dependent: :destroy, as: :voteable
   end
 
-  def vote_increment(user)
+  def vote_up(user)
     votes.create(user: user, value: 1)
   end
 
-  def vote_decrement(user)
+  def vote_down(user)
     votes.create(user: user, value: -1)
   end
 
