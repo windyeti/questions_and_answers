@@ -1,5 +1,5 @@
 - return unless answer.persisted?
-.answer class=('best' if answer.best)
+.answer id=("answer_id_#{answer.id}") class=('best' if answer.best)
   p.answer__content
     = answer.body
     = render 'shared/vote', resource: answer

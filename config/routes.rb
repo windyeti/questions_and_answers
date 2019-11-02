@@ -19,4 +19,6 @@ Rails.application.routes.draw do
   resources :attachments, only: [:destroy]
   resources :links, only: [:destroy]
   get 'user_rewards', to: 'rewards#user_rewards'
+
+  mount ActionCable.server => '/cable'
 end
