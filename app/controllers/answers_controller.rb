@@ -1,6 +1,9 @@
 class AnswersController < ApplicationController
   include Voted
 
+  # include Rails.application.routes.url_helpers
+
+
   before_action :authenticate_user!
   before_action :find_question, only: [:create]
   before_action :find_answer, only: [:destroy, :edit, :update, :best]
@@ -9,6 +12,24 @@ class AnswersController < ApplicationController
     @answer = @question.answers.new(answer_params)
     @answer.user = current_user
     @answer.save
+    ActionCable.server.broadcast(
+      "answers_question_#{@question.id}",
+      answer: @answer,
+      answer_balance_votes:  @answer.balance_votes,
+      answer_links:  @answer.links,
+      answer_files:  file_url(@answer.files)
+    )
+  end
+
+  def file_url(files)
+    files.map do |f|
+      {
+        id: f.id,
+        url: rails_blob_path(f, only_path: true),
+        name: f.filename.to_s
+      }
+    end
+
   end
 
   def edit

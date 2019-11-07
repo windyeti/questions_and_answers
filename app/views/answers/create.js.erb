@@ -1,15 +1,14 @@
 <% if @answer.errors.empty? %>
   var $inputFiles = $('#answer_files');
-  $('.answers').append('<%= j render @answer %>');
-
-//  var $button_add_nested_form = $('.add_fields')
-//  var template_nested_form = $button_add_nested_form.data('association-insertion-template')
-//  var div_with_button = $('<div>').addClass('links_to_add').append($button_add_nested_form);
-//  $('#links').html( template_nested_form ).append(div_with_button);
 
   $('#answer_body').val('');
   $inputFiles.val('');
   $inputFiles.removeAttr("disabled");
+
+  $('form input[type="hidden"]').remove();
+
+  $('.answers').append('<%= j render @answer %>');
+
 <% else %>
   $('.answer-errors').html('<%= render "shared/errors", resource: @answer %>');
 <% end %>

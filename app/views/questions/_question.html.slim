@@ -1,8 +1,8 @@
-tr id="question_id_#{question.id}"
+tr class ='question' id="question_id_#{question.id}"
   td= question.title
   td= question.body
   td
-    => link_to 'Show', question_path(question)
+    => link_to 'Show', question_path(question), class: 'question__show'
     - if current_user&.owner?(question)
-      => link_to 'Delete', question_path(question), method: :delete
-      = link_to 'Edit', edit_question_path(question)
+      => link_to 'Delete', question_path(question), method: :delete, class: 'question__delete'
+      = link_to 'Edit', edit_question_path(question), class: 'question__edit'

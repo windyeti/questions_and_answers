@@ -1,0 +1,32 @@
+- return if @answer.user_id == gon.user_id
+.answer id=("answer_id_#{@answer.id}")
+  p.answer__content
+    = @answer.body
+    .vote
+      .vote__balance
+        | Баланс голосов:
+        .vote__value
+          =< @answer_balance_votes
+      - if gon.user_id && gon.user_id != @answer.user_id
+        .vote__up
+          a data-type='json' data-remote='true' rel='nofollow' data-method='post' href="/answers/#{@answer.id}/vote_up" Vote Up
+          a data-type='json' data-remote='true' rel='nofollow' data-method='post' href="/answers/#{@answer.id}/vote_down" Vote Down
+        .vote__reset class='hidden_item'
+          a data-type='json' data-remote='true' rel='nofollow' data-method='delete' href="/answers/#{@answer.id}/vote_reset" Vote RESET
+
+    - if gon.question_of_user_id == gon.user_id
+      a class=("#{@answer.best} ? 'link_best hide_link_best' : 'link_best'") data-remote='true' rel='nofollow' data-method='patch' href="/answers/#{@answer.id}/best" Best
+
+    h4 Links:
+    .links
+      - for link in @answer_links
+        li
+          a href=link.url = link.name
+
+    .answer__attachment
+      h4 Attached files:
+      - for fff in @answer_files
+        p.answer__attachment__file id="attachment_id_#{fff.name}"
+          a href="#{fff.url}" target='_blank' = fff.name
+
+
