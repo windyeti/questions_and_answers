@@ -1,11 +1,16 @@
 <% if @answer.errors.empty? %>
   var $inputFiles = $('#answer_files');
-
+//  clean fields answer form
   $('#answer_body').val('');
   $inputFiles.val('');
   $inputFiles.removeAttr("disabled");
 
+//  delete hidden fields attachment files
   $('form input[type="hidden"]').remove();
+
+//  delete addition nested fields and clear fields first form
+  $('.nested-fields').not(':first-child').remove()
+  $('.nested-fields:first-child input[type="text"]').val('')
 
   $('.answers').append('<%= j render @answer %>');
 

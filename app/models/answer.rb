@@ -12,6 +12,8 @@ class Answer < ApplicationRecord
 
   validates :body, presence: true
 
+  after_create :publish_answer
+
   default_scope { order(best: :desc).order(created_at: :desc) }
 
   def set_best
@@ -19,6 +21,26 @@ class Answer < ApplicationRecord
       question.answers.update_all(best: false)
       update!(best: true)
       user.rewards << question.reward if question.reward.present?
+    end
+  end
+
+  def publish_answer
+    ActionCable.server.broadcast(
+      "answers_question_#{question.id}",
+      answer: self,
+      answer_balance_votes:  balance_votes,
+      answer_links:  links,
+      answer_files:  attachment_file(files)
+    )
+  end
+
+  def attachment_file(files)
+    files.map do |f|
+      {
+        id: f.id,
+        url: rails_blob_path(f, only_path: true),
+        name: f.filename.to_s
+      }
     end
   end
 end

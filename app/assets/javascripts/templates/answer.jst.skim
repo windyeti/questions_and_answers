@@ -25,8 +25,8 @@
 
     .answer__attachment
       h4 Attached files:
-      - for fff in @answer_files
-        p.answer__attachment__file id="attachment_id_#{fff.name}"
-          a href="#{fff.url}" target='_blank' = fff.name
+      - for answer_file in @answer_files
+        p.answer__attachment__file id="attachment_id_#{answer_file.name}"
+          a href="#{answer_file.url}" target='_blank' = answer_file.name
 
 
