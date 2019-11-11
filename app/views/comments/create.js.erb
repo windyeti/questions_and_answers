@@ -1,0 +1,7 @@
+<% if @comment.errors.empty? %>
+  var selector = "#<%= @comment.commentable_type.downcase %>_<%= @comment.commentable_id %>"
+  $(selector + " .comments").append('<%= j render @comment %>');
+  $(selector + " .form_comment_of_question textarea").val('');
+<% else %>
+  $(selector + " .comments").html('<%= render "shared/errors", resource: @answer %>');
+<% end %>

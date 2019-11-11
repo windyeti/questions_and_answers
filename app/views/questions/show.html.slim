@@ -1,6 +1,6 @@
 = link_to 'Back', questions_path
 
-.question
+.question id="question_#{@question.id}"
   .question__content
     h1= @question.title
     p= @question.body
@@ -23,6 +23,14 @@
   h4 Reward:
   - if @question.reward.present?
     = render @question.reward
+
+  h4 Comments:
+  .comments
+    - if @question.comments.present?
+      = render @question.comments
+  - if current_user.present?
+    .form_comment_of_question
+      = render partial: 'shared/form_comment', locals: { resource: @question }
 
 h4 List answers:
 .answers

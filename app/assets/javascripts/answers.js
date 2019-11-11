@@ -5,6 +5,7 @@ $(document).on('turbolinks:load', function() {
         this.perform('follow')
       },
       received: function(data) {
+        console.log(data);
         $('.answers').append(JST['templates/answer']({
             answer: data.answer,
             answer_balance_votes: data.answer_balance_votes,
@@ -13,7 +14,6 @@ $(document).on('turbolinks:load', function() {
           })
         )
       }
-
     })
   }
 })

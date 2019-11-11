@@ -11,7 +11,9 @@ Rails.application.routes.draw do
   end
 
   resources :questions, shallow: true, concerns: :voteable do
+    resources :comments, shallow: true, only: [:create, :destroy], defaults: { commentable: 'questions' }
     resources :answers, only: [:create, :edit, :update, :destroy], concerns: :voteable do
+      resources :comments, shallow: true, only: [:create, :destroy], defaults: { commentable: 'answers' }
       patch :best, on: :member
     end
   end

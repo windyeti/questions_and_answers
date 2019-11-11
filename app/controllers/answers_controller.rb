@@ -6,6 +6,7 @@ class AnswersController < ApplicationController
   before_action :find_answer, only: [:destroy, :edit, :update, :best]
 
   def create
+    @comment = Comment.new
     @answer = @question.answers.new(answer_params)
     @answer.user = current_user
     @answer.save

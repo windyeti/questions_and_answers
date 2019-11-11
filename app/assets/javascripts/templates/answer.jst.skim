@@ -29,4 +29,3 @@
         p.answer__attachment__file id="attachment_id_#{answer_file.name}"
           a href="#{answer_file.url}" target='_blank' = answer_file.name
 
-

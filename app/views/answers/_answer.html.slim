@@ -1,5 +1,5 @@
 - return unless answer.persisted?
-.answer id=("answer_id_#{answer.id}") class=('best' if answer.best)
+.answer id=("answer_#{answer.id}") class=('best' if answer.best)
   p.answer__content
     = answer.body
     = render 'shared/vote', resource: answer
@@ -31,3 +31,11 @@
                   id: "attachment_id_#{file.id}"
             = link_to file.filename.to_s, url_for(file), target: '_blank'
             =< link_to 'Delete', attachment_path(file), method: :delete, remote: true if current_user&.owner?(answer)
+
+    h4 Comments:
+    .comments
+      - if answer.comments.present?
+        = render answer.comments
+    - if current_user.present?
+      .form_comment_of_question
+        = render partial: 'shared/form_comment', locals: { resource: answer }

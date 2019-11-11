@@ -1,0 +1,7 @@
+= form_with model: [resource, @comment] do |f|
+  p
+    = f.label :body, 'Comment'
+    = f.text_area :body
+
+  p
+    = f.submit 'Save comment'

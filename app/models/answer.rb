@@ -5,6 +5,7 @@ class Answer < ApplicationRecord
   belongs_to :user
 
   has_many :links, dependent: :destroy, as: :linkable, inverse_of: :linkable
+  has_many :comments, dependent: :destroy, as: :commentable, inverse_of: :commentable
 
   has_many_attached :files
 
@@ -28,9 +29,9 @@ class Answer < ApplicationRecord
     ActionCable.server.broadcast(
       "answers_question_#{question.id}",
       answer: self,
-      answer_balance_votes:  balance_votes,
-      answer_links:  links,
-      answer_files:  attachment_file(files)
+      answer_balance_votes: balance_votes,
+      answer_links: links,
+      answer_files: attachment_file(files)
     )
   end
 

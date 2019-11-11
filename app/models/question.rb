@@ -4,6 +4,7 @@ class Question < ApplicationRecord
   belongs_to :user
   has_many :answers, dependent: :destroy
   has_many :links, dependent: :destroy, as: :linkable, inverse_of: :linkable
+  has_many :comments, dependent: :destroy, as: :commentable, inverse_of: :commentable
 
   has_one :reward, dependent: :destroy, inverse_of: :question
 

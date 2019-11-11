@@ -9,15 +9,18 @@
               polymorphic_path([:vote_up, resource]),
               remote: true,
               data: {type: :json},
-              method: :post
+              method: :post,
+              class: 'link__vote__up'
       = link_to 'Vote Down',
               polymorphic_path([:vote_down, resource]),
               remote: true,
               data: {type: :json},
-              method: :post
+              method: :post,
+              class: 'link__vote__down'
     .vote__reset class = ("#{can_vote_for?(resource, current_user) ? 'hidden_item' : ''}")
       = link_to 'Vote RESET',
               polymorphic_path([:vote_reset, resource]),
               remote: true,
               data: {type: :json},
-              method: :delete
+              method: :delete,
+              class: 'link__vote__reset'
