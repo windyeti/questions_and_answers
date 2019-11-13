@@ -17,6 +17,11 @@ RSpec.describe AnswersController, type: :controller do
           post :create, params: {question_id: question, answer: attributes_for(:answer)}, format: :js
           expect(response).to render_template :create
         end
+
+        it '@comment is new' do
+          post :create, params: {question_id: question, answer: attributes_for(:answer)}, format: :js
+          expect(assigns(:comment)).to be_a_new(Comment)
+        end
       end
 
       context 'with invalid data' do

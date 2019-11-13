@@ -1,4 +1,6 @@
 class Answer < ApplicationRecord
+  include Rails.application.routes.url_helpers
+
   include Voteable
 
   belongs_to :question
@@ -7,7 +9,7 @@ class Answer < ApplicationRecord
   has_many :links, dependent: :destroy, as: :linkable, inverse_of: :linkable
   has_many :comments, dependent: :destroy, as: :commentable, inverse_of: :commentable
 
-  has_many_attached :files
+  has_many_attached :files, dependent: :destroy
 
   accepts_nested_attributes_for :links, reject_if: :all_blank, allow_destroy: true
 
@@ -28,19 +30,32 @@ class Answer < ApplicationRecord
   def publish_answer
     ActionCable.server.broadcast(
       "answers_question_#{question.id}",
-      answer: self,
+      answer_id: id,
+      answer_user_id: user_id,
+      answer_body: body,
+      answer_best: best,
       answer_balance_votes: balance_votes,
-      answer_links: links,
-      answer_files: attachment_file(files)
+      answer_links: attachment_links(links),
+      answer_files: attachment_files(files)
     )
   end
 
-  def attachment_file(files)
+  def attachment_files(files)
     files.map do |f|
       {
         id: f.id,
         url: rails_blob_path(f, only_path: true),
         name: f.filename.to_s
+      }
+    end
+  end
+
+  def attachment_links(links)
+    links.map do |f|
+      {
+        id: f.id,
+        url: f.url,
+        name: f.name
       }
     end
   end

@@ -1,11 +1,11 @@
 tr
-  td #{@question.title}
-  td #{@question.body}
+  td #{@question_title}
+  td #{@question_body}
   td
     a href="/questions/#{@question.id}" Show
 
-    - if gon.user_id and gon.user_id is @question.user_id
-        a rel="nofollow" data-method="delete" href="/questions/#{@question.id}" Delete
-        a href="/questions/#{@question.id}/edit" Edit
+    - if gon.user_id and gon.user_id is @question_user_id
+        a rel="nofollow" data-method="delete" href="/questions/#{@question_id}" Delete
+        a href="/questions/#{@question_id}/edit" Edit
 
 

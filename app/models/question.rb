@@ -20,7 +20,10 @@ class Question < ApplicationRecord
   def publish_question
     ActionCable.server.broadcast(
       'questions',
-      question: self
+      question_id: id,
+      question_title: title,
+      question_body: body,
+      question_user_id: user_id
     )
   end
 end

@@ -4,7 +4,12 @@ $(document).on('turbolinks:load', function() {
       this.perform('follow')
     },
     received: function(data) {
-      $('table').append(JST["templates/question"]({question: data.question}))
+      $('table').append(JST["templates/question"]({
+        question_id: data.question_id,
+        question_title: data.question_title,
+        question_body: data.question_body,
+        question_user_id: data.question_user_id,
+      }))
     }
   })
 });

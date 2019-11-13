@@ -15,6 +15,10 @@ RSpec.describe QuestionsController, type: :controller do
       expect(assigns(:answer)).to be_a_new(Answer)
     end
 
+    it '@comment is new' do
+      expect(assigns(:comment)).to be_a_new(Comment)
+    end
+
     it '@answer.links is new' do
       expect(assigns(:answer).links.first).to be_a_new(Link)
     end

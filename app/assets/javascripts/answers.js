@@ -7,7 +7,10 @@ $(document).on('turbolinks:load', function() {
       received: function(data) {
         console.log(data);
         $('.answers').append(JST['templates/answer']({
-            answer: data.answer,
+            answer_id: data.answer_id,
+            answer_user_id: data.answer_user_id,
+            answer_body: data.answer_body,
+            answer_best: data.answer_best,
             answer_balance_votes: data.answer_balance_votes,
             answer_links: data.answer_links,
             answer_files: data.answer_files
