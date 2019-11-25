@@ -6,7 +6,10 @@ feature 'Only authenticated user can edit answer' do
       given!(:answer) { create(:answer, body: 'My body answer', user: user, question: question) }
 
   context 'Authenticated user', js: true do
-      background { sign_in(user) }
+      background do
+        user.confirm
+        sign_in(user)
+      end
 
     scenario 'with valid data' do
       visit question_path(question)
@@ -61,7 +64,10 @@ feature 'Only authenticated user can edit answer' do
 
   context 'Authenticated not author', js: true do
     given(:other_user) { create(:user) }
-    background { sign_in(other_user) }
+    background do
+      other_user.confirm
+      sign_in(other_user)
+    end
 
     scenario 'can not edit answer' do
       visit question_path(question)

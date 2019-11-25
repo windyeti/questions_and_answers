@@ -7,7 +7,10 @@ feature 'User can create an answer on the page question', %q{
   given(:user) { create(:user) }
 
   context 'Authenticated user create answer', js: true do
-    background { sign_in(user) }
+    background do
+      user.confirm
+      sign_in(user)
+    end
 
     given(:question) { create(:question, user: user) }
 

@@ -5,6 +5,8 @@ feature 'Authenticated user can create a comment of answer' do
   given(:question) { create(:question) }
   given!(:answer) { create(:answer, question: question) }
 
+  before { user.confirm }
+
   context 'multiple sessions', js: true do
     scenario 'comment appears on another users page' do
       Capybara.using_session('user') do

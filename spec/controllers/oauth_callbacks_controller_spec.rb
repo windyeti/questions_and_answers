@@ -6,7 +6,7 @@ RSpec.describe OauthCallbacksController, type: :controller do
       request.env["devise.mapping"] = Devise.mappings[:user]
     end
     context 'call method find_for_oauth' do
-      let(:oauth) { {provider: '123', uid: '456'} }
+      let(:oauth) { OmniAuth::AuthHash.new(provider: '123', uid: '456') }
 
       it do
         allow(request.env).to receive(:[]).and_call_original
@@ -18,7 +18,9 @@ RSpec.describe OauthCallbacksController, type: :controller do
 
     context 'user exist' do
       let!(:user) { create(:user) }
+      let!(:oauth) { OmniAuth::AuthHash.new(provider: '123', uid: '456') }
       before do
+        allow(subject).to receive('oauth_params').and_return(oauth)
         allow(User).to receive('find_for_oauth').and_return(user)
         get :github
       end

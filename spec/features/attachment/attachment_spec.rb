@@ -4,6 +4,7 @@ feature 'Delete attached file' do
   given(:user) { create(:user) }
   given!(:question) { create(:question, :with_attachment, user: user ) }
 
+  background { user.confirm }
 
   context "Authenticated user", js: true do
     background { sign_in(user) }
@@ -24,7 +25,10 @@ feature 'Delete attached file' do
 
   context "Authenticated user not author" do
     given(:other_user) { create(:user) }
-    background { sign_in(other_user) }
+    background do
+      other_user.confirm
+      sign_in(other_user)
+    end
 
     scenario 'can not delete attached file' do
       visit question_path(question)

@@ -5,11 +5,13 @@ feature 'Registration user', %q{
   to log in to ask questions and answer
 } do
   context 'User entry valid data' do
-    background {
+    background do
       user_sign_up_with_data
-    }
+      open_email('user21@test.com')
+      current_email.click_link 'Confirm my account'
+    end
     scenario 'User sign up' do
-      expect(page).to have_content('Welcome! You have signed up successfully.')
+      expect(page).to have_content('Your email address has been successfully confirmed.')
     end
 
     scenario 'User re-sign up with the same data' do

@@ -6,7 +6,10 @@ feature 'Only author can choose best question' do
     given!(:answer) { create(:answer, question: question) }
 
   context 'Authenticated author', js: true do
-    background { sign_in(user) }
+    background do
+      user.confirm
+      sign_in(user)
+    end
     scenario 'select best answer' do
       visit question_path(question)
       click_on 'Best'
@@ -17,7 +20,10 @@ feature 'Only author can choose best question' do
 
   context 'Authenticated user not author ', js: true do
     given(:other_user) { create(:user) }
-    background { sign_in(other_user) }
+    background do
+      other_user.confirm
+      sign_in(other_user)
+    end
 
     scenario 'can not select best answer' do
       visit question_path(question)
@@ -36,7 +42,10 @@ feature 'Only author can choose best question' do
   end
 
   context 'The best answer already exists', js: true do
-    background { sign_in(user) }
+    background do
+      user.confirm
+      sign_in(user)
+    end
     given!(:answer_start_best) { create(:answer, question: question, body: 'The best answer', best: true) }
 
     scenario 'The best answer should be first' do

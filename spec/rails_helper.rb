@@ -1,6 +1,8 @@
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 require 'spec_helper'
+
 ENV['RAILS_ENV'] ||= 'test'
+require 'capybara/email/rspec'
 
 require File.expand_path('../config/environment', __dir__)
 
@@ -39,6 +41,8 @@ RSpec.configure do |config|
   config.include ControllerHelper, type: :controller
   config.include FeatureHelper, type: :feature
   config.include WaitForAjaxHelper, type: :feature
+
+  config.include OmniauthMacros, type: :feature
 
   Capybara.default_max_wait_time = 10
 
@@ -91,3 +95,5 @@ end
 FactoryBot::SyntaxRunner.class_eval do
   include ActionDispatch::TestProcess
 end
+
+OmniAuth.config.test_mode = true

@@ -6,7 +6,10 @@ feature 'Adding links' do
   given(:url_google) { 'https://google.ru' }
 
   context 'Authenticated author', js: true do
-    background { sign_in(author_user) }
+    background do
+      author_user.confirm
+      sign_in(author_user)
+    end
 
     scenario 'can added link to his answer' do
       visit question_path(question)

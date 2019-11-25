@@ -6,7 +6,10 @@ feature 'Only authenticate user can delete own answer' do
   given!(:answer) { create(:answer, :with_attachment, question: question, user: user, body: 'MY BODY ANSWER') }
 
   context 'Authenticated user', js: true do
-    background { sign_in(user) }
+    background do
+      user.confirm
+      sign_in(user)
+    end
 
     scenario 'can delete own answer' do
       visit question_path(question)
@@ -21,7 +24,10 @@ feature 'Only authenticate user can delete own answer' do
 
   context 'Authenticated user not author ' do
     given(:other_user) { create(:user) }
-    background { sign_in(other_user) }
+    background do
+      other_user.confirm
+      sign_in(other_user)
+    end
 
     scenario 'can not delete answer' do
       visit question_path(question)

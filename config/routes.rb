@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  default_url_options host: "localhost:3000"
+
+  get '/set_account_email', to: 'emails#new'
+  post '/set_account_email', to: 'emails#create'
 
   devise_for :users, path: :account, controllers: { omniauth_callbacks: 'oauth_callbacks' }
 

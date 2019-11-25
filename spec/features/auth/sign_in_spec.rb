@@ -6,6 +6,8 @@ feature 'user can sign in', %q{
 } do
   given(:user) { create(:user) }
 
+  before { user.confirm }
+
   scenario 'Registered user can sign in' do
     visit new_user_session_path
     fill_in 'Email', with: user.email
