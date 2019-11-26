@@ -25,14 +25,33 @@ class User < ApplicationRecord
   end
 
   def self.find_or_create_user_and_oauth(oauth)
-    email = oauth.info[:email] || (return false)
-    user = User.find_by(email: email) || create_user(email) || (return false)
-    user.authorizations.create(provider: oauth.provider, uid: oauth.uid)
+    email = oauth.info&.email || (return false)
+    user = find_by(email: email)
+
+    if user
+      transaction do
+        user.update!(confirmed_at: Time.now)
+        user.create_authorization!(oauth)
+      end
+    else
+      transaction do
+        user = create_user!(email)
+        user.create_authorization!(oauth)
+      end
+    end
     user
   end
 
-  def self.create_user(email)
+  def self.create_user!(email)
     password = Devise.friendly_token[0, 20]
-    User.create(email: email, password: password, password_confirmation: password)
+    create!(email: email,
+            password: password,
+            password_confirmation: password,
+            confirmed_at: Time.now
+    )
+  end
+
+  def create_authorization!(oauth)
+    authorizations.create!(provider: oauth.provider, uid: oauth.uid)
   end
 end

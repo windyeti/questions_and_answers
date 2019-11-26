@@ -5,7 +5,7 @@ class EmailsController < ApplicationController
     begin
       User.transaction do
         password = Devise.friendly_token[0, 20]
-        @user = User.create(email: email_params, password: password, password_confirmation: password)
+        @user = User.create!(email: email_params, password: password, password_confirmation: password)
         @user.authorizations.create!(provider: params[:provider], uid: params[:uid])
       end
     rescue
