@@ -3,6 +3,10 @@ class OauthCallbacksController < Devise::OmniauthCallbacksController
     oauth_provider
   end
 
+  def vkontakte
+    oauth_provider
+  end
+
   private
 
   def oauth_provider
@@ -14,7 +18,7 @@ class OauthCallbacksController < Devise::OmniauthCallbacksController
       set_flash_message(:notice, :success, kind: action_name.capitalize) if is_navigational_format?
     else
       session[:provider] = oauth_params.provider
-      session[:uid] = oauth_params[:uid]
+      session[:uid] = oauth_params[:uid].to_s
       redirect_to set_account_email_path, alert: 'You must enter email to continue authorization'
     end
   end

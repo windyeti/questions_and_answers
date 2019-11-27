@@ -11,14 +11,14 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable,
          :confirmable,
-         :omniauthable, omniauth_providers: [:github]
+         :omniauthable, omniauth_providers: [:github, :vkontakte]
 
   def owner?(resource)
     resource.user_id == self.id
   end
 
   def self.find_for_oauth(oauth)
-    auth = Authorization.where(provider: oauth.provider, uid: oauth.uid).first
+    auth = Authorization.where(provider: oauth.provider, uid: oauth.uid.to_s).first
     return auth.user if auth
 
     find_or_create_user_and_oauth(oauth)
@@ -30,7 +30,7 @@ class User < ApplicationRecord
 
     if user
       transaction do
-        user.update!(confirmed_at: Time.now)
+        user.update!(confirmed_at: Time.zone.now)
         user.create_authorization!(oauth)
       end
     else
@@ -47,11 +47,11 @@ class User < ApplicationRecord
     create!(email: email,
             password: password,
             password_confirmation: password,
-            confirmed_at: Time.now
+            confirmed_at: Time.zone.now
     )
   end
 
   def create_authorization!(oauth)
-    authorizations.create!(provider: oauth.provider, uid: oauth.uid)
+    authorizations.create!(provider: oauth.provider, uid: oauth.uid.to_s)
   end
 end

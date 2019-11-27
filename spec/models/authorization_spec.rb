@@ -41,4 +41,55 @@ RSpec.describe Authorization, type: :model do
       end
     end
   end
+
+  describe '.find_or_create_user_and_oauth' do
+    describe 'oauth include email' do
+      let!(:user) { create(:user) }
+      let(:auth) { OmniAuth::AuthHash.new(provider: '123', uid: '456', info: { email: user.email }) }
+
+      describe 'user find by email' do
+        let!(:authorization) { create(:authorization, user: user) }
+
+        it 'return user' do
+          expect(User.find_or_create_user_and_oauth(auth)).to eq user
+        end
+      end
+      describe 'user does not find by email' do
+        it 'create user' do
+          expect(User.find_or_create_user_and_oauth(auth)).to eq User.first
+        end
+        it 'does not create user' do
+          auth = OmniAuth::AuthHash.new(provider: '123', uid: '456')
+          expect(User.find_or_create_user_and_oauth(auth)).to be_falsey
+
+        end
+      end
+    end
+
+    describe 'oauth does not include email' do
+      it 'return false' do
+        auth = OmniAuth::AuthHash.new(provider: '123', uid: '456')
+        expect(User.find_or_create_user_and_oauth(auth)).to be_falsey
+      end
+    end
+  end
+
+  describe '.create_user!' do
+    describe 'valid email' do
+      it 'create user' do
+        expect do
+          User.create_user!('test@mail.com')
+        end.to change(User, :count).by(1)
+      end
+    end
+
+    describe 'invalid email' do
+      let!(:user) { create(:user, email: 'test@mail.com') }
+      it 'does not create user' do
+        expect do
+          User.create_user!('test@mail.com')
+        end.to raise_error
+      end
+    end
+  end
 end
