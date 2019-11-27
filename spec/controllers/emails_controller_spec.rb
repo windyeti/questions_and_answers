@@ -29,17 +29,8 @@ RSpec.describe EmailsController, type: :controller do
     describe 'Invalid data' do
       it "does not create user" do
         expect do
-          get :create
-        end.to_not change(User, :count)
-      end
-      it "does not create user`s authorization" do
-        get :create
-        expect(assigns(:user)).to be_nil
-      end
-
-      it "redirect to root page" do
-        get :create
-        expect(response).to redirect_to root_path
+          get :create, params: {email: ''}
+        end.to raise_error
       end
     end
   end

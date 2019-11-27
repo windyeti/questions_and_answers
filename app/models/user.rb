@@ -51,6 +51,15 @@ class User < ApplicationRecord
     )
   end
 
+  def self.create_user_and_auth!(email, provider, uid)
+    transaction do
+      password = Devise.friendly_token[0, 20]
+      user = create!(email: email, password: password, password_confirmation: password)
+      user.authorizations.create!(provider: provider, uid: uid)
+      user
+    end
+  end
+
   def create_authorization!(oauth)
     authorizations.create!(provider: oauth.provider, uid: oauth.uid.to_s)
   end

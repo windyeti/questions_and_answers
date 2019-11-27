@@ -1,7 +1,7 @@
 h1 Emails
 = form_with url: set_account_email_path, method: :post do |f|
-  = f.hidden_field :provider, value: session[:provider]
-  = f.hidden_field :uid, value: session[:uid]
+  = f.hidden_field :provider, value: session["devise.provider"]
+  = f.hidden_field :uid, value: session["devise.uid"]
   = f.label :email
   = f.text_field :email
   = f.submit

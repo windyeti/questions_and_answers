@@ -88,7 +88,30 @@ RSpec.describe Authorization, type: :model do
       it 'does not create user' do
         expect do
           User.create_user!('test@mail.com')
-        end.to raise_error
+        end.to raise_error(ActiveRecord::RecordInvalid, 'Validation failed: Email has already been taken')
+      end
+    end
+  end
+
+  describe '.create_user_and_auth!' do
+    it 'create user valid email' do
+      expect do
+        User.create_user_and_auth!('test@mail.com', 'provider', '12345')
+      end.to change(User, :count).by(1)
+    end
+
+    it 'create authorization valid email' do
+      expect do
+        User.create_user_and_auth!('test@mail.com', 'provider', '12345')
+      end.to change(Authorization, :count).by(1)
+    end
+
+    describe 'does not create user and auth' do
+      let!(:user) { create(:user, email: 'already@mail.com') }
+      it 'invalid email' do
+        expect do
+          User.create_user_and_auth!('already@mail.com', 'provider', '12345')
+        end.to raise_error(ActiveRecord::RecordInvalid, 'Validation failed: Email has already been taken')
       end
     end
   end
