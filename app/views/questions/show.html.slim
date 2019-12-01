@@ -28,7 +28,7 @@
   .comments
     - if @question.comments.present?
       = render @question.comments
-  - if current_user.present?
+  - if can?(:create, Comment)
     .form_comment_of_question
       = render partial: 'shared/form_comment', locals: { resource: @question }
 
@@ -36,6 +36,6 @@ h4 List answers:
 .answers
   = render @question.answers
 
-- if current_user
+- if can?(:create, Answer)
   .new_answer
     = render 'answers/form'

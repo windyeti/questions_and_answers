@@ -8,8 +8,11 @@ class Ability
     can :update, [Question, Answer], { user: user }
     can :destroy, [Question, Answer], { user: user }
     can :best, Answer,  question: { user_id: user.id }
-    can [:vote_up, :vote_down, :vote_reset], [Question, Answer] do |resource|
-      resource.user_id != user.id
+    can [:vote_up, :vote_down], [Question, Answer] do |resource|
+      (resource.user_id != user.id) && resource.can_vote?(user)
+    end
+    can :vote_reset, [Question, Answer] do |resource|
+      (resource.user_id != user.id) && resource.can_reset?(user)
     end
     can :destroy, ActiveStorage::Attachment, record: { user_id: user.id }
     # can :destroy, ActiveStorage::Attachment do |file|

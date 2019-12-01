@@ -35,10 +35,7 @@ class QuestionsController < ApplicationController
     end
   end
 
-  def edit
-    # redirect_to questions_path
-    # redirect_to questions_path unless current_user&.owner?(@question)
-  end
+  def edit; end
 
   def update
      @question.update(question_params)

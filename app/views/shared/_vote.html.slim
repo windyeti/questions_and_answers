@@ -3,8 +3,8 @@
     | Баланс голосов:
     .vote__value
       =< resource.balance_votes
-  - if current_user && !current_user.owner?(resource)
-    .vote__up class = ("#{can_vote_for?(resource, current_user) ? '' : 'hidden_item'}")
+  - if can?(:vote_up, resource) || can?(:vote_down, resource) || can?(:vote_reset, resource)
+    .vote__up class = ("#{can?(:vote_up, resource) ? '' : 'hidden_item'}")
       => link_to 'Vote Up',
               polymorphic_path([:vote_up, resource]),
               remote: true,
@@ -17,10 +17,11 @@
               data: {type: :json},
               method: :post,
               class: 'link__vote__down'
-    .vote__reset class = ("#{can_vote_for?(resource, current_user) ? 'hidden_item' : ''}")
+    .vote__reset class = ("#{can?(:vote_reset, resource) ? '' : 'hidden_item'}")
       = link_to 'Vote RESET',
               polymorphic_path([:vote_reset, resource]),
               remote: true,
               data: {type: :json},
               method: :delete,
               class: 'link__vote__reset'
+

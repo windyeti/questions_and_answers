@@ -1,4 +1,4 @@
-p= link_to "Ask", new_question_path if current_user.present?
+p= link_to "Ask", new_question_path if can?(:create, Question)
 
 h3 "List questions"
 

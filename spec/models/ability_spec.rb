@@ -44,9 +44,17 @@ RSpec.describe Ability, type: :model do
     it { should_not be_able_to(:best, create(:answer, user: other_user)) }
 
     %i[question answer].each do |resource|
-      %i[vote_up vote_down vote_reset].each do |action|
+      %i[vote_up vote_down].each do |action|
         it { should be_able_to(action, create(resource, user: other_user)) }
         it { should_not be_able_to(action, create(resource, user: user)) }
+      end
+    end
+    describe 'resource already voted' do
+      %i[question answer].each do |resource|
+        let(:other_voteable) { create(resource, user: other_user) }
+        let!(:vote) { create(:vote, user: user, value: 1, voteable: other_voteable) }
+
+        it { should be_able_to(:vote_reset, other_voteable) }
       end
     end
 

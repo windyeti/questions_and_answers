@@ -4,7 +4,7 @@
     = answer.body
     = render 'shared/vote', resource: answer
 
-    - if current_user&.owner?(answer)
+    - if can?(:destroy, answer)
       .answer__edit
         =< link_to 'Delete',
                     answer_path(answer),
@@ -12,7 +12,7 @@
                     remote: true,
                     class: 'delete_answer'
         =< link_to 'Edit', edit_answer_path(answer)
-    - if current_user&.owner?(answer.question)
+    - if can?(:best, answer)
       =< link_to 'Best',
                   best_answer_path(answer),
                   method: :patch,
@@ -36,6 +36,6 @@
     .comments
       - if answer.comments.present?
         = render answer.comments
-    - if current_user.present?
+    - if can?(:create, Comment)
       .form_comment_of_question
         = render partial: 'shared/form_comment', locals: { resource: answer }

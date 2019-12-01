@@ -4,5 +4,5 @@
       - resource.links.each do |link|
         li
           = link_chooser(link)
-          - if current_user&.owner?(link.linkable)
+          - if can?(:destroy, link)
             =< link_to 'Delete', link_path(link), method: :delete, remote: true
