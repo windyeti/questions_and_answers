@@ -5,7 +5,6 @@ class CommentsController < ApplicationController
   authorize_resource
 
   def create
-    # redirect_to new_user_session_path if current_user.nil?
     @comment = @commentable.comments.new(comment_params)
     @comment.user = current_user
     @comment.save

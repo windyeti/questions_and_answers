@@ -6,7 +6,6 @@ class LinksController < ApplicationController
 
   def destroy
     @link.destroy
-    # if current_user&.owner?(@link.linkable)
   end
 
   private

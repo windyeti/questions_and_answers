@@ -15,21 +15,21 @@ class AnswersController < ApplicationController
   end
 
   def edit
-    redirect_to @answer.question unless current_user&.owner?(@answer)
+    redirect_to @answer.question unless can?(:update, @answer)
 
   end
 
   def update
-    redirect_to @answer.question unless current_user&.owner?(@answer)
+    redirect_to @answer.question unless can?(:update, @answer)
     @answer.update(answer_params)
   end
 
   def destroy
-    @answer.destroy if current_user&.owner?(@answer)
+    @answer.destroy
   end
 
   def best
-    @answer.set_best if current_user&.owner?(@answer.question)
+    @answer.set_best
   end
 
   private
