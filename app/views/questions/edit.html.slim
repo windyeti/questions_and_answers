@@ -1,4 +1,6 @@
 h1 Edit question
+.question-errors
+  = render 'shared/errors', resource: @question
 
 = form_with model: @question do |f|
   p

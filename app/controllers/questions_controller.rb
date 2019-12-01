@@ -4,6 +4,7 @@ class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
   before_action :find_question, only: [:show, :destroy, :edit, :update]
 
+  authorize_resource
 
   def index
     @questions = Question.all
@@ -35,25 +36,21 @@ class QuestionsController < ApplicationController
   end
 
   def edit
-    redirect_to questions_path unless current_user&.owner?(@question)
+    # redirect_to questions_path
+    # redirect_to questions_path unless current_user&.owner?(@question)
   end
 
   def update
-    if current_user&.owner?(@question)
-      @question.update(question_params)
-    else
-      redirect_to questions_path
-    end
+     @question.update(question_params)
   end
 
   def destroy
-    if current_user.owner?(@question)
-      @question.destroy
+    if @question.destroy
+      redirect_to questions_path
       flash[:notice] = "Question have been deleted."
     else
       flash[:alert] = "Question have not been deleted. You are not owner of the question."
     end
-    redirect_to questions_path
   end
 
   private

@@ -2,8 +2,10 @@ class CommentsController < ApplicationController
   before_action :authenticate_user!
   before_action :find_commentable, only: [:create]
 
+  authorize_resource
+
   def create
-    redirect_to new_user_session_path if current_user.nil?
+    # redirect_to new_user_session_path if current_user.nil?
     @comment = @commentable.comments.new(comment_params)
     @comment.user = current_user
     @comment.save

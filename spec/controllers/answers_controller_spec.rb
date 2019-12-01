@@ -58,7 +58,7 @@ RSpec.describe AnswersController, type: :controller do
       end
     end
 
-    context 'Authenticated user not author of the question' do
+    context 'Authenticated user not author of the answer' do
       let(:user_other) { create(:user) }
       before { login(user_other) }
 
@@ -68,7 +68,7 @@ RSpec.describe AnswersController, type: :controller do
 
       it 'render destroy template' do
         delete :destroy, params: { id: answer }, format: :js
-        expect(response).to render_template :destroy
+        expect(response).to redirect_to root_path
       end
     end
 
@@ -108,7 +108,7 @@ RSpec.describe AnswersController, type: :controller do
 
       it 'redirect to question' do
         get :edit, params: { id: answer }
-        expect(response).to redirect_to question
+        expect(response).to redirect_to root_path
       end
     end
 
@@ -156,7 +156,7 @@ RSpec.describe AnswersController, type: :controller do
       end
 
       it 'render best template' do
-        expect(response).to render_template :best
+        expect(response).to redirect_to root_path
       end
     end
 

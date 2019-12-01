@@ -3,6 +3,7 @@ require 'spec_helper'
 
 ENV['RAILS_ENV'] ||= 'test'
 require 'capybara/email/rspec'
+require 'cancan/matchers'
 
 require File.expand_path('../config/environment', __dir__)
 
@@ -97,3 +98,5 @@ FactoryBot::SyntaxRunner.class_eval do
 end
 
 OmniAuth.config.test_mode = true
+
+OmniAuth.config.logger = Rails.logger

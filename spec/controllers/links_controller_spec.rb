@@ -30,9 +30,9 @@ RSpec.describe LinksController, type: :controller do
         end.to_not change(question.links, :count)
       end
 
-      it 'render destroy.js.erb template' do
+      it 'redirect to root page' do
         delete :destroy, params: {id: link}, format: :js
-        expect(response).to render_template :destroy
+        expect(response).to redirect_to root_path
       end
     end
 

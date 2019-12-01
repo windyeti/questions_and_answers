@@ -9,9 +9,11 @@ Rails.application.routes.draw do
   root to: 'questions#index'
 
   concern :voteable do
-    post :vote_up, on: :member
-    post :vote_down, on: :member
-    delete :vote_reset, on: :member
+    member do
+      post :vote_up
+      post :vote_down
+      delete :vote_reset
+    end
   end
 
   resources :questions, shallow: true, concerns: :voteable do

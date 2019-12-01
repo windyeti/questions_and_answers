@@ -15,7 +15,7 @@ RSpec.shared_examples "vote examples" do |resource_class|
 
       it 'vote_up response status :forbidden' do
         post :vote_up, params: {id: voteable}, format: :json
-        expect(response).to have_http_status :forbidden
+        expect(response).to have_http_status 403
       end
 
       it 'vote_up response included text' do
@@ -121,7 +121,7 @@ RSpec.shared_examples "vote examples" do |resource_class|
 
       it 'vote_down response status :forbidden' do
         post :vote_down, params: {id: voteable}, format: :json
-        expect(response).to have_http_status :forbidden
+        expect(response).to have_http_status 403
       end
 
       it 'vote_up response included text' do

@@ -5,6 +5,8 @@ class AnswersController < ApplicationController
   before_action :find_question, only: [:create]
   before_action :find_answer, only: [:destroy, :edit, :update, :best]
 
+  authorize_resource
+
   def create
     @comment = Comment.new
     @answer = @question.answers.new(answer_params)

@@ -150,9 +150,9 @@ RSpec.describe QuestionsController, type: :controller do
         expect { delete :destroy, params: { id: question } }.to_not change(Question, :count)
       end
 
-      it 'redirect to questions' do
+      it 'redirect to root page' do
         delete :destroy, params: { id: question }
-        expect(response).to redirect_to questions_path
+        expect(response).to redirect_to root_path
       end
     end
 
@@ -190,9 +190,9 @@ RSpec.describe QuestionsController, type: :controller do
       let(:other_user) { create(:user) }
       before { login(other_user) }
 
-      it 'redirect to questions' do
+      it 'redirect to root page' do
         get :edit, params: {id: question}
-        expect(response).to redirect_to questions_path
+        expect(response).to redirect_to root_path
       end
     end
 
@@ -218,9 +218,9 @@ RSpec.describe QuestionsController, type: :controller do
           expect(assigns(:question).title).to eq 'NEW TITLE'
         end
 
-        it 'render update template' do
+        it 'redirect to root page' do
           patch :update, params: { id: question, question: { title: 'NEW TITLE', body: 'NEW BODY' } }, format: :js
-          expect(response).to render_template :update
+          expect(response).to redirect_to question
         end
       end
       context 'with invalid data' do
@@ -230,7 +230,7 @@ RSpec.describe QuestionsController, type: :controller do
           end.to_not change(question, :body)
         end
 
-        it 'render update template' do
+        it 'render edit template' do
           patch :update, params: { id: question, question: attributes_for(:question, :invalid) }, format: :js
           expect(response).to render_template :update
         end
@@ -249,7 +249,7 @@ RSpec.describe QuestionsController, type: :controller do
 
       it 'render index template' do
         patch :update, params: { id: question, question: { title: 'NEW TITLE', body: 'NEW BODY' } }, format: :js
-        expect(response).to redirect_to questions_path
+        expect(response).to redirect_to root_path
       end
     end
 
