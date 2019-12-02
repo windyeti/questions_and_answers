@@ -17,11 +17,6 @@ RSpec.shared_examples "vote examples" do |resource_class|
         post :vote_up, params: {id: voteable}, format: :json
         expect(response).to have_http_status 403
       end
-
-      it 'vote_up response included text' do
-        post :vote_up, params: {id: voteable}, format: :json
-        expect(response.body).to have_content 'You are not rights for this act'
-      end
     end
 
     context 'Authenticated user not author' do
@@ -80,7 +75,7 @@ RSpec.shared_examples "vote examples" do |resource_class|
           post :vote_up, params: {id: voteable}, format: :json
 
           post :vote_up, params: {id: voteable}, format: :json
-          expect(response.body).to have_content 'You are not rights for this act'
+          expect(response).to have_http_status 403
         end
       end
     end
@@ -122,11 +117,6 @@ RSpec.shared_examples "vote examples" do |resource_class|
       it 'vote_down response status :forbidden' do
         post :vote_down, params: {id: voteable}, format: :json
         expect(response).to have_http_status 403
-      end
-
-      it 'vote_up response included text' do
-        post :vote_down, params: {id: voteable}, format: :json
-        expect(response.body).to have_content 'You are not rights for this act'
       end
     end
 
@@ -177,14 +167,14 @@ RSpec.shared_examples "vote examples" do |resource_class|
         end.to_not change(Vote, :count)
       end
 
-      it 'vote_down response included text' do
+      it 'double vote_down status 403' do
         user = create(:user)
         voteable = create(resource_class)
         login(user)
         post :vote_down, params: {id: voteable}, format: :json
 
         post :vote_down, params: {id: voteable}, format: :json
-        expect(response.body).to have_content 'You are not rights for this act'
+        expect(response).to have_http_status 403
       end
     end
 
@@ -257,9 +247,9 @@ RSpec.shared_examples "vote examples" do |resource_class|
         end.to_not change(Vote, :count)
       end
 
-      it 'vote_reset response included text' do
+      it 'vote_reset status 403' do
         delete :vote_reset, params: {id: voteable}, format: :json
-        expect(response.body).to have_content 'You are not rights for this act'
+        expect(response).to have_http_status 403
       end
     end
 

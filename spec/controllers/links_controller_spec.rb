@@ -32,7 +32,7 @@ RSpec.describe LinksController, type: :controller do
 
       it 'redirect to root page' do
         delete :destroy, params: {id: link}, format: :js
-        expect(response).to redirect_to root_path
+        expect(response).to have_http_status 403
       end
     end
 

@@ -14,13 +14,9 @@ class AnswersController < ApplicationController
     @answer.save
   end
 
-  def edit
-    redirect_to @answer.question unless can?(:update, @answer)
-
-  end
+  def edit; end
 
   def update
-    redirect_to @answer.question unless can?(:update, @answer)
     @answer.update(answer_params)
   end
 

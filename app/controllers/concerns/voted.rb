@@ -6,19 +6,19 @@ module Voted
   end
 
   def vote_up
-    return render_no_permission unless can?(:vote_up, @voteable)
+    authorize! :vote_up, @voteable
     @vote = @voteable.vote_up(current_user)
     render_json
   end
 
   def vote_down
-    return render_no_permission unless can?(:vote_down, @voteable)
+    authorize! :vote_down, @voteable
     @vote = @voteable.vote_down(current_user)
     render_json
   end
 
   def vote_reset
-    return render_no_permission unless can?(:vote_reset, @voteable)
+    authorize! :vote_reset, @voteable
     @vote = @voteable.vote_reset(current_user)
     render_reset
   end
@@ -35,15 +35,9 @@ module Voted
     end
   end
 
-  def render_no_permission
-    respond_to do |format|
-      format.json { render json: { vote: "You are not rights for this act" }, status: :forbidden }
-    end
-  end
-
   def render_reset
     respond_to do |format|
-      format.json { render json: { vote: "Your vote has been canceled", value: @voteable.balance_votes }}
+      format.json { render json: { message: "Your vote has been canceled", value: @voteable.balance_votes }}
     end
   end
 

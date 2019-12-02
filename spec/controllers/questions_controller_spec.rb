@@ -249,7 +249,7 @@ RSpec.describe QuestionsController, type: :controller do
 
       it 'render index template' do
         patch :update, params: { id: question, question: { title: 'NEW TITLE', body: 'NEW BODY' } }, format: :js
-        expect(response).to redirect_to root_path
+        expect(response).to have_http_status 403
       end
     end
 

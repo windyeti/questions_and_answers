@@ -68,7 +68,7 @@ RSpec.describe AnswersController, type: :controller do
 
       it 'render destroy template' do
         delete :destroy, params: { id: answer }, format: :js
-        expect(response).to redirect_to root_path
+        expect(response).to have_http_status 403
       end
     end
 
@@ -156,7 +156,7 @@ RSpec.describe AnswersController, type: :controller do
       end
 
       it 'render best template' do
-        expect(response).to redirect_to root_path
+        expect(response).to have_http_status 403
       end
     end
 
