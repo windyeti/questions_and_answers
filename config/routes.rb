@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  use_doorkeeper
   default_url_options host: "localhost:3000"
 
   get '/set_account_email', to: 'emails#new'
