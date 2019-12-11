@@ -5,7 +5,6 @@ class ApplicationController < ActionController::Base
       format.js { render status: :forbidden }
       format.json { render json: { message: exception.message }, status: :forbidden }
     end
-
   end
   check_authorization unless: :devise_controller?
 end

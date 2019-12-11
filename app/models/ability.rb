@@ -20,5 +20,8 @@ class Ability
     # end
     can :destroy, Link, linkable: { user_id: user.id }
     can :user_rewards, Reward, question: { user_id: user.id }
+    can :me, User
+    return unless user.admin?
+    can :manage, :all
   end
 end
