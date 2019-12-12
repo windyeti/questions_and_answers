@@ -75,6 +75,7 @@ RSpec.describe Ability, type: :model do
     it { should_not be_able_to(:user_rewards, create(:reward, question: other_question)) }
 
     it { should be_able_to(:me, User) }
+    it { should be_able_to(:index, User) }
 
   end
 end

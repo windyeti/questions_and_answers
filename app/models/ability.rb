@@ -21,6 +21,7 @@ class Ability
     can :destroy, Link, linkable: { user_id: user.id }
     can :user_rewards, Reward, question: { user_id: user.id }
     can :me, User
+    can :index, User
     return unless user.admin?
     can :manage, :all
   end
