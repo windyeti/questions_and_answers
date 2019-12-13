@@ -71,6 +71,12 @@ describe 'Question API', type: :request do
         expect(response).to be_successful
       end
 
+      it 'returns answer fields' do
+        %w[id title].each do |attr|
+          expect(json['question'][attr]).to eq question.send(attr).as_json
+        end
+      end
+
       it 'returns question that requested' do
         expect(json['question']['id']).to eq question.id
       end
@@ -88,5 +94,58 @@ describe 'Question API', type: :request do
         expect(json['question']['files'][0]).to eq url
       end
     end
+  end
+
+  describe 'POST /api/v1/questions' do
+    let(:headers) { {
+      "Accept" => "application/json"
+    } }
+
+    context 'unauthorize' do
+
+      it 'returns 401 if there is no token' do
+        post "/api/v1/questions", headers: headers
+        expect(response.status).to eq 401
+      end
+
+      it 'returns 401 if there is token invalid' do
+        post "/api/v1/questions", params: { access_token: '1234' }, headers: headers
+        expect(response.status).to eq 401
+      end
+    end
+
+    context 'Authorize' do
+      let(:me) { create(:user) }
+      let!(:access_token) { create(:access_token, resource_owner_id: me.id) }
+      let(:params) do {
+        access_token: access_token.token,
+        question: attributes_for(:question)
+        }
+      end
+
+      it 'request create question' do
+        expect do
+          post "/api/v1/questions", params: params, headers: headers
+        end.to change(Question, :count)
+      end
+
+      it 'request create question' do
+        post "/api/v1/questions", params: params, headers: headers
+        expect(response).to be_successful
+      end
+
+      context 'request with invalid question params' do
+        let(:params) do {
+          access_token: access_token.token,
+          question: attributes_for(:question, :invalid)
+        }
+        end
+        it 'returns forbidden' do
+          post "/api/v1/questions", params: params, headers: headers
+          expect(response).to have_http_status(:forbidden)
+        end
+      end
+    end
+
   end
 end
