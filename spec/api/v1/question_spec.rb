@@ -77,10 +77,6 @@ describe 'Question API', type: :request do
         end
       end
 
-      it 'returns question that requested' do
-        expect(json['question']['id']).to eq question.id
-      end
-
       it 'returns comments of question' do
         expect(json['question']['comments'].first['body']).to eq comment.body
       end
@@ -117,24 +113,27 @@ describe 'Question API', type: :request do
     context 'Authorize' do
       let(:me) { create(:user) }
       let!(:access_token) { create(:access_token, resource_owner_id: me.id) }
-      let(:params) do {
-        access_token: access_token.token,
-        question: attributes_for(:question)
-        }
-      end
 
-      it 'request create question' do
-        expect do
+      context 'valid params' do
+        let(:params) do {
+          access_token: access_token.token,
+          question: attributes_for(:question)
+          }
+        end
+
+        it 'request create question' do
+          expect do
+            post "/api/v1/questions", params: params, headers: headers
+          end.to change(Question, :count).by(1)
+        end
+
+        it 'returns successful' do
           post "/api/v1/questions", params: params, headers: headers
-        end.to change(Question, :count)
+          expect(response).to be_successful
+        end
       end
 
-      it 'request create question' do
-        post "/api/v1/questions", params: params, headers: headers
-        expect(response).to be_successful
-      end
-
-      context 'request with invalid question params' do
+      context 'invalid params' do
         let(:params) do {
           access_token: access_token.token,
           question: attributes_for(:question, :invalid)
@@ -144,8 +143,123 @@ describe 'Question API', type: :request do
           post "/api/v1/questions", params: params, headers: headers
           expect(response).to have_http_status(:forbidden)
         end
+
+        it 'request does not create question' do
+          expect do
+            post "/api/v1/questions", params: params, headers: headers
+          end.to_not change(Question, :count)
+        end
+      end
+    end
+  end
+
+  describe 'PATCH /api/v1/questions/:question_id' do
+    let(:headers) { {
+      "Accept" => "application/json"
+    } }
+
+    context 'Unauthorize' do
+    let(:question) { create(:question) }
+
+      it 'returns 401 if there is no token' do
+        patch "/api/v1/questions/#{question.id}", headers: headers
+        expect(response.status).to eq 401
+      end
+
+      it 'returns 401 if there is token invalid' do
+        patch "/api/v1/questions/#{question.id}", params: { access_token: '1234' }, headers: headers
+        expect(response.status).to eq 401
       end
     end
 
+    context 'Authorize' do
+      let(:me) { create(:user) }
+      let!(:access_token) { create(:access_token, resource_owner_id: me.id) }
+      let!(:question_me) { create(:question, user: me) }
+
+      context 'valid params' do
+        let(:params) do {
+          access_token: access_token.token,
+          question: {
+            title: 'New Title',
+            body: 'New Body'
+          }
+        }
+        end
+
+        it 'returns successful' do
+          patch "/api/v1/questions/#{question_me.id}", params: params, headers: headers
+          expect(response).to be_successful
+        end
+
+        it 'request update question' do
+          patch "/api/v1/questions/#{question_me.id}", params: params, headers: headers
+          expect(assigns(:question).title).to eq 'New Title'
+        end
+      end
+
+      context 'invalid params' do
+        let(:params) do {
+          access_token: access_token.token,
+          question: attributes_for(:question, :invalid)
+        }
+        end
+
+        it 'returns forbidden' do
+          post "/api/v1/questions", params: params, headers: headers
+          expect(response).to have_http_status(:forbidden)
+        end
+
+        it 'request does not update question' do
+          patch "/api/v1/questions/#{question_me.id}", params: params, headers: headers
+          expect(assigns(:question).errors).to be_truthy
+        end
+      end
+    end
   end
+
+  describe 'DELETE /api/v1/questions/:question_id' do
+    let(:headers) { {
+      "Accept" => "application/json"
+    } }
+
+    context 'Unauthorize' do
+      let(:question) { create(:question) }
+
+      it 'returns 401 if there is no token' do
+        delete "/api/v1/questions/#{question.id}", headers: headers
+        expect(response.status).to eq 401
+      end
+
+      it 'returns 401 if there is token invalid' do
+        delete "/api/v1/questions/#{question.id}", params: { access_token: '1234' }, headers: headers
+        expect(response.status).to eq 401
+      end
+    end
+
+    context 'Authorize' do
+      let(:me) { create(:user) }
+      let!(:access_token) { create(:access_token, resource_owner_id: me.id) }
+      let!(:question_me) { create(:question, user: me) }
+
+      context 'valid params' do
+        let(:params) do {
+          access_token: access_token.token
+        }
+        end
+
+        it 'returns successful' do
+          delete "/api/v1/questions/#{question_me.id}", params: params, headers: headers
+          expect(response).to be_successful
+        end
+
+        it 'request update question' do
+          expect do
+            delete "/api/v1/questions/#{question_me.id}", params: params, headers: headers
+          end.to change(Question, :count).by(-1)
+        end
+      end
+    end
+  end
+
 end
