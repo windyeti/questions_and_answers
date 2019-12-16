@@ -1,5 +1,6 @@
 class Api::V1::AnswersController < Api::V1::BaseController
-  authorize_resource
+  authorize_resource except: :destroy
+
   before_action :find_question, only: [:index, :create]
   before_action :find_answer, only: [:show, :update, :destroy]
 
@@ -32,6 +33,8 @@ class Api::V1::AnswersController < Api::V1::BaseController
   end
 
   def destroy
+    authorize! :destroy, @answer
+
     if @answer.destroy
       head :ok
     else

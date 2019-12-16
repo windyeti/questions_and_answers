@@ -1,5 +1,6 @@
 class Api::V1::QuestionsController < Api::V1::BaseController
-  authorize_resource
+  authorize_resource except: :destroy
+
   before_action :find_question, only: [:show, :update, :destroy]
 
   def index
@@ -16,7 +17,7 @@ class Api::V1::QuestionsController < Api::V1::BaseController
     if @question.save
       head :ok
     else
-      render json: { errors_message: @question.errors.full_messages, status: :forbidden }
+      render json: { errors_message: @question.errors.full_messages, status: :forbidden }, status: :forbidden
     end
   end
 
@@ -24,15 +25,17 @@ class Api::V1::QuestionsController < Api::V1::BaseController
     if @question.update(question_params)
       head :ok
     else
-      render json: { errors_message: @question.errors.full_messages, status: :forbidden }
+      render json: { errors_message: @question.errors.full_messages, status: :forbidden }, status: :forbidden
     end
   end
 
   def destroy
+    authorize! :destroy, @question
+
     if @question.destroy
       head :ok
     else
-      render json: { errors_message: "#{@question.body} has not been deleted", status: :forbidden }
+      render json: { errors_message: "#{@question.body} has not been deleted", status: :unprocessable_entity }, status: :unprocessable_entity
     end
   end
 

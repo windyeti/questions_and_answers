@@ -6,7 +6,7 @@ class Ability
     return unless user
     can :create, [Question, Answer, Comment]
     can :update, [Question, Answer], { user: user }
-    can :destroy, [Question, Answer], { user: user }
+    can :destroy, [Question, Answer], { user_id: user.id }
     can :best, Answer,  question: { user_id: user.id }
     can [:vote_up, :vote_down], [Question, Answer] do |resource|
       !user.owner?(resource) && resource.can_vote?(user)

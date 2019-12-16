@@ -173,7 +173,6 @@ RSpec.describe AnswersController, type: :controller do
     end
   end
 
-  describe "POST #create_vote" do
-    it_behaves_like "vote examples", :answer
-  end
+  it_behaves_like "vote examples", :answer
+
 end

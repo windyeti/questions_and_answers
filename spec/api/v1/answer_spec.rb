@@ -1,273 +1,272 @@
 require 'rails_helper'
 
 describe 'Answer API', type: :request do
-  let(:headers) { {
-    "Content-Type" => "application/json",
-    "Accept" => "application/json"
-  } }
-
-  describe 'GET /api/v1/questions/:id/answers' do
-
-    context 'unauthorize' do
-      let!(:question) { create(:question) }
-
-      it 'returns 401 if there is no token' do
-        get "/api/v1/questions/#{question.id}/answers", headers: headers
-        expect(response.status).to eq 401
-      end
-
-      it 'returns 401 if there is token invalid' do
-        get "/api/v1/questions/#{question.id}/answers", params: { access_token: '1234' }, headers: headers
-        expect(response.status).to eq 401
-      end
-    end
-
-    context 'Authorize' do
-      let(:me) { create(:user) }
-      let!(:access_token) { create(:access_token, resource_owner_id: me.id) }
-      let!(:question) { create(:question) }
-      let!(:answers) { create_list(:answer, 3, question: question) }
-      let(:answer) { answers.first }
-
-      before { get "/api/v1/questions/#{question.id}/answers", params: { access_token: access_token.token }, headers: headers }
-
-      it 'returns status 200' do
-        expect(response).to be_successful
-      end
-
-      it 'returns answers of question' do
-        expect(json['answers'].size).to eq 3
-      end
-
-      it 'returns answer fields' do
-        %w[id body question_id created_at updated_at user_id best].each do |attr|
-          expect(json['answers'].first[attr]).to eq answer.send(attr).as_json
-        end
-      end
-    end
-  end
-
-  describe 'GET /api/v1/answers/:id' do
-
-    context 'unauthorize' do
-      let!(:answer) { create(:answer) }
-
-      it 'returns 401 if there is no token' do
-        get "/api/v1/answers/#{answer.id}", headers: headers
-        expect(response.status).to eq 401
-      end
-
-      it 'returns 401 if there is token invalid' do
-        get "/api/v1/answers/#{answer.id}", params: { access_token: '1234' }, headers: headers
-        expect(response.status).to eq 401
-      end
-    end
-
-    context 'Authorize' do
-      let(:me) { create(:user) }
-      let!(:access_token) { create(:access_token, resource_owner_id: me.id) }
-      let!(:answer) { create(:answer, :with_attachment) }
-      let!(:comment) { create(:comment, commentable: answer, user: me) }
-      let!(:link) { create(:link, linkable: answer) }
-
-      before { get "/api/v1/answers/#{answer.id}", params: { access_token: access_token.token }, headers: headers }
-
-      it 'returns status 200' do
-        expect(response).to be_successful
-      end
-
-      it 'returns answer fields' do
-        %w[id body].each do |attr|
-          expect(json['answer'][attr]).to eq answer.send(attr).as_json
-        end
-      end
-
-      it 'returns comments of answer' do
-        expect(json['answer']['comments'].first['body']).to eq comment.body
-      end
-
-      it 'returns links of answer' do
-        expect(json['answer']['links'].first['url']).to eq link.url
-      end
-
-      it 'returns files of answer' do
-        url = rails_blob_path(answer.files[0], only_path: true)
-        expect(json['answer']['files'][0]).to eq url
-      end
-    end
-
-  end
-
-  describe 'POST /api/v1/questions/:question_id/answers' do
-    let(:question) { create(:question) }
+  describe 'Headers for GET' do
     let(:headers) { {
+      "Content-Type" => "application/json",
       "Accept" => "application/json"
     } }
-
-    context 'Unauthorized' do
-
-      it 'returns 401 if there is no token' do
-        post "/api/v1/questions/#{question.id}/answers", headers: headers
-        expect(response.status).to eq 401
-      end
-
-      it 'returns 401 if there is token invalid' do
-        post "/api/v1/questions/#{question.id}/answers", params: { access_token: '1234' }, headers: headers
-        expect(response.status).to eq 401
-      end
-    end
-
-    context 'Authorized' do
-      let(:me) { create(:user) }
-      let!(:access_token) { create(:access_token, resource_owner_id: me.id) }
-
-      context 'valid params' do
-        let(:params) do {
-          access_token: access_token.token,
-          answer: attributes_for(:answer)
-        }
-        end
-
-        it 'request create answer' do
-          expect do
-            post "/api/v1/questions/#{question.id}/answers", params: params, headers: headers
-          end.to change(Answer, :count).by(1)
-        end
-
-        it 'returns successful' do
-          post "/api/v1/questions/#{question.id}/answers", params: params, headers: headers
-          expect(response).to be_successful
-        end
-      end
-
-      context 'invalid params' do
-        let(:params) do {
-          access_token: access_token.token,
-          answer: attributes_for(:answer, :invalid)
-        }
-        end
-        it 'returns forbidden' do
-          post "/api/v1/questions/#{question.id}/answers", params: params, headers: headers
-          expect(response).to have_http_status(:forbidden)
-        end
-
-        it 'request does not create answer' do
-          expect do
-            post "/api/v1/questions/#{question.id}/answers", params: params, headers: headers
-          end.to_not change(Answer, :count)
-        end
-      end
-    end
-  end
-
-  describe 'PATCH /api/v1/answers/:answer_id' do
-    let(:headers) { {
-      "Accept" => "application/json"
-    } }
-
-    context 'Unauthorized' do
+    describe 'GET /api/v1/questions/:id/answers' do
       let(:question) { create(:question) }
-      let(:answer) { create(:answer, question: question) }
 
-      it 'returns 401 if there is no token' do
-        patch "/api/v1/answers/#{answer.id}", headers: headers
-        expect(response.status).to eq 401
+      context 'Unauthorized' do
+        it_behaves_like 'API Unauthorizable' do
+          let(:method) { 'get' }
+          let(:api_path) { "/api/v1/questions/#{question.id}/answers" }
+        end
       end
 
-      it 'returns 401 if there is token invalid' do
-        patch "/api/v1/answers/#{answer.id}", params: { access_token: '1234' }, headers: headers
-        expect(response.status).to eq 401
+      context 'Authorize' do
+        let(:me) { create(:user) }
+        let!(:access_token) { create(:access_token, resource_owner_id: me.id) }
+        let(:size) { 3 }
+        let!(:answers) { create_list(:answer, size, question: question) }
+        before { get "/api/v1/questions/#{question.id}/answers", params: { access_token: access_token.token }, headers: headers }
+
+        it_behaves_like 'Returns successful'
+        it_behaves_like 'Returns array' do
+          let(:size_array) { size }
+          let(:resource_response) { json['answers'] }
+        end
+        it_behaves_like 'Returns fields' do
+          let(:resource_response) { json['answers'].first }
+          let(:resource) { answers.first }
+          let(:fields) { %w[id body question_id created_at updated_at user_id best] }
+        end
+
       end
     end
+    describe 'GET /api/v1/answers/:id' do
 
-    context 'Authorize' do
-      let(:me) { create(:user) }
-      let!(:access_token) { create(:access_token, resource_owner_id: me.id) }
-      let!(:answer_me) { create(:answer, user: me) }
-
-      context 'valid params' do
-        let(:params) do {
-          access_token: access_token.token,
-          answer: {
-            body: 'New Body'
-          }
-        }
-        end
-
-        it 'returns successful' do
-          patch "/api/v1/answers/#{answer_me.id}", params: params, headers: headers
-          expect(response).to be_successful
-        end
-
-        it 'request update question' do
-          patch "/api/v1/answers/#{answer_me.id}", params: params, headers: headers
-          expect(assigns(:answer).body).to eq 'New Body'
+      context 'unauthorize' do
+        it_behaves_like 'API Unauthorizable' do
+          let!(:answer) { create(:answer) }
+          let(:method) { 'get' }
+          let(:api_path) { "/api/v1/answers/#{answer.id}" }
         end
       end
 
-      context 'invalid params' do
-        let(:params) do {
-          access_token: access_token.token,
-          answer: attributes_for(:answer, :invalid)
-        }
+      context 'Authorize' do
+        let(:me) { create(:user) }
+        let!(:access_token) { create(:access_token, resource_owner_id: me.id) }
+        let!(:answer) { create(:answer, :with_attachment) }
+        let(:size) { 3 }
+        let!(:comments) { create_list(:comment, size, commentable: answer, user: me) }
+        let!(:links) { create_list(:link, size, linkable: answer) }
+
+        before { get "/api/v1/answers/#{answer.id}", params: { access_token: access_token.token }, headers: headers }
+
+        it_behaves_like 'Returns successful'
+        it_behaves_like 'Returns fields' do
+          let(:resource) { answer }
+          let(:resource_response) { json['answer'] }
+          let(:fields) { %w[id body] }
+        end
+        it_behaves_like 'Returns resource with ...' do
+          let(:resource_response) { json['answer']['comments'] }
+          let(:resource) { comments }
+        end
+        it_behaves_like 'Returns resource with ...' do
+          let(:resource_response) { json['answer']['links'] }
+          let(:resource) { links }
+        end
+        it_behaves_like 'Returns resource with ...' do
+          let(:resource_response) { json['answer']['files'] }
+          let(:resource) { answer.files }
         end
 
-        it 'returns forbidden' do
-          patch "/api/v1/answers/#{answer_me.id}", params: params, headers: headers
-          expect(response).to have_http_status(:forbidden)
-        end
-
-        it 'request does not update question' do
-          patch "/api/v1/answers/#{answer_me.id}", params: params, headers: headers
-          expect(assigns(:answer).errors).to be_truthy
-        end
+        # it 'returns status 200' do
+        #   expect(response).to be_successful
+        # end
+        #
+        # it 'returns answer fields' do
+        #   %w[id body].each do |attr|
+        #     expect(json['answer'][attr]).to eq answer.send(attr).as_json
+        #   end
+        # end
+        #
+        # it 'returns comments of answer' do
+        #   expect(json['answer']['comments'].first['body']).to eq comment.body
+        # end
+        #
+        # it 'returns links of answer' do
+        #   expect(json['answer']['links'].first['url']).to eq link.url
+        # end
+        #
+        # it 'returns files of answer' do
+        #   url = rails_blob_path(answer.files[0], only_path: true)
+        #   expect(json['answer']['files'][0]).to eq url
+        # end
       end
+
     end
   end
-
-  describe 'DELETE /api/v1/answers/:answer_id' do
+  describe 'Headers for POST' do
     let(:headers) { {
       "Accept" => "application/json"
     } }
+    describe 'POST /api/v1/questions/:question_id/answers' do
+      let(:question) { create(:question) }
+      let(:api_path) { "/api/v1/questions/#{question.id}/answers" }
+      let(:method) { 'post' }
 
-    context 'Unauthorized' do
-      let(:me) { create(:user) }
-      let(:answer_me) { create(:answer, user: me) }
-
-      it 'returns 401 if there is no token' do
-        delete "/api/v1/answers/#{answer_me.id}", headers: headers
-        expect(response.status).to eq 401
+      context 'Unauthorized' do
+        it_behaves_like 'API Unauthorizable'
       end
 
-      it 'returns 401 if there is token invalid' do
-        delete "/api/v1/answers/#{answer_me.id}", params: { access_token: '1234' }, headers: headers
-        expect(response.status).to eq 401
+      context 'Authorized' do
+        let(:me) { create(:user) }
+        let!(:access_token) { create(:access_token, resource_owner_id: me.id) }
+
+        context 'valid attributes' do
+          let(:params) do {
+            access_token: access_token.token,
+            answer: attributes_for(:answer)
+          }
+          end
+
+          it_behaves_like 'Returns successful' do
+            before { post api_path, params: params, headers: headers }
+          end
+
+          it_behaves_like 'Create resource' do
+            let(:model_resource) { Answer }
+          end
+        end
+
+        context 'invalid attributes' do
+          let(:params) do {
+            access_token: access_token.token,
+            answer: attributes_for(:answer, :invalid)
+          }
+          end
+
+          it_behaves_like 'Returns forbidden' do
+            before { post api_path, params: params, headers: headers }
+          end
+
+          it_behaves_like 'Does not create resource' do
+            let(:model_resource) { Answer }
+          end
+        end
       end
     end
+    describe 'PATCH /api/v1/answers/:answer_id' do
+        let(:me) { create(:user) }
+        let!(:answer_me) { create(:answer, user: me) }
+        let(:method) { 'patch' }
+        let(:api_path) { "/api/v1/answers/#{answer_me.id}" }
 
-    context 'Authorize' do
-      let(:me) { create(:user) }
-      let!(:access_token) { create(:access_token, resource_owner_id: me.id) }
-      let!(:answer_me) { create(:answer, user: me) }
+      context 'Unauthorized' do
+        it_behaves_like 'API Unauthorizable'
+      end
 
-      context 'valid params' do
-        let(:params) do {
-          access_token: access_token.token
-        }
+      context 'Authorize' do
+        let!(:access_token) { create(:access_token, resource_owner_id: me.id) }
+
+        context 'valid attributes' do
+          let(:params) do {
+            access_token: access_token.token,
+            answer: {
+              body: 'New Body'
+            }
+          }
+          end
+
+          it_behaves_like 'Returns successful' do
+            before { patch api_path, params: params, headers: headers }
+          end
+
+          it_behaves_like 'Updates resource' do
+            let(:resource) { answer_me }
+            let(:attr) { 'body' }
+            let(:new_value) { 'New Body' }
+          end
         end
 
-        it 'returns successful' do
-          delete "/api/v1/answers/#{answer_me.id}", params: params, headers: headers
-          expect(response).to be_successful
-        end
+        context 'invalid attributes' do
+          let(:params) do {
+            access_token: access_token.token,
+            answer: attributes_for(:answer, :invalid)
+          }
+          end
 
-        it 'request update question' do
-          expect do
-            delete "/api/v1/answers/#{answer_me.id}", params: params, headers: headers
-          end.to change(Answer, :count).by(-1)
+          it_behaves_like 'Returns forbidden' do
+            before { patch api_path, params: params, headers: headers }
+          end
+
+          it_behaves_like 'Does not updates resource' do
+            let(:resource) { answer_me }
+            let(:attr) { 'body' }
+            let(:old_value) { resource.send(attr) }
+          end
         end
       end
+
+        context 'Not author' do
+          let(:other_user) { create(:user) }
+          let!(:access_token) { create(:access_token, resource_owner_id: other_user.id) }
+          let(:params) do {
+            access_token: access_token.token,
+            answer: {
+              body: 'New Body'
+            }
+          }
+          end
+
+          it_behaves_like 'Returns forbidden' do
+            before { delete api_path, params: params, headers: headers }
+          end
+
+          it_behaves_like 'Does not deletes resource' do
+            let(:model_resource) { Question }
+          end
+        end
+    end
+    describe 'DELETE /api/v1/answers/:answer_id' do
+        let!(:me) { create(:user) }
+        let!(:answer_me) { create(:answer, user: me) }
+        let(:method) { 'delete' }
+        let(:api_path) { "/api/v1/answers/#{answer_me.id}" }
+
+      context 'Unauthorized' do
+        it_behaves_like 'API Unauthorizable'
+      end
+
+      context 'Authorize' do
+        let!(:access_token) { create(:access_token, resource_owner_id: me.id) }
+
+        context 'valid attributes' do
+          let(:params) do {
+            access_token: access_token.token
+          }
+          end
+
+          it_behaves_like 'Returns successful' do
+            before { delete api_path, params: params, headers: headers }
+          end
+
+          it_behaves_like 'Deletes resource' do
+            let(:model_resource) { Answer }
+          end
+        end
+      end
+        context 'Not author' do
+          let(:other_user) { create(:user) }
+          let!(:access_token) { create(:access_token, resource_owner_id: other_user.id) }
+          let(:params) do {
+            access_token: access_token.token
+          }
+          end
+
+          it_behaves_like 'Returns forbidden' do
+            before { delete api_path, params: params, headers: headers }
+          end
+
+          it_behaves_like 'Does not deletes resource' do
+            let(:model_resource) { Answer }
+          end
+        end
     end
   end
-
 end
