@@ -206,7 +206,6 @@ RSpec.describe QuestionsController, type: :controller do
 
   end
 
-
   describe 'PATCH #update' do
 
     context 'Authenticated user can edit question' do

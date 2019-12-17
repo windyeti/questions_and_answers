@@ -7,8 +7,8 @@ RSpec.describe Question, type: :model do
   it { should belong_to(:user) }
 
   it { should have_many(:answers).dependent(:destroy) }
-  it { should have_many(:links).dependent(:destroy) }
-  it { should have_many(:comments).dependent(:destroy) }
+  it_behaves_like 'Linkable'
+  it_behaves_like 'Commentable'
 
   it { should have_one(:reward).dependent(:destroy) }
 
