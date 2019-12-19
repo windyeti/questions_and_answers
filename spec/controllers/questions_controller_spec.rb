@@ -266,6 +266,13 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
 
+  # describe 'PATCH #subscibe' do
+  #
+  #   context 'Authenticated user can subscribe to a question' do
+  #     before { login(user) }
+  #   end
+  # end
+
     it_behaves_like "vote examples", :question
 
 end
