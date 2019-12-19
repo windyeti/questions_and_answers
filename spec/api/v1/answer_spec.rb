@@ -74,29 +74,6 @@ describe 'Answer API', type: :request do
           let(:resource_response) { json['answer']['files'] }
           let(:resource) { answer.files }
         end
-
-        # it 'returns status 200' do
-        #   expect(response).to be_successful
-        # end
-        #
-        # it 'returns answer fields' do
-        #   %w[id body].each do |attr|
-        #     expect(json['answer'][attr]).to eq answer.send(attr).as_json
-        #   end
-        # end
-        #
-        # it 'returns comments of answer' do
-        #   expect(json['answer']['comments'].first['body']).to eq comment.body
-        # end
-        #
-        # it 'returns links of answer' do
-        #   expect(json['answer']['links'].first['url']).to eq link.url
-        # end
-        #
-        # it 'returns files of answer' do
-        #   url = rails_blob_path(answer.files[0], only_path: true)
-        #   expect(json['answer']['files'][0]).to eq url
-        # end
       end
 
     end
