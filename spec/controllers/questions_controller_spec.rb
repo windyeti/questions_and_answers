@@ -266,12 +266,71 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
 
-  # describe 'PATCH #subscibe' do
-  #
-  #   context 'Authenticated user can subscribe to a question' do
-  #     before { login(user) }
-  #   end
-  # end
+  describe 'PATCH #subscribe' do
+
+    context 'Authenticated user can subscribe to any question' do
+      let(:other_user) { create(:user) }
+      before { login(other_user) }
+
+      it 'user added to list subscribers of question' do
+        patch :subscribe, params: { id: question }
+        question.reload
+        expect(question.subscribers.first).to eq other_user
+      end
+    end
+
+    context 'Authenticated user cannot subscribe to a question twice' do
+      let(:other_user) { create(:user) }
+      let(:question) do
+        create(:question, user: user) do |q|
+          q.subscribers << other_user
+        end
+      end
+      before { login(other_user) }
+
+      it 'user cannot added to list subscribers of question twice' do
+        patch :subscribe, params: { id: question }
+        question.reload
+        expect(question.subscribers.size).to eq 1
+      end
+    end
+
+    context 'Guest can not subscribe to a question' do
+      it 'guest can not added to list subscribers of question' do
+        patch :subscribe, params: { id: question }
+        question.reload
+        expect(question.subscribers).to be_empty
+      end
+    end
+  end
+
+  describe 'PATCH #unsubscribe' do
+      let(:other_user) { create(:user) }
+      let(:question) { create(:question, user: user) }
+    before do
+      question.subscribers << other_user
+    end
+
+    context 'Authenticated user can unsubscribe to a question' do
+      before do
+        login(other_user)
+      end
+
+      it 'deleted from list subscribers of question' do
+        patch :unsubscribe, params: { id: question }
+        question.reload
+        expect(question.subscribers).to be_empty
+      end
+    end
+
+    context 'Guest can not unsubscribe to a question' do
+      it 'guest can not added to list subscribers of question' do
+        patch :unsubscribe, params: { id: question }
+        question.reload
+        expect(question.subscribers.size).to eq 1
+      end
+    end
+  end
 
     it_behaves_like "vote examples", :question
 

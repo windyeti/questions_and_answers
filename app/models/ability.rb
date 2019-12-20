@@ -22,6 +22,17 @@ class Ability
     can :user_rewards, Reward, question: { user_id: user.id }
     can :me, User
     can :index, User
+
+# TODO -- любой аутентиф юзер может подписать на любой вопрос,
+# на который еще не подписан
+    can :subscribe, Question do |q|
+      !q.subscribers.find_by_id(user)
+    end
+
+    can :unsubscribe, Question do |q|
+      q.subscribers.find_by_id(user)
+    end
+
     return unless user.admin?
     can :manage, :all
   end

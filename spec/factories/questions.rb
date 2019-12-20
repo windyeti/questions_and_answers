@@ -9,6 +9,10 @@ FactoryBot.define do
     body { "MyBody #{generate(:num)}" }
     user
 
+    # after :create do |question|
+    #   question.subscribers << create(:user)
+    # end
+
     trait :invalid do
       body { nil }
     end

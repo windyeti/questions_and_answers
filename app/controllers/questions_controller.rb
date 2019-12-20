@@ -2,7 +2,7 @@ class QuestionsController < ApplicationController
   include Voted
 
   before_action :authenticate_user!, except: [:index, :show]
-  before_action :find_question, only: [:show, :destroy, :edit, :update]
+  before_action :find_question, only: [:show, :destroy, :edit, :update, :subscribe, :unsubscribe]
 
   authorize_resource
 
@@ -48,6 +48,14 @@ class QuestionsController < ApplicationController
     else
       flash[:alert] = "Question have not been deleted. You are not owner of the question."
     end
+  end
+
+  def subscribe
+    @question.subscribers << current_user
+  end
+
+  def unsubscribe
+    @question.subscribers.delete(current_user)
   end
 
   private
