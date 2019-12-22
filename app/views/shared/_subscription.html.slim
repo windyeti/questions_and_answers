@@ -1,0 +1,8 @@
+/ = link_to 'Subscribe',    subscribe_question_path(resource),
+/                           method: :patch,
+/                           class: ("#{can?(:subscribe, resource) ? '' : 'hidden_item'}"),
+/                           remote: true
+/ = link_to 'Unsubscribe',  unsubscribe_question_path(resource),
+/                           method: :patch,
+/                           class: ("#{can?(:unsubscribe, resource) ? '' : 'hidden_item'}"),
+/                           remote: true

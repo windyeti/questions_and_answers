@@ -17,6 +17,11 @@ module Qna
     # Application configuration can go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded after loading
     # the framework and any gems in your application.
+
+    # config.autoload_paths += ["#{Rails.root}/app/services/services"]
+    config.autoload_paths += %W(#{config.root}/app)
+    # config.autoload_paths += [config.root.join('app')]
+
     config.generators do |g|
       g.test_framework :rspec,
                        view_specs: false,

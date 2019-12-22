@@ -1,0 +1,9 @@
+h1 Daily Digest from QnA
+p
+ = @greeting
+ span ,
+ =< @user.email
+h3 List of new questions
+ul
+  - @questions.each do |question|
+    = render 'questions/questions_email', question: question

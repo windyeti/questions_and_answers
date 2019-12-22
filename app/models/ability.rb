@@ -23,15 +23,13 @@ class Ability
     can :me, User
     can :index, User
 
-# TODO -- любой аутентиф юзер может подписать на любой вопрос,
-# на который еще не подписан
-    can :subscribe, Question do |q|
-      !q.subscribers.find_by_id(user)
-    end
-
-    can :unsubscribe, Question do |q|
-      q.subscribers.find_by_id(user)
-    end
+    # can :subscribe, Question do |q|
+    #   !q.subscribers.include?(user)
+    # end
+    #
+    # can :unsubscribe, Question do |q|
+    #   q.subscribers.include?(user)
+    # end
 
     return unless user.admin?
     can :manage, :all
