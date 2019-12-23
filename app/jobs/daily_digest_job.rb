@@ -1,4 +1,4 @@
-class DailydigestJob < ApplicationJob
+class DailyDigestJob < ApplicationJob
   queue_as :default
 
   def perform
