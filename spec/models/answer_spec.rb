@@ -12,6 +12,15 @@ RSpec.describe Answer, type: :model do
   it { should validate_presence_of(:body) }
 
   it { is_expected.to callback(:publish_answer).after(:create) }
+  it { is_expected.to callback(:notify_of_answer).after(:create) }
+
+  describe 'after create answer' do
+    let(:subject) { build(:answer) }
+    it 'call AnswerNotificationJob.perform_later' do
+      expect(AnswerNotificationJob).to receive(:perform_later).with(subject)
+      subject.save!
+    end
+  end
 
   it 'have many attached file' do
     expect(Answer.new.files).to be_an_instance_of(ActiveStorage::Attached::Many)
