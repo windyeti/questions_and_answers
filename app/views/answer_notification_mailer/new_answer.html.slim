@@ -1,2 +1,5 @@
 h1 AnswerNotification#new_answer
-p = @greeting + ", find me in app/views/answer_notification_mailer/new_answer.html.slim"
+p = @greeting + ", " + @user.email
+
+p A new answer was received to the question you subscribed to.
+p = @question.title

@@ -5,8 +5,9 @@
     h1= @question.title
     p= @question.body
     = render 'shared/vote', resource: @question
-  .question__subscription
-    = render 'shared/subscription', resource: @question
+  - if can? :create, Subscription
+    .question__subscription
+      = render 'shared/subscription'
 
   h4 Links:
   = render 'shared/link', resource: @question

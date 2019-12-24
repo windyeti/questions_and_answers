@@ -11,6 +11,8 @@ Rails.application.routes.draw do
   get '/set_account_email', to: 'emails#new'
   post '/set_account_email', to: 'emails#create'
 
+  resources :subscriptions, only: [:create, :destroy]
+
   devise_for :users, path: :account, controllers: { omniauth_callbacks: 'oauth_callbacks' }
 
   root to: 'questions#index'
@@ -35,8 +37,6 @@ Rails.application.routes.draw do
   end
 
   resources :questions, shallow: true, concerns: :voteable do
-    patch :subscribe, on: :member
-    patch :unsubscribe, on: :member
     resources :comments, shallow: true, only: [:create, :destroy], defaults: { commentable: 'questions' }
     resources :answers, only: [:create, :edit, :update, :destroy], concerns: :voteable do
       resources :comments, shallow: true, only: [:create, :destroy], defaults: { commentable: 'answers' }

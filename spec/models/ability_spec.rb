@@ -77,11 +77,15 @@ RSpec.describe Ability, type: :model do
     it { should be_able_to(:me, User) }
     it { should be_able_to(:index, User) }
 
-    # it { should be_able_to(:subscribe, create(:question)) }
-    # it do
-    #   question.subscribers << user
-    #   should be_able_to(:unsubscribe, question)
-    # end
+    describe 'subscribe' do
+       let(:subscription) { create(:subscription, user: user, question: question) }
+      it do
+        should be_able_to(:create, subscription)
+      end
+      it do
+        should be_able_to(:destroy, subscription)
+      end
+    end
 
   end
 end

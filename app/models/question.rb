@@ -5,6 +5,7 @@ class Question < ApplicationRecord
   has_many :answers, dependent: :destroy
   has_many :links, dependent: :destroy, as: :linkable, inverse_of: :linkable
   has_many :comments, dependent: :destroy, as: :commentable, inverse_of: :commentable
+  has_many :subscriptions, dependent: :destroy
 
   has_one :reward, dependent: :destroy, inverse_of: :question
 
@@ -15,7 +16,7 @@ class Question < ApplicationRecord
 
   validates :title, :body, presence: true
 
-  after_create :publish_question, only: :create
+  after_create :publish_question, :subscribe_author, only: :create
 
   def publish_question
     ActionCable.server.broadcast(
@@ -25,5 +26,9 @@ class Question < ApplicationRecord
       question_body: body,
       question_user_id: user_id
     )
+  end
+
+  def subscribe_author
+    subscriptions.create(user: self.user)
   end
 end

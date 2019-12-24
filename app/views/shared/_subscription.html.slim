@@ -1,8 +1,9 @@
-/ = link_to 'Subscribe',    subscribe_question_path(resource),
-/                           method: :patch,
-/                           class: ("#{can?(:subscribe, resource) ? '' : 'hidden_item'}"),
-/                           remote: true
-/ = link_to 'Unsubscribe',  unsubscribe_question_path(resource),
-/                           method: :patch,
-/                           class: ("#{can?(:unsubscribe, resource) ? '' : 'hidden_item'}"),
-/                           remote: true
+= link_to 'Subscribe',    subscriptions_path(id: @question.id),
+                          method: :post,
+                          class: ("#{'hidden_item' if has_subscribe?(@question)}"),
+                          remote: true
+
+= link_to 'Unsubscribe',  subscription_path(@question),
+                          method: :delete,
+                          class: ("#{'hidden_item' unless has_subscribe?(@question)}"),
+                          remote: true

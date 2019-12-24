@@ -23,13 +23,8 @@ class Ability
     can :me, User
     can :index, User
 
-    # can :subscribe, Question do |q|
-    #   !q.subscribers.include?(user)
-    # end
-    #
-    # can :unsubscribe, Question do |q|
-    #   q.subscribers.include?(user)
-    # end
+    can :create, Subscription
+    can :destroy, Subscription, { user_id: user.id }
 
     return unless user.admin?
     can :manage, :all
