@@ -1,0 +1,53 @@
+\l
+CREATE DATABASE test_guru_development;
+\q
+\l
+\c test_guru_development
+\d
+\q
+\c test_guru_development
+test_passages;
+test_passages;
+\q
+/l
+\d
+\l
+:q
+CREATE DATABASE qna_development; 
+:q
+CREATE DATABASE qna_development; 
+CREATE DATABASE qna_development;
+CREATE DATABASE qna_test;
+/l
+;
+/l;
+\l;
+\d
+/d
+;
+\l
+\l
+\c qna_test
+\t
+\dt
+\d
+dt
+;
+\dt;
+\l
+\c qna_test
+\t
+\dt
+\q
+/q
+q
+exit
+\q
+\l
+\q
+\l
+\c qna_test
+\t
+\s
+\dt
+\s user

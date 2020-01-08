@@ -1,0 +1,6 @@
+h1 Search#index
+-p '==========================='
+-p @results
+-p '==========================='
+- @results.each do |r|
+  = render 'question', resource: r
