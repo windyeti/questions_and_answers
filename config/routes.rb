@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  use_doorkeeper
   default_url_options host: "localhost:3000"
 
   get '/set_account_email', to: 'emails#new'
@@ -7,6 +8,17 @@ Rails.application.routes.draw do
   devise_for :users, path: :account, controllers: { omniauth_callbacks: 'oauth_callbacks' }
 
   root to: 'questions#index'
+
+  namespace :api do
+    namespace :v1 do
+      resources :profiles, only: [:index] do
+        get :me, on: :collection
+      end
+      resources :questions, only: [:index, :show, :create, :update, :destroy] do
+         resources :answers, only: [:index, :show, :create, :update, :destroy], shallow: true
+      end
+    end
+  end
 
   concern :voteable do
     member do

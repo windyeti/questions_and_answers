@@ -42,8 +42,8 @@ RSpec.configure do |config|
   config.include ControllerHelper, type: :controller
   config.include FeatureHelper, type: :feature
   config.include WaitForAjaxHelper, type: :feature
-
   config.include OmniauthMacros, type: :feature
+  config.include ApiHelper, type: :request
 
   Capybara.default_max_wait_time = 10
 

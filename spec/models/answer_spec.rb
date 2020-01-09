@@ -4,8 +4,8 @@ RSpec.describe Answer, type: :model do
   it { should belong_to(:question) }
   it { should belong_to(:user) }
 
-  it { should have_many(:links).dependent(:destroy) }
-  it { should have_many(:comments).dependent(:destroy) }
+  it_behaves_like 'Linkable'
+  it_behaves_like 'Commentable'
 
   it { should accept_nested_attributes_for :links }
 
