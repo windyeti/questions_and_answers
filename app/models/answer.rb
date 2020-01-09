@@ -15,7 +15,7 @@ class Answer < ApplicationRecord
 
   validates :body, presence: true
 
-  after_create :publish_answer
+  after_create :publish_answer, :notify_of_answer
 
   default_scope { order(best: :desc).order(created_at: :desc) }
 
@@ -58,5 +58,9 @@ class Answer < ApplicationRecord
         name: f.name
       }
     end
+  end
+
+  def notify_of_answer
+    AnswerNotificationJob.perform_later(self)
   end
 end

@@ -1,0 +1,9 @@
+= link_to 'Subscribe',    subscriptions_path(id: @question.id),
+                          method: :post,
+                          class: ("#{'hidden_item' if has_subscribe?(@question)}"),
+                          remote: true
+
+= link_to 'Unsubscribe',  subscription_path(@question),
+                          method: :delete,
+                          class: ("#{'hidden_item' unless has_subscribe?(@question)}"),
+                          remote: true

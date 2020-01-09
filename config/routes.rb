@@ -1,9 +1,17 @@
+require 'sidekiq/web'
+
 Rails.application.routes.draw do
+  authenticate :user, lambda { |u| u.admin? } do
+    mount Sidekiq::Web => '/sidekiq'
+  end
+
   use_doorkeeper
   default_url_options host: "localhost:3000"
 
   get '/set_account_email', to: 'emails#new'
   post '/set_account_email', to: 'emails#create'
+
+  resources :subscriptions, only: [:create, :destroy]
 
   devise_for :users, path: :account, controllers: { omniauth_callbacks: 'oauth_callbacks' }
 

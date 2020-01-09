@@ -22,6 +22,10 @@ class Ability
     can :user_rewards, Reward, question: { user_id: user.id }
     can :me, User
     can :index, User
+
+    can :create, Subscription
+    can :destroy, Subscription, { user_id: user.id }
+
     return unless user.admin?
     can :manage, :all
   end
