@@ -8,6 +8,8 @@ Rails.application.routes.draw do
   use_doorkeeper
   default_url_options host: "localhost:3000"
 
+  resources :searches, only: [:index]
+
   get '/set_account_email', to: 'emails#new'
   post '/set_account_email', to: 'emails#create'
 

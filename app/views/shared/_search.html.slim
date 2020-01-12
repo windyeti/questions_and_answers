@@ -1,0 +1,8 @@
+= form_with url: searches_path, method: :get, local: true do |f|
+  div
+    = f.label :query, 'Search'
+    = f.text_field :query
+  div
+    = f.select 'scope', [['All', 'ThinkingSphinx'], 'Question', 'Answer', 'Comment']
+  div
+    = f.submit 'Search'

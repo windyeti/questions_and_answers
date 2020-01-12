@@ -1,0 +1,10 @@
+development: &default
+  enable_star: 1
+  min_infix_len: 1
+
+test:
+  <<: *default
+  mysql41: 9307
+
+production:
+  <<: *default
