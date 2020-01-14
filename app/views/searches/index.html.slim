@@ -1,9 +1,3 @@
-h1 Search#index
-- @results.each do |r|
-  p = r.body
-
-/ -p '==========================='
-/ -p @results
-/ -p '==========================='
-/ - @results.each do |r|
-/   = render 'question', resource: r
+h3 Searches
+- @results.each do |result|
+  = render "#{result.class.to_s.downcase}", resource: result

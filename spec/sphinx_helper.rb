@@ -18,7 +18,7 @@ RSpec.configure do |config|
     DatabaseCleaner.strategy = :transaction
   end
 
-  config.before(:each, searches: true) do
+  config.before(:each, sphinx: true) do
     DatabaseCleaner.strategy = :truncation
     # Index data when running an acceptance spec.
     ThinkingSphinx::Test.index
