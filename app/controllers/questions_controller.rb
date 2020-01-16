@@ -50,14 +50,6 @@ class QuestionsController < ApplicationController
     end
   end
 
-  # def subscribe
-  #   @question.subscribers << current_user
-  # end
-  #
-  # def unsubscribe
-  #   @question.subscribers.delete(current_user)
-  # end
-
   private
 
   def question_params

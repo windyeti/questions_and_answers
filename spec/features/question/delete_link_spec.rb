@@ -10,13 +10,14 @@ feature 'Delete link', js: true do
 
     scenario 'can delete link of his question' do
       visit question_path(question)
-      expect(page.all('li')[0]).to have_link 'Rbk' , href: 'https://rbk.ru'
+      expect(page).to have_link 'Rbk' , href: 'https://rbk.ru'
 
-      within '.question .links li:first-child' do
+      within '.question .links li:last-child' do
+      save_and_open_page
         click_on 'Delete'
       end
 
-      expect(page.all('li')[0]).to_not have_link 'Rbk' , href: 'https://rbk.ru'
+      expect(page).to_not have_link 'Rbk' , href: 'https://rbk.ru'
     end
   end
 
