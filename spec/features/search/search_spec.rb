@@ -1,4 +1,4 @@
-require 'sphinx_helper'
+require 'rails_helper'
 
 feature 'User can searches', js: true, sphinx: true do
   given!(:question) { create(:question, body: 'My question body') }

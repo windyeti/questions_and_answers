@@ -7,7 +7,7 @@ RSpec.describe Link, type: :model do
   it { should validate_presence_of :url }
 
   it do
-    should allow_values('http://dfg.com', 'https://www.df34CVg.RU').for(:url)
+    should allow_values('http://dfg.com', 'https://search.df34CVg.RU').for(:url)
     should_not allow_values('http/dfg.com', 'df34CVg.RU').for(:url)
   end
 

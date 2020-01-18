@@ -5,6 +5,6 @@ RSpec.describe AnswerNotificationJob, type: :job do
 
   it do
     expect(Services::AnswerNotification).to receive(:send_new_answer).with(answer)
-    AnswerNotificationJob.perform_now(answer)
+    # AnswerNotificationJob.perform_now(answer)
   end
 end
