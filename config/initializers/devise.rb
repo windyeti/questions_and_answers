@@ -268,6 +268,15 @@ Devise.setup do |config|
                   ENV['VK_OAUTH_SECRET'].to_sym,
                   scope: [:friends]
 
+  # config.omniauth :github,
+  #                 ENV['GITHUB_OAUTH_ID'].to_sym,
+  #                 ENV['GITHUB_OAUTH_SECRET'].to_sym,
+  #                 scope: 'user:email, read:user'
+  # config.omniauth :vkontakte,
+  #                 ENV['VK_OAUTH_ID'].to_sym,
+  #                 ENV['VK_OAUTH_SECRET'].to_sym,
+  #                 scope: [:friends]
+
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or
   # change the failure app, you can configure them inside the config.warden block.
