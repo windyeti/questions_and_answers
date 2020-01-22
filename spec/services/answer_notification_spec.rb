@@ -7,8 +7,10 @@ RSpec.describe Services::AnswerNotification, type: :service do
   it 'sends mails to subscribers of question' do
 
     question.subscriptions.find_each do |subscription|
-      expect(AnswerNotificationMailer).to receive(:new_answer).with(subscription.user, question).and_call_original
+      expect(AnswerNotificationMailer).to receive(:new_answer)
+                                            .with(subscription.user, question)
+                                            .and_call_original.exactly(4)
     end
-    # Services::AnswerNotification.send_new_answer(answer)
+    Services::AnswerNotification.send_new_answer(answer)
   end
 end

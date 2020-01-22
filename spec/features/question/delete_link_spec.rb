@@ -13,7 +13,6 @@ feature 'Delete link', js: true do
       expect(page).to have_link 'Rbk' , href: 'https://rbk.ru'
 
       within '.question .links li:last-child' do
-      save_and_open_page
         click_on 'Delete'
       end
 

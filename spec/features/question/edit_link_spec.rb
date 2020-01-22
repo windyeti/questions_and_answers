@@ -18,10 +18,10 @@ feature 'Edit links' do
         fill_in 'Name', with: 'New link'
         fill_in 'Url', with: 'http://new_url.ru'
       end
-        click_on 'Save'
+      save_and_open_page
+      click_on 'Save'
 
       visit question_path(question)
-
       within '.links' do
         expect(page).to have_link 'New link' , href: 'http://new_url.ru'
       end

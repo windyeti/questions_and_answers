@@ -92,6 +92,12 @@ group :development do
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
   gem "letter_opener"
+
+  gem 'capistrano', require: false
+  gem 'capistrano-bundler', require: false
+  gem 'capistrano-rails', require: false
+  gem 'capistrano-rvm', require: false
+  gem 'capistrano-passenger', require: false
 end
 
 group :test do
@@ -103,7 +109,7 @@ group :test do
   gem 'shoulda-callback-matchers', '~> 1.1.1'
   gem 'rails-controller-testing'
   gem 'launchy'
-  gem 'database_cleaner'
+  gem 'database_cleaner', '~> 1.8.0.beta'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

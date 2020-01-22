@@ -15,10 +15,9 @@ feature 'Show rewards', %q{
       visit questions_path
 
       click_on 'My rewards'
-
       within '.my_rewards' do
         expect(page).to have_content 'My reward for best answer'
-        expect(page).to have_css 'img'
+        expect(page).to have_css '.reward__image'
       end
     end
   end

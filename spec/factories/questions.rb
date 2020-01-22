@@ -36,11 +36,19 @@ FactoryBot.define do
       end
     end
 
+    # trait :with_reward do
+    #   after :create do |question|
+    #     file_path1 = Rails.root.join('spec', 'rails_helper.rb')
+    #     file1 = fixture_file_upload(file_path1, 'text/plain')
+    #     question.files.attach(file1)
+    #   end
+    # end
+
     trait :with_reward do
       after :create do |question|
         reward = question.build_reward
         reward.name = 'My reward for best answer'
-        reward.picture = fixture_file_upload(Rails.root.join('spec', 'rails_helper.rb'), 'text/plain')
+        reward.picture = fixture_file_upload(Rails.root.join('spec', 'support', 'images', 'marty.jpg'), 'image/jpg')
         reward.save
       end
     end
