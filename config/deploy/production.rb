@@ -6,6 +6,11 @@
 server "134.209.80.11", user: "deployer", roles: %w{app db web}, primary: true
 set :rails_env, :production
 
+
+# Postgresql
+set :pg_password, YAML.load(`rails credentials:show`)['postgres']['pg_password']
+set :pg_username, YAML.load(`rails credentials:show`)['postgres']['pg_username']
+
 # server "example.com", user: "deploy", roles: %w{app web}, other_property: :other_value
 # server "db.example.com", user: "deploy", roles: %w{db}
 
