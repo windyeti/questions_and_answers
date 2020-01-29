@@ -11,6 +11,7 @@ set :deploy_user, "deployer"
 
 # Postgresql
 set :pg_password, YAML.load(`rails credentials:show`)['postgres']['pg_password']
+set :pg_username, YAML.load(`rails credentials:show`)['postgres']['pg_username']
 # set :pg_password, "#{Rails.application.credentials.postgres[:pg_password]}"
 # set :pg_ask_for_password, true
 
