@@ -10,7 +10,8 @@ set :deploy_to, "/home/deployer/qna"
 set :deploy_user, "deployer"
 
 # Postgresql
-set :pg_password, "#{Rails.application.credentials.postgres[:pg_password]}"
+set :pg_password, "1234567"
+# set :pg_password, "#{Rails.application.credentials.postgres[:pg_password]}"
 set :pg_ask_for_password, true
 
 # Default value for :format is :airbrussh.
