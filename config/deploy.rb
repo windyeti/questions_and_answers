@@ -11,7 +11,7 @@ set :deploy_user, "deployer"
 
 set :sidekiq_config, -> { File.join(shared_path, 'config', 'sidekiq.yml') }
 
-set :rvm_map_bins, fetch(:rvm_map_bins).to_a.concat(%w(sidekiq sidekiqctl))
+set :rvm_map_bins, %w(rake gem bundle ruby rails sidekiq sidekiqctl)
 
 # Default value for :format is :airbrussh.
 # set :format, :airbrussh
