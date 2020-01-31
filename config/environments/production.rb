@@ -70,10 +70,10 @@ Rails.application.configure do
   config.action_mailer.default_url_options = { host: '134.209.80.11' }
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
-    address:              'smtp.gmail.com',
+    address:              'smtp.sendgrid.net',
     port:                 587,
-    user_name:            Rails.application.credentials.gmail[:smtp_username],
-    password:             Rails.application.credentials.gmail[:smtp_password],
+    user_name:            Rails.application.credentials.mailer[:smtp_username],
+    password:             Rails.application.credentials.mailer[:smtp_password],
     # user_name:            ENV['SMTP_USERNAME'],
     # password:             ENV['SMTP_PASSWORD'],
     authentication:       'plain',
