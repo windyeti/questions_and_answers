@@ -2,7 +2,7 @@ tr
   td #{@question_title}
   td #{@question_body}
   td
-    a href="/questions/#{@question.id}" Show
+    a href="/questions/#{@question_id}" Show
 
     - if gon.user_id and gon.user_id is @question_user_id
         a rel="nofollow" data-method="delete" href="/questions/#{@question_id}" Delete
