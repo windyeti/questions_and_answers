@@ -4,6 +4,6 @@ class AnswerNotificationMailer < ApplicationMailer
     @question = question
     @user = user
 
-    mail to: user.email
+    mail to: user.email, subject: 'Answer Notification'
   end
 end
