@@ -8,3 +8,4 @@ test:
 
 production:
   <<: *default
+  pid_file: Rails.application.credentials.pid_file[:sphinx]
