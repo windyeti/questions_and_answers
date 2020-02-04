@@ -8,4 +8,4 @@ test:
 
 production:
   <<: *default
-  pid_file: Rails.application.credentials.pid_file[:sphinx]
+  pid_file: <%= YAML.load(`rails credentials:show`)['pid_file']['sphinx'] %>
