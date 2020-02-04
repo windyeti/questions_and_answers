@@ -8,5 +8,5 @@ test:
 
 production:
   <<: *default
-  pid_file: "/home/deployer/qna/shared/tmp/pids/searchd.production.pid"
+#  pid_file: "/home/deployer/qna/shared/tmp/pids/searchd.production.pid"
 #  pid_file: <%= YAML.load(`rails credentials:show`)['pid_file']['sphinx'] %>
