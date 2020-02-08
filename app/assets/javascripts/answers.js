@@ -5,7 +5,7 @@ $(document).on('turbolinks:load', function() {
         this.perform('follow')
       },
       received: function(data) {
-        console.log(data);
+        console.log('Answers', data);
         $('.answers').append(JST['templates/answer']({
             answer_id: data.answer_id,
             answer_user_id: data.answer_user_id,

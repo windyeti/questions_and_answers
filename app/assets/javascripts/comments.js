@@ -5,9 +5,9 @@ $(document).on('turbolinks:load', function() {
         this.perform('follow', { question_id: gon.question_id })
       },
       received: function(data) {
-        console.log(data)
+        console.log('Comments', data)
         var selector = '#' + data.commentable_type + '_' + data.commentable_id + ' .comments';
-        console.log(selector)
+        console.log('Comments Selector', selector)
         $(selector).append(JST['templates/comment']({
           commentable_type: data.commentable_type,
           commentable_id: data.commentable_id,
