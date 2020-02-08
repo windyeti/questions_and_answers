@@ -4,6 +4,7 @@ $(document).on('turbolinks:load', function() {
       this.perform('follow')
     },
     received: function(data) {
+      console.log('QUESTION!!! SKIM');
       $('table').append(JST["templates/question"]({
         question_id: data.question_id,
         question_title: data.question_title,
