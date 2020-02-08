@@ -4,7 +4,6 @@ $(document).on('turbolinks:load', function() {
       this.perform('follow')
     },
     received: function(data) {
-      console.log('Questions', data);
       $('table').append(JST["templates/question"]({
         question_id: data.question_id,
         question_title: data.question_title,
