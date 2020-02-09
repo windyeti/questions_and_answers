@@ -19,7 +19,6 @@ class Question < ApplicationRecord
   after_create :publish_question, :subscribe_author, only: :create
 
   def publish_question
-    p '>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>'
     ActionCable.server.broadcast(
       'questions',
       question_id: id,

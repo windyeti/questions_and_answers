@@ -4,6 +4,5 @@ p
  span ,
  =< @user.email
 h3 List of new questions
-ul
-  - @questions.each do |question|
-    = render 'questions/questions_email', question: question
+- @questions.each do |question|
+  = render 'questions/questions_email', question: question
