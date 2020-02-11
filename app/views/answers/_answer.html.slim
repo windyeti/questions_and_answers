@@ -1,7 +1,9 @@
 - return unless answer.persisted?
+
 .answer id=("answer_#{answer.id}") class=('best' if answer.best)
   p.answer__content
-    = answer.body
+    - cache answer do
+      = answer.body
     = render 'shared/vote', resource: answer
 
     - if can?(:destroy, answer)

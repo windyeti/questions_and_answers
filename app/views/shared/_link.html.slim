@@ -2,7 +2,8 @@
   - if resource.links.present?
     ul
       - resource.links.each do |link|
-        li
-          = link_chooser(link)
-          - if can?(:destroy, link)
-            =< link_to 'Delete', link_path(link), method: :delete, remote: true
+        - cache link do
+          li
+            = link_chooser(link)
+            - if can?(:destroy, link)
+              =< link_to 'Delete', link_path(link), method: :delete, remote: true

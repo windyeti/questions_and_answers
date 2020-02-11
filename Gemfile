@@ -71,6 +71,7 @@ gem 'mysql2', '0.4.9'
 gem 'thinking-sphinx', '4.0.0'
 gem 'mini_racer'
 gem 'unicorn'
+gem 'redis-rails'
 #
 group :development, :test do
   gem 'dotenv-rails'

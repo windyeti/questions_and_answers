@@ -1,13 +1,15 @@
 = link_to 'Back', questions_path
+- if can? :create, Subscription
+  .question__subscription
+    = render 'shared/subscription'
 
 .question id="question_#{@question.id}"
-  .question__content
-    h1= @question.title
-    p= @question.body
-    = render 'shared/vote', resource: @question
-  - if can? :create, Subscription
-    .question__subscription
-      = render 'shared/subscription'
+  - cache @question do
+    .question__content
+      h1= @question.title
+      p= @question.body
+
+  = render 'shared/vote', resource: @question
 
   h4 Links:
   = render 'shared/link', resource: @question
