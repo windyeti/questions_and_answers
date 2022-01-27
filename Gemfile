@@ -63,7 +63,7 @@ gem 'doorkeeper', '~> 5.1.0'
 gem 'active_model_serializers', '~> 0.10'
 gem 'oj'
 
-gem 'sidekiq', '~> 5'
+gem 'sidekiq', '~> 6'
 gem 'sinatra', require: false
 gem 'whenever', require: false
 
